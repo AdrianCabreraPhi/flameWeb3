@@ -8,9 +8,6 @@
             "schematics": {
                 "@schematics/angular:component": {
                     "style": "scss"
-                },
-                "@schematics/angular:application": {
-                    "strict": true
                 }
             },
             "root": "",
@@ -32,6 +29,11 @@
                         ],
                         "styles": [
                             "src/assets/css/bootstrap.min.css",
+                            "node_modules/font-awesome-animation/css/font-awesome-animation.min.css",
+                            "node_modules/font-awesome/css/font-awesome.css",
+                            "node_modules/@fortawesome/fontawesome-free/css/all.css",
+                            "src/assets/css/dataTables.bootstrap4.min.css",
+                            "src/assets/css/buttons.bootstrap4.min.css",
                             "src/styles.scss"
                         ],
                         "scripts": [
@@ -47,7 +49,9 @@
                             "src/assets/js/buttons.print.min.js",
                             "src/assets/js/buttons.colVis.min.js",
                             "src/assets/js/date-euro.js",
-                            "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                            "node_modules/smiles-drawer/dist/smiles-drawer.min.js",
+                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+                            "node_modules/arrive/src/arrive.js"
                         ]
                     },
                     "configurations": {
