@@ -1,0 +1,33 @@
+<!--CONFUSION MATRIX-->
+<div id="matrix" class="container">
+    <div class="row">
+
+        <table>
+            <tr>
+                <td></td>
+                <td><strong>+</strong></td>
+                <td><strong>-</strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class='signcell'><strong>pred + </strong></td>
+                <td class='numcell TP'>{{this.TP}}</td>
+                <td class='numcell FP'>{{this.FP}}</td>
+                <td class='numcell'>{{this.TP+this.FP}}</td>
+            </tr>
+            <tr>
+                <td class='signcell'><strong>pred - </strong></td>
+                <td class='numcell FN'>{{this.FN}}</td>
+                <td class='numcell TN'>{{this.TN}}</td>
+                <td class='numcell'>{{this.FN+this.TN}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class='numcell'>{{this.TP+this.FN}}</td>
+                <td class='numcell'>{{this.FP+this.TN}}</td>
+                <td class='numcell'>{{this.TP+this.FP+this.TN+this.FN}}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>

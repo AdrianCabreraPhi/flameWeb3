@@ -1,0 +1,47 @@
+$color1: #0076a3;
+ul {
+    background: $color1;
+    li a {
+        background: $color1;
+        color: #B8DCED;
+        &.active {
+            background: #22577a;
+            color: white;
+            border-bottom: 3px solid #e59300;
+            border-radius: 0;
+        }
+    }
+}
+
+.logo {
+    max-height: 40px;
+    padding-top: 5px;
+    padding-right: 20px;
+}
+
+.logo-right {
+    max-height: 40px;
+    padding-top: 5px;
+}
+
+.info {
+    background-color: white;
+}
+
+.scrollable {
+    /* right column will have a max of 95%
+       and a scroll bar will appear only when it is bigger */
+    max-height: 95vh;
+    overflow: auto;
+}
+
+.app-base {
+    padding-left: 0px;
+    padding-right: 30px;
+    /* prevents horizontal scrollbar*/
+}
+
+.top-bar {
+    /* top bar is max 5% of GUI */
+    max-height: 5vh;
+}
