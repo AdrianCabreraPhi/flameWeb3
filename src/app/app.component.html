@@ -1,0 +1,75 @@
+<div class="container-fluid app-base">
+    <div class="row" id="top-bar">
+
+        <div class="col p-0">
+            <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="compounds-tab-line" data-toggle="tab" href="#compounds" role="tab" aria-controls="compounds-tab" aria-selected="false">Compounds</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="build-tab-line" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="true">Models</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-7">
+            <div class="float-right">
+                <a *ngIf="this.toxhub==''" href="http://etransafe.eu" target="_Blank"><img class="logo" src="assets/img/etransafe_logo.svg"></a>
+                <a *ngIf="this.toxhub!=''" href="{{this.toxhub}}"><img class="logo" src="assets/img/toxhub_logo.svg"></a>
+                <img class="logo" src="assets/img/efpia_logo.svg">
+                <img class="logo" src="assets/img/imi_logo.svg">
+                <img class="logo-right" src="assets/img/eu_logo.svg">
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane fade" id="compounds" role="tabpanel" aria-labelledby="compounds-tab">
+            <div class="row">
+                <div class="col p-0">
+                    <app-compounds></app-compounds>
+                </div>
+
+                <div class="col-7 info scrollable">
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
+            <div class="row">
+                <div class="col p-0">
+                    <app-model-list></app-model-list>
+                </div>
+
+
+                <div class="col-7 info scrollable">
+                    <div *ngIf="(this.model.name != undefined)">
+                        <app-validations [name]=this.model.name [version]=this.model.version></app-validations>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab">
+            <div class="row">
+                <div class="col ml-4 p-0">
+                    <!-- <app-prediction-list></app-prediction-list> -->
+                    Predictions work!!
+                </div>
+
+                <div class="col-7 info scrollable">
+                    <!-- <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
+                        <app-prediction [predictionName]=this.prediction.name></app-prediction> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
