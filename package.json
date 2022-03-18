@@ -36,6 +36,7 @@
         "font-awesome": "^4.7.0",
         "font-awesome-animation": "^1.1.1",
         "jquery": "^3.6.0",
+        "jsme-editor": "^2022.2.26",
         "plotly.js": "^1.53.0",
         "rxjs": "~6.6.0",
         "smiles-drawer": "^1.2.0",

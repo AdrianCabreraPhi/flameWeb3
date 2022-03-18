@@ -12,6 +12,8 @@ import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
+import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms'
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -23,13 +25,16 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ValidationsComponent,
     QualitConformalComponent,
     ConfusionMatrixComponent,
-    QuantitConformalComponent
+    QuantitConformalComponent,
+    SketchStructureComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    PlotlyModule
+    PlotlyModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [Model, Prediction, Globals],
   bootstrap: [AppComponent]
