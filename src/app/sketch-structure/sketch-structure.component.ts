@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../Globals';
 import { Renderer2 } from '@angular/core';
+// import 'jsme-editor';
 
 // declare var $: any;
 @Component({

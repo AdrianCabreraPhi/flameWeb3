@@ -26,6 +26,22 @@ constructor(private http: HttpClient) {}
         "/validation";
       return this.http.get(url);
     }
+    getDocumentation(
+      modelName: string,
+      modelVersion: string,
+      oformat: string
+    ): Observable<any> {
+      const url: string =
+        environment.baseUrl_manage +
+        "model/" +
+        modelName +
+        "/version/" +
+        modelVersion +
+        "/oformat/" +
+        oformat +
+        "/documentation";
+      return this.http.get(url);
+    }
 
 
 }

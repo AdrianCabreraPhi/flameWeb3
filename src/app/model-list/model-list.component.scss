@@ -1,3 +1,5 @@
+$color1: #0076a3;
+$color2: #e59300;
 i {
     margin-right: 5px;
     cursor: pointer;
@@ -12,7 +14,7 @@ i {
     th {
         padding-left: 1px;
         padding-right: 1px;
-        color: #0076a3;
+        color: $color1;
     }
     td {
         padding: 5px;
@@ -43,7 +45,7 @@ i {
 }
 
 .text-etransafe {
-    color: #e59300;
+    color: $color2
 }
 
 .spinner-border {
@@ -74,4 +76,34 @@ i {
 
 .hideText {
     max-width: 150px;
+}
+
+.selected-list {
+    border: 2px solid $color1;
+    border-radius: 10px;
+    height: 200px;
+    overflow: auto;
+    span {
+        padding-left: 10px;
+    }
+}
+
+.form-check-input {
+    margin-left: 3px;
+    margin-top: 1px;
+}
+
+.btn-ets-do {
+    background: #0076a3;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+    &:hover,
+    &:focus,
+    &.active {
+        background: #22577a;
+        color: #ffffff;
+    }
 }

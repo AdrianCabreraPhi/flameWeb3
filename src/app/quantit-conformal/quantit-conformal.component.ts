@@ -404,7 +404,6 @@ export class QuantitConformalComponent implements OnChanges {
     getValidation() {
       this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
-          console.log(result)
           const info = result;
           
           this.model.input_type = info.meta.input_type;
