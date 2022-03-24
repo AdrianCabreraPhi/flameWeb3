@@ -71,6 +71,7 @@ export class ModelListComponent implements OnInit {
     }
 
     selectAll(event){
+      //pending comment
       const isChecked = event.target.checked;
       var lastPage = false;
       
@@ -89,11 +90,7 @@ export class ModelListComponent implements OnInit {
 
          lastPage = nextPage.className.includes('disabled')
          nextPage.click();
-  
+         
        }
-
-
-
-
     }
 }
