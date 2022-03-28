@@ -12,7 +12,6 @@ declare var $: any;
 export class ModelListComponent implements OnInit {
 
   models: Array<any>;
-  modelsSelected: Array<any> = [];
   objectKeys = Object.keys;
   modelsDocumentation: Array<any> = [];
 
@@ -62,10 +61,10 @@ export class ModelListComponent implements OnInit {
 
       const isChecked = event.target.checked;
       if(isChecked) {
-        this.modelsSelected.push(obj);
+        this.model.listModelsSelected.push(obj);
       } else {
-        let index = this.modelsSelected.indexOf(obj);
-        this.modelsSelected.splice(index,1);
+        let index = this.model.listModelsSelected.indexOf(obj);
+        this.model.listModelsSelected.splice(index,1);
       }
 
     }

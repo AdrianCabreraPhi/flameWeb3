@@ -13,7 +13,8 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
-import { FormsModule,ReactiveFormsModule} from '@angular/forms'
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { ModelSelectedInfoComponent } from './model-selected-info/model-selected-info.component'
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -26,7 +27,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     QualitConformalComponent,
     ConfusionMatrixComponent,
     QuantitConformalComponent,
-    SketchStructureComponent
+    SketchStructureComponent,
+    ModelSelectedInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -33,6 +33,7 @@ export class Model {
     selectedItems = [];
     page:number = 0;
     pagelen:number = 10;
+    listModelsSelected = [];
   }
 
 @Injectable()
