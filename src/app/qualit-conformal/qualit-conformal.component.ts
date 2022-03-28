@@ -26,255 +26,266 @@ export class QualitConformalComponent implements OnChanges {
     features = false;
     features_method = '';
     featuresTSV = '';
-    predictData = [{
+
+   predictData = [{
+        offset: 45, 
+        r: [],
+        theta: ["TP", "FN", "TN", "FP"],
+        meta: ["TP", "FN", "TN", "FP"],
+        marker: {
+          opacity: 0.8,
+          color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"],
+        },
+        type: "barpolar",
+        hovertemplate: "%{meta}: %{r}<extra></extra>"
+    }]
+
+    fittingData = [{
       offset: 45, 
       r: [],
-      theta: ["TP", "FN", "TN", "FP"],
-      meta: ["TP", "FN", "TN", "FP"],
+      theta: ["TP", "FP", "TN", "FN"],
+      meta: ["TP", "FP", "TN", "FN"],
       marker: {
         opacity: 0.8,
         color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"],
       },
       type: "barpolar",
       hovertemplate: "%{meta}: %{r}<extra></extra>"
-  }]
+    }]
 
-  fittingData = [{
-    offset: 45, 
-    r: [],
-    theta: ["TP", "FP", "TN", "FN"],
-    meta: ["TP", "FP", "TN", "FN"],
-    marker: {
-      opacity: 0.8,
-      color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"],
-    },
-    type: "barpolar",
-    hovertemplate: "%{meta}: %{r}<extra></extra>"
-  }]
-
-  plotCommon = {
-    layout :{
-      width: 350,
-      // height: 300,
-      // margin: {r: 10, t: 30, b:30, pad: 0 },
-      polar: {
-        bargap: 0,
-        gridcolor: "grey",
-        gridwidth: 1,
-        radialaxis: {
-          angle: 90,
-          ticks: '', 
-          tickfont: { size: 12, fontStyle: 'Barlow Semi Condensed, sans-serif'},
-        },
-        angularaxis: {
-          showticklabels: false, 
-          ticks:'',
+    plotCommon = {
+      layout :{
+        width: 350,
+        // height: 300,
+        // margin: {r: 10, t: 30, b:30, pad: 0 },
+        polar: {
+          bargap: 0,
+          gridcolor: "grey",
+          gridwidth: 1,
+          radialaxis: {
+            angle: 90,
+            ticks: '', 
+            tickfont: { size: 12, fontStyle: 'Barlow Semi Condensed, sans-serif'},
+          },
+          angularaxis: {
+            showticklabels: false, 
+            ticks:'',
+          }
         }
+      },
+      config: {
+        // responsive: true,
+        displayModeBar: false
       }
-    },
-    config: {
-      // responsive: true,
-      displayModeBar: false
-    }
-  };  
+    };  
 
-  plotScores = {
-    data: [
-      { x: [], 
-        y: [], 
-        text: [],
-        type: 'scatter', 
-        mode: 'markers', 
-        marker: {
-          color: [],
-          opacity: 0.6,
-          colorscale: 'Bluered', 
+    plotScores = {
+      data: [
+        { x: [], 
+          y: [], 
+          text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            color: [],
+            opacity: 0.6,
+            colorscale: 'Bluered', 
+            showscale: false,
+            cmax: 1.0,
+            cmin: 0.0,
+            // size: 14,
+            size: 10,
+            // line: {
+            //   width: 2
+            // },
+            colorbar: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+            }
+          },
+          hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        },
+        {
+          x: [],
+          y: [],
+          colorscale: 'Greys',
+          autocontour: true,
+          reversescale: true,
           showscale: false,
-          cmax: 1.0,
-          cmin: 0.0,
-          // size: 14,
-          size: 10,
-          // line: {
-          //   width: 2
-          // },
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
-      },
-      {
-        x: [],
-        y: [],
-        // name: 'density',
-        // ncontours: 20,
-        // colorscale: 'Greys',
-        // colorscale: 'Hot',
-        // autocolorscales: true, 
-        autocontour: true,
-        // reversescale: true,
-        showscale: false,
-        type: 'histogram2dcontour',
-        hoverinfo: 'skip',
-        contours: { 
-          // coloring: "none", 
-          // showlines: false,
-          coloring: "heatmap" 
+          visible: false, 
+          type: 'histogram2dcontour',
+          hoverinfo: 'skip',
+          // contours: { 
+          //   // coloring: "none", 
+          //   showlines: false,
+          //   coloring: 'heatmap' 
+          // }
         }
-      }
-    ],
-    layout: { 
-      width: 700,
-      height: 500,
-      showtitle: true,
-      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-      title: 'Training series (using model X matrix)', 
-      hovermode: 'closest',
-          margin: {r: 10, t: 30, pad: 0 },
-          showlegend: false,
-          xaxis: {
-            hoverformat: '.2f',
-            zeroline: true,
-            showgrid: true,
-            showline: true,
-            gridwidth: 1,
-            linecolor: 'rgb(200,200,200)',
-            linewidth: 2,
-            title: 'PCA PC1',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
-          },
-          yaxis: {
-            hoverformat: '.2f',
-            zeroline: true,
-            showgrid: true,
-            showline: true,
-            gridwidth: 1,
-            linecolor: 'rgb(200,200,200)',
-            linewidth: 2,
-            title: 'PCA PC2',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
-          },
-    },
-    config: {
-          displaylogo: false,
-          toImageButtonOptions: {
-            format: 'svg', // one of png, svg, jpeg, webp
-            filename: 'flame_scores',
-            width: 700,
-            height: 500,
-            scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
-          },
-          // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
-          modeBarButtonsToRemove: ['autoScale2d', 'hoverCompareCartesian']    
-    }
-  };
 
-  plotPie = {
-    data:  [{
-          values: [],
-          labels: ['positive', 'negative'],
-          textinfo: "label+percent",
-          marker: { colors: ["red", "blue"] },
-          type: 'pie'
-    }],
-    layout: {
-          width: 300,
-          height: 200,
-          showlegend: false,
-          margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
-    },
-    config: {
-      displaylogo: false,
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
-    }
-  }
-
-  plotFeatures= {
-    data : [{
-      type: 'bar',
-      y: [],
-      x: [],
-      hoverlabel: { bgcolor: "#22577"},
-      hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
-      fillcolor: "#B8DCED",
-    }],
-    layout : {
-      title: 'Feature importances (top 50)',
-      font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
-      width: 900,
-      height: 600,
-      barmode: 'overlay',
-      hovermode: 'closest',
-      margin: {b:200, t:50, pad: 10},
-      xaxis: {
-        tickangle: -45,
-        dtick: 1, 
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
-      },
-      yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
-      },
-    },
-    config: {
-      displaylogo: false,
-      showtitle: true, 
-      showlegend: false, 
-      toImageButtonOptions: {
-        format: 'svg', // one of png, svg, jpeg, webp
-        filename: 'flame_features',
-        width: 600,
+      ],
+      layout: { 
+        width: 700,
         height: 500,
-        scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        showtitle: true,
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        title: 'Training series (using model X matrix)', 
+        hovermode: 'closest',
+            margin: {r: 10, t: 30, pad: 0 },
+            showlegend: false,
+            xaxis: {
+              hoverformat: '.2f',
+              zeroline: true,
+              showgrid: true,
+              showline: true,
+              gridwidth: 1,
+              linecolor: 'rgb(200,200,200)',
+              linewidth: 2,
+              title: 'PCA PC1',
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            },
+            yaxis: {
+              hoverformat: '.2f',
+              zeroline: true,
+              showgrid: true,
+              showline: true,
+              gridwidth: 1,
+              linecolor: 'rgb(200,200,200)',
+              linewidth: 2,
+              title: 'PCA PC2',
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            },
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
-    }
-  }
+      config: {
+            displaylogo: false,
+            toImageButtonOptions: {
+              format: 'svg', // one of png, svg, jpeg, webp
+              filename: 'flame_scores',
+              width: 700,
+              height: 500,
+              scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+            },
+            // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+            modeBarButtonsToRemove: ['autoScale2d', 'hoverCompareCartesian']    
+      }
+    };
 
-  plotSummary = {
-    data:  [{
-          x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
-          y: [],
-          name:'fitting',
-          type: 'bar',
-          texttemplate: "%{y:.2f}",
-          textposition: 'auto',
-          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          marker: {
-            color: 'rgba(70,143,184,0.8)',
-          }
-        },{
-          x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
-          y: [],
-          name:'prediction',
-          type: 'bar',
-          texttemplate: "%{y:.2f}",
-          textposition: 'auto',
-          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          marker: {
-            color: 'rgba(156,198,221,0.8)',
-          }
-        }],
-    layout: {
-          yaxis: {
-            range: [0.0,1.0],
-            // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          },
-          xaxis: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          },
-          width: 600,
-          height: 400,
-          showlegend: true,
-          barmode: 'group'
-    },
-    config: {
-      // displaylogo: false,
-      displayModeBar: false
-      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+    plotPie = {
+      data:  [{
+            values: [],
+            labels: ['positive', 'negative'],
+            textinfo: "label+percent",
+            marker: { colors: ["red", "blue"] },
+            type: 'pie'
+      }],
+      layout: {
+            width: 300,
+            height: 200,
+            showlegend: false,
+            margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+      },
+      config: {
+        displaylogo: false,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
     }
+
+    plotFeatures= {
+      data : [{
+        type: 'bar',
+        y: [],
+        x: [],
+        hoverlabel: { bgcolor: "#22577"},
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
+        fillcolor: "#B8DCED",
+      }],
+      layout : {
+        title: 'Feature importances (top 50)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 900,
+        height: 600,
+        barmode: 'overlay',
+        hovermode: 'closest',
+        margin: {b:200, t:50, pad: 10},
+        xaxis: {
+          tickangle: -45,
+          dtick: 1, 
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'flame_features',
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
+    plotSummary = {
+      data:  [{
+            x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
+            y: [],
+            name:'fitting',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            marker: {
+              color: 'rgba(70,143,184,0.8)',
+            }
+          },{
+            x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
+            y: [],
+            name:'prediction',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            marker: {
+              color: 'rgba(156,198,221,0.8)',
+            }
+          }],
+      layout: {
+            yaxis: {
+              range: [0.0,1.0],
+              // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            xaxis: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            width: 600,
+            height: 400,
+            showlegend: true,
+            barmode: 'group'
+      },
+      config: {
+        // displaylogo: false,
+        displayModeBar: false
+        // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
+    }
+
+  public changeProjectStyleMark (event) {
+    const value = event.target.value
+    var update = {'visible':[true, false]}
+    if (value == 'density') {
+      update = {'visible':[false, true]}
+    }
+    if (value == 'both') {
+      update = {'visible':[true, true]}
+    }
+    PlotlyJS.restyle('scoresDIV', update);
   }
 
 
