@@ -9,15 +9,15 @@
         <table id="dataTableModels" class="table display compact" style="width:100%">
             <thead>
                 <tr>
-                    <th><input class="ml-2" type="checkbox" (click)='selectAll($event)' /></th>
-                    <th style="max-width: 5%" class="text-center"></th>
+                    <th style="width: 5%"><input class="ml-2" type="checkbox" (click)='selectAll($event)' /></th>
+                    <th style="width: 5%" class="text-center"></th>
                     <th>Name</th>
-                    <th style="max-width: 5%">Ver</th>
-                    <th style="width: 12%">Maturity</th>
-                    <th style="width: 12%">Type</th>
-                    <th style="width: 12%">Subtype</th>
-                    <th style="width: 12%">Endpoint</th>
-                    <th style="width: 12%">Species</th>
+                    <th style="width: 5%">Ver</th>
+                    <th style="width: 5%"></th>
+                    <th style="width: 20%">Type</th>
+                    <!-- <th style="width: 12%">Subtype</th> -->
+                    <th style="width: 20%">Endpoint</th>
+                    <th style="width: 10%">Species</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,9 +40,14 @@
                     </td>
                     <td>{{model.listModels[key].name}}</td>
                     <td>{{model.listModels[key].version}}</td>
-                    <td>{{model.listModels[key].maturity}}</td>
+                    <td class="text-center">
+                        <i class="fas" [ngClass]="{
+                          'fa-check': model.listModels[key].maturity=='mature',
+                          'fa-certificate': model.listModels[key].maturity=='validated'
+                        }" aria-hidden="true"></i>
+                    </td>
                     <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_type}}</td>
-                    <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_subtype}}</td>
+                    <!-- <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_subtype}}</td> -->
                     <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_endpoint}}</td>
                     <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_species}}</td>
                 </tr>
@@ -52,9 +57,10 @@
                     <th></th>
                     <th>Name</th>
                     <th>Ver</th>
-                    <th>Maturity</th>
+                    <!-- <th>Maturity</th> -->
+                    <th></th>
                     <th>Type</th>
-                    <th>Subtype</th>
+                    <!-- <th>Subtype</th> -->
                     <th>Endpoint</th>
                     <th>Species</th>
                 </tr>
@@ -67,7 +73,8 @@
         </div>
         <div class="btn-group mt-2 float-right" role="group">
             <button type="button" class="btn btn-ets-do">Save</button>
-            <button type="button" class="btn btn-ets-do ml-3 mr-3">Load</button>
+            <button type="button" class="btn btn-ets-do ml-3">Load</button>
+            <!-- <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || model.version == '0'}" (click)="newPrediction(model.name, model.version)">Predict</button> -->
         </div>
     </div>
 </div>

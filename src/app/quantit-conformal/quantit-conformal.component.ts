@@ -164,7 +164,7 @@ export class QuantitConformalComponent implements OnChanges {
             colorscale: 'RdBu', 
             showscale: true, 
             cauto: true,
-            size: 14,
+            size: 10,
             colorbar: {
               tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
               titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
@@ -172,6 +172,22 @@ export class QuantitConformalComponent implements OnChanges {
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        },
+        {
+          x: [],
+          y: [],
+          colorscale: 'Greys',
+          autocontour: true,
+          reversescale: true,
+          showscale: false,
+          visible: false, 
+          type: 'histogram2dcontour',
+          hoverinfo: 'skip',
+          // contours: { 
+          //   // coloring: "none", 
+          //   showlines: false,
+          //   coloring: 'heatmap' 
+          // }
         }
       ],
       layout: { 
@@ -346,6 +362,17 @@ export class QuantitConformalComponent implements OnChanges {
         // displaylogo: false,
         // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
+    }
+    public changeProjectStyleMark (event) {
+      const value = event.target.value
+      var update = {'visible':[true, false]}
+      if (value == 'density') {
+        update = {'visible':[false, true]}
+      }
+      if (value == 'both') {
+        update = {'visible':[true, true]}
+      }
+      PlotlyJS.restyle('scoresDIV', update);
     }
 
     ngOnChanges(): void {
