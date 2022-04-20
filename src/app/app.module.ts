@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { Model, Prediction, Globals } from './Globals';
+import { Model, Prediction, Globals, Compound } from './Globals';
 import { ModelListComponent } from './model-list/model-list.component';
 import { CompoundsComponent } from './compounds/compounds.component';
 import { ValidationsComponent } from './validations/validations.component';
@@ -14,7 +14,10 @@ import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.co
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
-import { ModelSelectedInfoComponent } from './model-selected-info/model-selected-info.component'
+import { ModelSelectedInfoComponent } from './model-selected-info/model-selected-info.component';
+import { CompoundsInfoComponent } from './compounds-info/compounds-info.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -28,7 +31,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfusionMatrixComponent,
     QuantitConformalComponent,
     SketchStructureComponent,
-    ModelSelectedInfoComponent
+    ModelSelectedInfoComponent,
+    CompoundsInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +40,11 @@ PlotlyModule.plotlyjs = PlotlyJS;
     HttpClientModule,
     PlotlyModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
-  providers: [Model, Prediction, Globals],
+  providers: [Model, Prediction, Globals,Compound],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

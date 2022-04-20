@@ -29,6 +29,8 @@ export class QuantitConformalComponent implements OnChanges {
     features_method = '';
     featuresTSV = '';
 
+
+
     plotFitted = {
       data: [{ x: [], 
               y: [], 
@@ -363,6 +365,7 @@ export class QuantitConformalComponent implements OnChanges {
         // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
     }
+
     public changeProjectStyleMark (event) {
       const value = event.target.value
       var update = {'visible':[true, false]}
@@ -397,6 +400,8 @@ export class QuantitConformalComponent implements OnChanges {
 
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
+      this.plotScores.data[1].x =[];
+      this.plotScores.data[1].y =[];
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].meta = [];
       this.plotScores.data[0].marker.color = [];
@@ -409,6 +414,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.featuresTSV = '';
       
       this.getValidation();
+      this.getDocumentation();
     }
 
     isObject(val) {
@@ -416,6 +422,21 @@ export class QuantitConformalComponent implements OnChanges {
         return false;
       }
       return typeof val === 'object';
+    }
+
+    getDocumentation() {
+      this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
+        result => {
+          let label_units = '';
+          if (result['Endpoint_units'].value != undefined) {
+            label_units = ': '+ result['Endpoint_units'].value;
+          }
+          this.plotScatter.layout.xaxis.title= 'Experimental'+label_units;
+          this.plotScatter.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+          this.plotScatter.layout.yaxis.title= 'Model'+label_units;
+          this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+        }
+      );
     }
 
     downloadFeatures () {
@@ -500,6 +521,8 @@ export class QuantitConformalComponent implements OnChanges {
 
               this.plotScores.data[0].x = info['PC1'];
               this.plotScores.data[0].y = info['PC2'];
+              this.plotScores.data[1].x = info['PC1'];
+              this.plotScores.data[1].y = info['PC2'];
               this.plotScores.data[0].text = info['obj_nam'];
               this.plotScores.data[0].meta = info['SMILES'];
               this.plotScores.data[0].marker.color = info['ymatrix'];
@@ -549,7 +572,7 @@ export class QuantitConformalComponent implements OnChanges {
               var tbl = <HTMLTableElement>document.getElementById('tableSelections');
               if (eventdata != null && 'points' in eventdata) {
                 var points = eventdata.points;
-                console.log(points);
+                // console.log(points);
                 points.forEach(function(pt) {
                   const tr = tbl.insertRow();
         

@@ -7,12 +7,9 @@ export class Model {
     name: string = undefined;   // Name of the model selected in the first step
     version: any = undefined; // Version of the model selected in the first step
     modelID: string = undefined;
-    file: any = undefined;  // Name of file uploaded in the second step
     type: string;
     input_type: string = undefined;
     trained = false; // Model is already trained
-    file_info = undefined; // Info file ej. num mols, variables
-    file_fields = undefined;
     quantitative: boolean = undefined;
     conformal: boolean = undefined;
     confidential: boolean = undefined;
@@ -35,6 +32,13 @@ export class Model {
     pagelen:number = 10;
     listModelsSelected = [];
   }
+  @Injectable()
+  export class Compound{
+    file_info = undefined; // Info file ej. num mols, variables
+    file_fields = undefined;
+    file: any = undefined;
+    sketchstructure: {} = undefined;
+  }
 
 @Injectable()
 export class Prediction {
@@ -52,6 +56,10 @@ export class Prediction {
     modelID = undefined;
 }
 
+@Injectable()
+export class Compounds {
+  sdfile_info = undefined;
+}
 
 @Injectable()
 export class Globals {
@@ -60,6 +68,7 @@ export class Globals {
     tableSpaceVisible = false;
     mainTabActive: string = undefined;
     read_only = environment.read_only;
+    compoundTabActive: string = undefined;
 }
 @Injectable()
 export class CustomHTMLElement extends HTMLElement {

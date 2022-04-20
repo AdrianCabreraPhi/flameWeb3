@@ -10,10 +10,10 @@ declare var $: any;
   styleUrls: ['./model-list.component.scss']
 })
 export class ModelListComponent implements OnInit {
-
   models: Array<any>;
   objectKeys = Object.keys;
   modelsDocumentation: Array<any> = [];
+  isValidCompound: boolean = false;
 
   constructor( public model: Model,
     public globals: Globals,
@@ -21,10 +21,13 @@ export class ModelListComponent implements OnInit {
     public func: CommonFunctions, private commonService: CommonService) { }
 
     ngOnInit():void {
+
+      this.commonService.isValidCompound$.subscribe(value => this.isValidCompound = value)
       this.prediction.name = undefined;
       this.model.name = undefined;
       this.model.version = undefined;
       this.func.getModelList();
+      
       // preload the documentation of the models to avoid multiple requests to the api.
       setTimeout(() => {this.getAllDocumentation() },200)
       
@@ -36,15 +39,13 @@ export class ModelListComponent implements OnInit {
            this.modelsDocumentation.push({'name':key,'result':result});
          },
          error => {
-           alert('documentation file not found');
+           console.log('documentation file not found:',key);
          }
        );
      }
-  
     }
 
     onChange(name,version,quantitative,type, event):void {
-
       const documentation = this.modelsDocumentation.find(el =>  el.name == name+'-'+version) //get documentation of model
       const endpoint = documentation.result['Endpoint'].value || 'na'  //get endpoint values
       

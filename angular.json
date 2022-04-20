@@ -32,6 +32,7 @@
                             "node_modules/font-awesome-animation/css/font-awesome-animation.min.css",
                             "node_modules/font-awesome/css/font-awesome.css",
                             "node_modules/@fortawesome/fontawesome-free/css/all.css",
+                            "node_modules/ngx-toastr/toastr.css",
                             "src/assets/css/dataTables.bootstrap4.min.css",
                             "src/assets/css/buttons.bootstrap4.min.css",
                             "src/styles.scss"

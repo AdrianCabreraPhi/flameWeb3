@@ -1,0 +1,16 @@
+$color2: #e59300;
+.container {
+    margin-top: 53px;
+}
+
+.title {
+    background: whitesmoke;
+    border: 2px solid transparent;
+    border-bottom-color: $color2;
+    color: #22577A;
+    font-weight: bold;
+}
+
+.card-header {
+    border-top: 2px solid orange !important;
+}
