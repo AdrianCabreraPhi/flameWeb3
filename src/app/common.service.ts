@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../environments/environment";
 import { Observable } from 'rxjs';
@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommonService {
+  // to do  information
+  currentCompoundTab = new EventEmitter<string>();
+  isValidCompound$ = new EventEmitter<boolean>();
 
 constructor(private http: HttpClient) {}
    /**
@@ -44,4 +47,14 @@ constructor(private http: HttpClient) {}
     }
 
 
+    getParameters(model: string, version: string): Observable<any> {
+      const url: string =
+        environment.baseUrl_manage +
+        "model/" +
+        model +
+        "/version/" +
+        version +
+        "/parameters";
+      return this.http.get(url);
+    }
 }

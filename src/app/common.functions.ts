@@ -32,9 +32,6 @@ export class CommonFunctions {
         this.model.quantitative = quantitative;
         this.model.ensemble = ensemble;
         this.model.error = error;
-        this.model.file = undefined;
-        this.model.file_info = undefined;
-        this.model.file_fields = undefined;
         this.model.parameters = undefined;
       }
 

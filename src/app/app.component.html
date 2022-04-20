@@ -4,10 +4,10 @@
         <div class="col-4 p-0">
             <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" id="compounds-tab-line" data-toggle="tab" href="#compounds" role="tab" aria-controls="compounds-tab" aria-selected="false">Compounds</a>
+                    <a class="nav-link active" aria-disabled="true" id="compounds-tab-line" data-toggle="tab" href="#compounds" role="tab" aria-controls="compounds-tab" aria-selected="true">Compounds</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" id="build-tab-line" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="true">Models</a>
+                    <a class="nav-link" id="build-tab-line" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="false">Models</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
@@ -25,21 +25,18 @@
         </div>
     </div>
     <div class="tab-content">
-        <div class="tab-pane fade" id="compounds" role="tabpanel" aria-labelledby="compounds-tab">
+        <div class="tab-pane fade show active" id="compounds" role="tabpanel" aria-labelledby="compounds-tab">
             <div class="row">
                 <div class="col-4 p-0">
                     <app-compounds></app-compounds>
                 </div>
 
                 <div class="col p-0 info scrollable">
-                    <!-- sketch -->
-                    <app-sketch-structure></app-sketch-structure>
+                    <app-compounds-info></app-compounds-info>
                 </div>
             </div>
-
         </div>
-
-        <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
+        <div class="tab-pane fade" id="build" role="tabpanel" aria-labelledby="build-tab">
             <div class="row">
                 <div class="col-4 p-0">
                     <app-model-list></app-model-list>
@@ -50,6 +47,7 @@
                     <div *ngIf="(this.model.name != undefined)">
                         <app-validations [name]=this.model.name [version]=this.model.version></app-validations>
                     </div>
+                    <app-model-selected-info></app-model-selected-info>
                 </div>
             </div>
         </div>
