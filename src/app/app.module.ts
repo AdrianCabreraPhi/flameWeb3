@@ -18,6 +18,7 @@ import { ModelSelectedInfoComponent } from './model-selected-info/model-selected
 import { CompoundsInfoComponent } from './compounds-info/compounds-info.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SdfFileComponent } from './sdf-file/sdf-file.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -32,7 +33,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     QuantitConformalComponent,
     SketchStructureComponent,
     ModelSelectedInfoComponent,
-    CompoundsInfoComponent
+    CompoundsInfoComponent,
+    SdfFileComponent
   ],
   imports: [
     BrowserModule,
