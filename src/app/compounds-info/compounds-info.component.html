@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row" *ngIf="currentTab == 'sdfile-tab'">
+    <div class="row" *ngIf="currentTab == 'input-file'">
 
         <div *ngIf="this.compound.file_info!==undefined" class="col-5 card p-0 ml-4 mr-4">
             <div class="card-header p-2">
@@ -17,7 +17,7 @@
                 </li>
                 <li *ngIf="this.compound.file_info.num_mols != undefined" class="list-group-item d-flex justify-content-between align-items-left p-1">
                     <strong>Number of molecules </strong>
-                    <span class="badge badge-primary badge-pill">{{this.compound.file_info['num_mols']}}</span>
+                    <span class="badge  badge-pill">{{this.compound.file_info['num_mols']}}</span>
                 </li>
             </ul>
 
@@ -31,14 +31,12 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-left p-1" *ngFor="let key of objectKeys(this.compound.file_fields)">
                     <strong>{{key}}</strong>
-                    <span class="badge badge-primary badge-pill">{{this.compound.file_fields[key]}}</span>
+                    <span class="badge  badge-pill">{{this.compound.file_fields[key]}}</span>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-
-
 
 <div class="container w-50" *ngIf="currentTab == 'sketch-tab'">
     <!-- <div *ngIf="this.compound.sketchstructure" class="row">
