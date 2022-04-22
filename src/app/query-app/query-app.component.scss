@@ -37,3 +37,12 @@ $color2: #e59300;
     margin: 0px;
     border-radius: 0px;
 }
+
+button {
+    background-color: #22577A;
+    color: white;
+    &:hover {
+        color: white;
+        background-color: #16394e;
+    }
+}
