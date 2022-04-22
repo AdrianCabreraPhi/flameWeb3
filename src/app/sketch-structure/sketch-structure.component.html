@@ -1,9 +1,6 @@
 <div>
     <div class="row">
         <div class="col">
-            <h5 class="mb-3 p-2 title">
-                Sketch Structure
-            </h5>
             <div class="form-group">
                 <div id="jsme_container"></div>
                 <small class="text-muted">Sketch a molecular structure (one molecule max.).</small>
@@ -11,7 +8,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-10">
             <label for="sketchName">Structure name</label>
             <input type="text" class="form-control is-valid" [class.is-valid]="isvalidSketch" [class.is-invalid]="!isvalidSketch" id="sketchName" [(ngModel)]="sketchName" (ngModelChange)="sketchNameChange()" required>
             <div class="valid-feedback">
@@ -21,9 +18,10 @@
                 The structure name entered is not valid
             </div>
             <span [hidden]=true id="molclipboard">XXX</span>
-            <div class=" align-self-end">
-                <button [disabled]="!this.isvalidSketch" type="button" class="btn btn-primary float-right" (click)="saveStructure()" onclick="clipmol(jsmeApplet.smiles())">Save</button>
-            </div>
         </div>
+        <div class="col-2 align-self-end">
+            <button [disabled]="!this.isvalidSketch" type="button" class="btn btn-primary float-right" (click)="saveStructure()" onclick="clipmol(jsmeApplet.smiles())">Save</button>
+        </div>
+
     </div>
 </div>

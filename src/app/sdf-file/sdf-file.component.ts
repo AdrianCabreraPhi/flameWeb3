@@ -11,10 +11,7 @@ import { Compound, Model } from '../Globals';
 export class SdfFileComponent implements OnInit {
   isValidSDFile: boolean = false;
   fileContent: any;
-  listNameMols: [];
-
   constructor(public model: Model,public compound: Compound,private commonService: CommonService,private toastr: ToastrService) { }
-
   ngOnInit(): void {
 
   }
@@ -40,16 +37,13 @@ export class SdfFileComponent implements OnInit {
     this.compound.file_info['type_file'] = extension[1];
     const fileReader: FileReader = new FileReader();
     const self = this;
-
     // for SDFiles only.
     if (this.compound.file_info['type_file'] == 'sdf') {
       this.isValidSDFile = true;
       fileReader.onloadend = function(x) {
         self.fileContent = fileReader.result;
-        var listNameMols = self.fileContent.matchAll(/<name>\s+(.+)\s*/ig)
+        //var listNameMols = self.fileContent.matchAll(/<name>\s+(.+)\s*/ig)
         self.compound.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
-        listNameMols = Array.from(listNameMols).sort();
-        self.listNameMols = listNameMols.reduce((acc,el) => acc.concat(el[1]),[])// reduce the arrays to one with the names only
         const res_array = self.fileContent.match(/>( )*<(.*)>/g);
         const res_dict = {};
         for (const variable of res_array) {
@@ -65,8 +59,5 @@ export class SdfFileComponent implements OnInit {
       }
       fileReader.readAsText(file);
     }
-   
-   
   }
-
 }

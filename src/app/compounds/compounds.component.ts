@@ -7,8 +7,6 @@ import { Model, Globals,Compound } from '../Globals';
   styleUrls: ['./compounds.component.scss']
 })
 export class CompoundsComponent implements OnInit {
-  num_of_mols = 0;
-  type_file: string;
 
   constructor(private commonService: CommonService) { }
 
@@ -19,9 +17,5 @@ export class CompoundsComponent implements OnInit {
   currentTab(event){
    this.commonService.currentCompoundTab.emit(event.target.id);
   }
-
-  
-
- 
 
 }
