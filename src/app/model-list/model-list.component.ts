@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model, Prediction, Globals } from '../Globals';
+import { Model, Prediction, Globals, Compound } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import 'datatables.net-bs4';
@@ -18,12 +18,9 @@ export class ModelListComponent implements OnInit {
   constructor( public model: Model,
     public globals: Globals,
     public prediction: Prediction,
-    public func: CommonFunctions, private commonService: CommonService) { }
+    public func: CommonFunctions, private commonService: CommonService,public compound: Compound, ) { }
 
     ngOnInit():void {
-
-      this.commonService.isValidCompound$.subscribe(value => this.isValidCompound = value)
-      this.prediction.name = undefined;
       this.model.name = undefined;
       this.model.version = undefined;
       this.func.getModelList();

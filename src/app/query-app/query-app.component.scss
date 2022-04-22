@@ -1,0 +1,39 @@
+$color1: #0076a3;
+$color2: #e59300;
+.title {
+    background: whitesmoke;
+    border: 2px solid transparent;
+    border-bottom-color: $color1;
+    color: #22577A;
+    font-weight: bold;
+}
+
+.selected-list {
+    width: 97%;
+    margin: auto;
+    margin-top: 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    height: 250px;
+    overflow: auto;
+    background-color: #F5F5F5;
+}
+
+.minitable {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    width: 400px;
+    td {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 12px;
+        border-bottom: 1px solid #B8DCED;
+        vertical-align: middle;
+    }
+}
+
+.box select {
+    background-color: #22577A;
+    color: white;
+    margin: 0px;
+    border-radius: 0px;
+}

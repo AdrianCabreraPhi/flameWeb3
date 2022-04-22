@@ -1,9 +1,9 @@
 <div class="ml-4 mt-3">
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a (click)="currentTab($event)" class="nav-link active" id="sdfile-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">SDF File</a>
-            <a (click)="currentTab($event)" class="nav-link" id="sketch-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Sketch</a>
-            <a (click)="currentTab($event)" class="nav-link" id="other-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Other</a>
+            <a (click)="currentTab($event)" class="nav-link active" id="sdfile-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Input File</a>
+            <a (click)="currentTab($event)" class="nav-link" id="sketch-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Sketch structure</a>
+            <a (click)="currentTab($event)" class="nav-link" id="other-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Input List</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -16,8 +16,7 @@
             <app-sketch-structure></app-sketch-structure>
         </div>
         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-            <!-- queryApp option -->
-
+            <app-query-app></app-query-app>
         </div>
     </div>
 </div>

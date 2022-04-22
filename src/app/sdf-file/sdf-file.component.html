@@ -1,8 +1,5 @@
 <!-- input file -->
 <div class="input-file">
-    <h5 class="p-2 title">
-        Input File
-    </h5>
     <div class="form-group mt-2">
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" (change)="change($event)">
@@ -14,14 +11,6 @@
 </div>
 <!-- input list -->
 <div class="mt-4 input-list">
-    <h5 class="p-2 title">
-        Input List
-    </h5>
-    <div class="selected-list mt-2">
-        <div *ngFor="let mol of listNameMols">
-            <span class="pl-1">{{mol | titlecase}}</span>
-        </div>
-    </div>
     <div class="mt-4 align-self-end">
         <button [disabled]="!isValidSDFile" (click)="Save()" type="button" class="btn btn-primary float-right">Save</button>
     </div>

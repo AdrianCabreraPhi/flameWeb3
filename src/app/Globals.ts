@@ -38,6 +38,8 @@ export class Model {
     file_fields = undefined;
     file: any = undefined;
     sketchstructure: {} = undefined;
+    input_list: {} = undefined;
+    sdfile_info = undefined;
   }
 
 @Injectable()
@@ -56,10 +58,6 @@ export class Prediction {
     modelID = undefined;
 }
 
-@Injectable()
-export class Compounds {
-  sdfile_info = undefined;
-}
 
 @Injectable()
 export class Globals {
