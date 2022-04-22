@@ -8,7 +8,7 @@ import { Model,Compound} from '../Globals';
   styleUrls: ['./compounds-info.component.scss']
 })
 export class CompoundsInfoComponent implements OnInit {
-  currentTab: string = "sdfile-tab"
+  currentTab: string = "input-file"
   objectKeys = Object.keys;
   constructor(private commonService : CommonService, public model:Model,public compound:Compound) { }
 
