@@ -40,9 +40,7 @@ objectKeys = Object.keys;
     modeltab.click();
     this.toastr.success('Successfully', 'Save '+this.compound.input_list['name'], {
      timeOut: 5000, positionClass: 'toast-top-right'
-   });
-
-      
+   });      
     }
 
   }

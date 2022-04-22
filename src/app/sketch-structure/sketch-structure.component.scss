@@ -7,3 +7,12 @@ $color2: #e59300;
     color: #22577A;
     font-weight: bold;
 }
+
+button {
+    background-color: #22577A;
+    color: white;
+    &:hover {
+        color: white;
+        background-color: #16394e;
+    }
+}
