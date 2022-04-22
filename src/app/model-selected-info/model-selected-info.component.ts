@@ -3,9 +3,11 @@ import { Model} from '../Globals';
 
 @Component({
   selector: 'app-model-selected-info',
-  template: `<div class="selected-list">
+  template: `
+  <hr>
+  <div class="selected-list">
   <div *ngFor="let model of this.model.listModelsSelected">
-      <span>* {{model.name}} v.{{model.version}} {{model.quantitative}} |</span> {{model.type}} |<span>{{model.endpoint}} </span>
+      <span> {{model.name}} v.{{model.version}} {{model.quantitative}} |</span> {{model.type}} |<span>{{model.endpoint}} </span>
   </div> 
 </div>`,
   // templateUrl: './model-selected-info.component.html',
