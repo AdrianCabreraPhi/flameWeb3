@@ -1,4 +1,4 @@
-$color2: #e59300;
+@import '../../assets/scss/colors.scss';
 .container {
     margin-top: 53px;
 }
@@ -16,6 +16,6 @@ $color2: #e59300;
 }
 
 .badge {
-    background-color: #0076a3;
+    background-color: $color1;
     color: white;
 }

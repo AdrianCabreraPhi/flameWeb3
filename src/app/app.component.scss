@@ -1,4 +1,4 @@
-$color1: #0076a3;
+@import '../assets/scss/colors.scss';
 ul {
     background: $color1;
     li a {
@@ -7,7 +7,7 @@ ul {
         &.active {
             background: #22577a;
             color: white;
-            border-bottom: 3px solid #e59300;
+            border-bottom: 3px solid $color2;
             border-radius: 0;
         }
     }
