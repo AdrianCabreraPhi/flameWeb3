@@ -37,7 +37,9 @@ export class SketchStructureComponent implements OnInit {
       //check name
       if(this.isvalidSketch && this.sketchSmiles){
         this.commonService.isValidCompound$.emit(true);
-        this.compound.sketchstructure = {'name':this.sketchName,'smiles':this.sketchSmiles}
+        this.commonService.currentSelection$.emit({'option':'Sketch structure','name':this.sketchName});
+        this.compound.sketchstructure = {'name':this.sketchName,'result':this.sketchSmiles}
+        this.cleanOtherOptions();
         let modeltab =  document.getElementById('build-tab-line');
         modeltab.click();
         this.toastr.success('Successfully', 'Save '+this.compound.sketchstructure['name'], {
@@ -52,6 +54,12 @@ export class SketchStructureComponent implements OnInit {
 
       
     }
+
+    cleanOtherOptions(){
+      this.compound.input_list = undefined;
+      this.compound.input_file = undefined
+    }
+
   ngOnInit(): void {
       // inject into the HTML code these two scripts required by JSME
       const jsme_script = this.renderer2.createElement('script');

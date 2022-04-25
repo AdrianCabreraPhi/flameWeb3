@@ -15,11 +15,10 @@ export class ManageModelsComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.isValidCompound$.subscribe(value => this.isValidCompound = value)
-    this.prediction.name = undefined;
+    this.prediction.name = "postman";
   }
-
   Predict(){
-    if(this.compound.file){
+    //if(this.compound.file){
       //guarda los datos principales del modelo
       // this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.file.name];
     //public service: PredictorService
@@ -27,6 +26,6 @@ export class ManageModelsComponent implements OnInit {
     //   let iter = 0;
 
     // })
-  }
+  //}
   }
 }
