@@ -1,14 +1,16 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
 import { Compound, Model } from '../Globals';
 
 @Component({
-  selector: 'app-sdf-file',
-  templateUrl: './sdf-file.component.html',
-  styleUrls: ['./sdf-file.component.scss']
+  selector: 'app-input-file',
+  templateUrl: './input-file.component.html',
+  styleUrls: ['./input-file.component.scss']
 })
-export class SdfFileComponent implements OnInit {
+export class InputFileComponent implements OnInit {
+
   isValidSDFile: boolean = false;
   fileContent: any;
   file = undefined;
@@ -16,7 +18,6 @@ export class SdfFileComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
   Save(){
     this.commonService.isValidCompound$.emit(true);
     this.commonService.currentSelection$.emit({'option':'Input File','name':this.compound.file_info['name']});
@@ -29,8 +30,7 @@ export class SdfFileComponent implements OnInit {
    });
 
    }
-
-  public change(event): void {
+   public change(event): void {
     const file:File = event.target.files[0];
     if(file) this.file = file;
     this.compound.file_info = {};
@@ -63,8 +63,6 @@ export class SdfFileComponent implements OnInit {
       fileReader.readAsText(file);
     }
   }
-
-
   cleanOtherOptions(){
     this.compound.input_list = undefined;
     this.compound.sketchstructure = undefined

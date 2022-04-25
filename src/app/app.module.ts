@@ -18,10 +18,10 @@ import { ModelSelectedInfoComponent } from './model-selected-info/model-selected
 import { CompoundsInfoComponent } from './compounds-info/compounds-info.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SdfFileComponent } from './sdf-file/sdf-file.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
-import { QueryAppComponent } from './query-app/query-app.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
+import { InputFileComponent } from './input-file/input-file.component';
+import { InputListComponent } from './input-list/input-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -37,10 +37,10 @@ PlotlyModule.plotlyjs = PlotlyJS;
     SketchStructureComponent,
     ModelSelectedInfoComponent,
     CompoundsInfoComponent,
-    SdfFileComponent,
     ManageModelsComponent,
-    QueryAppComponent,
-    CurrentSelectionComponent
+    CurrentSelectionComponent,
+    InputFileComponent,
+    InputListComponent
   ],
   imports: [
     BrowserModule,
