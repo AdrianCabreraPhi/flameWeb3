@@ -1,0 +1,19 @@
+<div *ngIf="this.currentSelection">
+    <div class="card-header">
+        Current Selection
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th style="width: 50%">Option</th>
+                <th style="width: 50%">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td>{{this.currentSelection['option']}}</td>
+                <td>{{this.currentSelection['name']}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

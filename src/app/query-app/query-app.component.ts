@@ -36,6 +36,8 @@ objectKeys = Object.keys;
     if(this.isvalidSeries){
       this.compound.input_list = {'name':this.inputListName,'result':this.compound_list}
       this.commonService.isValidCompound$.emit(true);
+      this.commonService.currentSelection$.emit({'option':'Input List','name':this.inputListName});
+      this.cleanOtherOptions();
     var modeltab =  document.getElementById('build-tab-line');
     modeltab.click();
     this.toastr.success('Successfully', 'Save '+this.compound.input_list['name'], {
@@ -123,5 +125,10 @@ objectKeys = Object.keys;
       alert('unable to get input lists!')
     }
     )
+  }
+
+  cleanOtherOptions(){
+    this.compound.sketchstructure = undefined;
+    this.compound.input_file = undefined
   }
 }

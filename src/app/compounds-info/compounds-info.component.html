@@ -1,6 +1,5 @@
 <div class="container">
     <div class="row" *ngIf="currentTab == 'input-file'">
-
         <div *ngIf="this.compound.file_info!==undefined" class="col-5 card p-0 ml-4 mr-4">
             <div class="card-header p-2">
                 <h5>Input file info</h5>
@@ -36,22 +35,4 @@
             </ul>
         </div>
     </div>
-</div>
-
-<div class="container w-50" *ngIf="currentTab == 'sketch-tab'">
-    <!-- <div *ngIf="this.compound.sketchstructure" class="row">
-        <div class="card" style="width: 600px">
-            <div class="card-header text-center">
-                <h5>{{this.compound.sketchstructure['name']}}</h5>
-            </div>
-            <canvas (mouseover)="drawSmile()" id="example-canvas"></canvas>
-            <ul class="list-group list-group-flush">
-                <li style="border: 1px solid black;" class="list-group-item text-info text-center">{{this.compound.sketchstructure['smiles']}}</li>
-            </ul>
-        </div>
-
-    </div> -->
-</div>
-<div class="row" *ngIf="currentTab == 'other-tab'">
-
 </div>

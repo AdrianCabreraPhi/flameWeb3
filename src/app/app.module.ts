@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SdfFileComponent } from './sdf-file/sdf-file.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { QueryAppComponent } from './query-app/query-app.component';
+import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -38,7 +39,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     CompoundsInfoComponent,
     SdfFileComponent,
     ManageModelsComponent,
-    QueryAppComponent
+    QueryAppComponent,
+    CurrentSelectionComponent
   ],
   imports: [
     BrowserModule,

@@ -11,13 +11,17 @@ import { Compound, Model } from '../Globals';
 export class SdfFileComponent implements OnInit {
   isValidSDFile: boolean = false;
   fileContent: any;
+  file = undefined;
   constructor(public model: Model,public compound: Compound,private commonService: CommonService,private toastr: ToastrService) { }
   ngOnInit(): void {
 
   }
-  
+
   Save(){
     this.commonService.isValidCompound$.emit(true);
+    this.commonService.currentSelection$.emit({'option':'Input File','name':this.compound.file_info['name']});
+    this.compound.input_file = {'name': this.compound.file_info['name'] ,'result':this.file}
+    this.cleanOtherOptions();
     var modeltab =  document.getElementById('build-tab-line');
     modeltab.click();
     this.toastr.success('Successfully', 'Save '+this.compound.file_info['name'], {
@@ -27,9 +31,8 @@ export class SdfFileComponent implements OnInit {
    }
 
   public change(event): void {
-    
     const file:File = event.target.files[0];
-    if(file) this.compound.file = file;
+    if(file) this.file = file;
     this.compound.file_info = {};
     this.compound.file_info['name'] = file.name;
     this.compound.file_info['size_M'] = ((file.size / 1024) / 1024).toFixed(2);
@@ -59,5 +62,11 @@ export class SdfFileComponent implements OnInit {
       }
       fileReader.readAsText(file);
     }
+  }
+
+
+  cleanOtherOptions(){
+    this.compound.input_list = undefined;
+    this.compound.sketchstructure = undefined
   }
 }

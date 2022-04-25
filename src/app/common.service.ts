@@ -6,9 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommonService {
-  // to do  information
+  // events implemented to control which compound tab we are in and if the selected compound is valid. 
   currentCompoundTab = new EventEmitter<string>();
   isValidCompound$ = new EventEmitter<boolean>();
+  currentSelection$ = new EventEmitter<{}>();
 
 constructor(private http: HttpClient) {}
    /**

@@ -36,10 +36,9 @@ export class Model {
   export class Compound{
     file_info = undefined; // Info file ej. num mols, variables
     file_fields = undefined;
-    file: any = undefined;
     sketchstructure: {} = undefined;
     input_list: {} = undefined;
-    sdfile_info = undefined;
+    input_file = undefined;
   }
 
 @Injectable()
