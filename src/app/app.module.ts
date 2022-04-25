@@ -19,9 +19,9 @@ import { CompoundsInfoComponent } from './compounds-info/compounds-info.componen
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
-import { QueryAppComponent } from './query-app/query-app.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 import { InputFileComponent } from './input-file/input-file.component';
+import { InputListComponent } from './input-list/input-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -38,9 +38,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ModelSelectedInfoComponent,
     CompoundsInfoComponent,
     ManageModelsComponent,
-    QueryAppComponent,
     CurrentSelectionComponent,
-    InputFileComponent
+    InputFileComponent,
+    InputListComponent
   ],
   imports: [
     BrowserModule,

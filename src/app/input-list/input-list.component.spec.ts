@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QueryAppComponent } from './query-app.component';
+import { InputListComponent } from './input-list.component';
 
-describe('QueryAppComponent', () => {
-  let component: QueryAppComponent;
-  let fixture: ComponentFixture<QueryAppComponent>;
+describe('InputListComponent', () => {
+  let component: InputListComponent;
+  let fixture: ComponentFixture<InputListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QueryAppComponent ]
+      declarations: [ InputListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QueryAppComponent);
+    fixture = TestBed.createComponent(InputListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
