@@ -1,5 +1,5 @@
-$color1: #0076a3;
-$color2: #e59300;
+@import '../../assets/scss/colors.scss';
+@import '../../assets/scss/buttons.scss';
 i {
     margin-right: 5px;
     cursor: pointer;
@@ -81,19 +81,4 @@ i {
 .form-check-input {
     margin-left: 3px;
     margin-top: 1px;
-}
-
-.btn-ets-do {
-    background: #0076a3;
-    color: #ffffff;
-    border-width: 0;
-    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    letter-spacing: 0.05em;
-    border-radius: 0;
-    &:hover,
-    &:focus,
-    &.active {
-        background: #22577a;
-        color: #ffffff;
-    }
 }

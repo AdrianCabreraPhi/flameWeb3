@@ -1,6 +1,6 @@
 <ng-template #elseBlock>
     <div class="alert alert-danger mt-2 text-center" role="alert">
-        No input List!
+        There isn't a input list!
     </div>
 </ng-template>
 <div *ngIf="this.basket_list.length > 0 else elseBlock">
@@ -14,13 +14,13 @@
 </select>
     </div>
 
-    <div style="overflow-y:scroll; height:400px; border:1px solid #B8DCED;">
+    <div style="overflow-y:scroll; height:400px;">
         <table id="tableInputList" style="width: 100%" class="minitable compact">
             <tbody>
             </tbody>
         </table>
     </div>
-
+    <hr>
     <div class="row mt-2">
         <div class="col-10">
             <label for="seriesName">Series name</label>

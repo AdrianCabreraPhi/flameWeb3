@@ -1,8 +1,7 @@
-$color1: #0076a3;
-$color2: #e59300;
+@import '../../assets/scss/colors.scss';
 ul li.nav-item a {
     background: white;
-    color: #0076a3;
+    color: $color1;
     font-size: 1.2rem;
     &.active {
         background: white;
