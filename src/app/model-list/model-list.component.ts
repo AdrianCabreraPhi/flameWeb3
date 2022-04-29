@@ -45,6 +45,7 @@ export class ModelListComponent implements OnInit {
     onChange(name,version,quantitative,type, event):void {
       const documentation = this.modelsDocumentation.find(el =>  el.name == name+'-'+version) //get documentation of model
       const endpoint = documentation.result['Endpoint'].value || 'na'  //get endpoint values
+
       
       // check if model is quantitative or qualitative
       if(quantitative){ quantitative = 'quantitative'} else quantitative = "qualitative";
@@ -61,8 +62,9 @@ export class ModelListComponent implements OnInit {
       if(isChecked) {
         this.model.listModelsSelected.push(obj);
       } else {
-        let index = this.model.listModelsSelected.indexOf(obj);
-        this.model.listModelsSelected.splice(index,1);
+        this.model.listModelsSelected.splice(
+          this.model.listModelsSelected.findIndex(
+            model => model.name === name && model.version === version),1);
       }
 
     }
