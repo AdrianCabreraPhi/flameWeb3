@@ -1,5 +1,5 @@
 <div class="float-left">
-    <button (click)="Predict()" [ngClass]="{disabled: !this.isValidCompound}" class="btn btn-ets-do">Predict</button>
+    <button (click)="select_prediction()" [ngClass]="{disabled: !this.isValidCompound || this.model.listModelsSelected.length < 2}" class="btn btn-ets-do">Predict</button>
 </div>
 <div class="btn-group mt-2 float-right" role="group">
     <button type="button" class="btn btn-ets-do" [disabled]="this.model.listModelsSelected.length < 2">Save</button>
