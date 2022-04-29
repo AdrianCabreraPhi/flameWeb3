@@ -35,7 +35,6 @@ export class InputListComponent implements OnInit {
   }
   Save() {
     const item = parseInt(this.basket_selected.substring(0, 1));
-
     if (this.isvalidSeries) {
       this.compound.input_list = {
         name: this.inputListName,
