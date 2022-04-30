@@ -28,13 +28,16 @@ export class InputListComponent implements OnInit {
 
   ngOnInit(): void {
     this.refresh_list();
-
-    setTimeout(() => {
-      this.show_basket();
-    }, 200);
+    this.commonService.currentCompoundTab.subscribe( tab => {
+      if(tab == 'input-list-tab') {
+        setTimeout(() => {
+          this.show_basket();
+        }, 200);
+      }  
+    });
   }
   Save() {
-    const item = parseInt(this.basket_selected.substring(0, 1));
+    // const item = parseInt(this.basket_selected.substring(0, 1));
     if (this.isvalidSeries) {
       this.compound.input_list = {
         name: this.inputListName,
@@ -50,7 +53,7 @@ export class InputListComponent implements OnInit {
       modeltab.click();
       this.toastr.success(
         'Successfully',
-        'Save ' + this.compound.input_list['name'],
+        'Saved ' + this.compound.input_list['name'],
         {
           timeOut: 5000,
           positionClass: 'toast-top-right',

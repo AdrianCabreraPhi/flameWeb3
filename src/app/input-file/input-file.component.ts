@@ -25,7 +25,7 @@ export class InputFileComponent implements OnInit {
     this.cleanOtherOptions();
     var modeltab =  document.getElementById('build-tab-line');
     modeltab.click();
-    this.toastr.success('Successfully', 'Save '+this.compound.file_info['name'], {
+    this.toastr.success('Successfully', 'Saved '+this.compound.file_info['name'], {
      timeOut: 5000, positionClass: 'toast-top-right'
    });
 
