@@ -10,6 +10,7 @@ export class CommonService {
   currentCompoundTab = new EventEmitter<string>();
   isValidCompound$ = new EventEmitter<boolean>();
   currentSelection$ = new EventEmitter<{}>();
+  dtPredictionVisible = new  EventEmitter<boolean>();
 
 constructor(private http: HttpClient) {}
    /**

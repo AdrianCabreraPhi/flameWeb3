@@ -29,7 +29,7 @@ export class PredictorService {
   formData.append('endpoints',endpoints);
   formData.append('versions',versions);
   const url: string = environment.baseUrl_predict + 'profile/profileName/' + profileName + '/smiles';
-  return this.http.put(url,formData)
+  return this.http.put(url,formData);
 
 
   }
@@ -37,18 +37,18 @@ export class PredictorService {
 
 profileSummary(profileName: string){
   const url = environment.baseUrl_manage + 'profile/'+profileName+'/summary';
-  return this.http.get(url)
+  return this.http.get(url);
 
   }
 
   getBasketList(): Observable<any>{
     const url = environment.baseUrl_manage + "baskets"
-    return this.http.get(url)
+    return this.http.get(url);
   }
 
   getBasket(num): Observable<any> {
     const url = environment.baseUrl_manage + "basket/"+ num
-    return this.http.get(url)
+    return this.http.get(url);
   }
   
 }
