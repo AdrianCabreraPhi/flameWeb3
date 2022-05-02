@@ -17,8 +17,8 @@ export class ManageModelsComponent implements OnInit {
     public model: Model,
     public compound: Compound,
     public commonService: CommonService,
-    public prediction: Prediction,
-    public service: PredictorService
+    private prediction: Prediction,
+    private service: PredictorService
   ) {
     this.prediction.name = 'postman';
   }
@@ -27,11 +27,10 @@ export class ManageModelsComponent implements OnInit {
     this.commonService.isValidCompound$.subscribe(
       (value) => (this.isValidCompound = value)
     );
-    this.commonService.currentSelection$.subscribe(
-      (result) => (this.currentSelection = result)
-    );
   }
 
+
+  
   select_prediction() {
     
     if(this.compound.input_file){
@@ -57,34 +56,26 @@ export class ManageModelsComponent implements OnInit {
     console.log(this.compound.sketchstructure)
     this.service.predictSketchStructure(this.prediction.name,this.compound.sketchstructure['result'],this.compound.sketchstructure['name'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result => {
-        console.log(result)
-      })
-      this.service.profileSummary(this.prediction.name).subscribe(result =>{
-        console.log(result)
+        if(result) this.commonService.dtPredictionVisible.emit(true);
+          
+         
+      
       })
   }
   predict() {
    this.filterModels();
     this.service.predictInputFile(this.prediction.name,this.compound.input_file['result'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result =>{
-        console.log(result)
-      //   for (var i = 0; i < this.model.listModelsSelected.length; i++) {
-      //     console.log(i)
-      //  }
-
+        if(result) this.commonService.dtPredictionVisible.emit(true);
       },
       error =>{
         console.log("error");  
       }
     )
-
-    this.service.profileSummary(this.prediction.name).subscribe(result =>{
-      console.log(result)
-    })
-
   }
 
-predictInputList(profileName:string,){
+// TO DO
+predictInputList(profileName:string){
 
 }
 
