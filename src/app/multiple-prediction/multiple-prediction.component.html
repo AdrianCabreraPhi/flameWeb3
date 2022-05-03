@@ -1,4 +1,4 @@
-<div class="mt-2" *ngIf="this.predictVisible">
+<div class="mt-2" *ngIf="this.globals.dtPredictionVisible">
     <div class="col">
         <table class="display compact cell-border" id="dataTablePrediction" style="width:100%">
             <thead>
@@ -10,7 +10,8 @@
             <tbody>
                 <tr *ngFor="let compound of this.result['obj_nam'];let i = index">
                     <td class="border font-weight-bold">{{compound}}</td>
-                    <td class='border border-secondary' data-toggle="tooltip" data-placement="bottom" (mouseover)="generateTooltip($event,compound,value)" [ngStyle]="{background: value == 1 ? '#2ecc71': value == -1 ? '#95a5a6': '#e74c3c'  }" *ngFor="let value of this.result['values'][i]"></td>
+                    <td id="values" class="result border border-secondary" data-toggle="tooltip" data-placement="bottom" (click)="showPrediction($event)" (mouseover)="generateTooltip($event,compound,value)" [ngStyle]="{background: value == 1 ? '#2ecc71': value == -1 ? '#95a5a6': '#e74c3c'}"
+                        *ngFor="let value of this.result['values'][i]"></td>
                 </tr>
             </tbody>
         </table>
