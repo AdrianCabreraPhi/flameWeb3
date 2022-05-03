@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
-import { Prediction } from '../Globals';
+import { Prediction,Globals } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 import 'datatables.net-bs4';
 declare var $: any;
@@ -12,17 +12,18 @@ declare var $: any;
 })
 export class MultiplePredictionComponent implements OnInit {
   result: any;
-  predictVisible = false;
+  beforeSelection: any = undefined;
   constructor(
     private service: PredictorService,
     private prediction: Prediction,
     public commonService: CommonService,
-    public commonFunctions: CommonFunctions
+    public commonFunctions: CommonFunctions,
+    public globals: Globals
   ) {}
 
 
   ngOnInit(): void {
-    this.getPrediction();
+    this.getSummary();
 
 
   }
@@ -31,16 +32,32 @@ export class MultiplePredictionComponent implements OnInit {
     const val = value == 1 ? 'Positive' : value == -1 ? 'Undefined': 'Negative';
     const text = compound +"\n"+this.result['endpoint'][column]+"\n"+val;
     event.target.setAttribute('title',text)
+  }
+
+  showPrediction(event){
+
+
+    this.selectionStyle(event);
     
+  }
+
+  /**
+   * Function to add specific styles to the selected prediction
+   * @param event 
+   */
+  selectionStyle(event){
+    if (this.beforeSelection) this.beforeSelection.classList.remove('selected');   
+    this.beforeSelection = event.target
+    event.target.classList.add('selected')
 
   }
 
-  getPrediction() {
+  getSummary() {
     this.service.profileSummary(this.prediction.name).subscribe(
       (res) => {
         if(res){
           this.result = res;
-          this.predictVisible = true;
+          this.globals.dtPredictionVisible = true;
           setTimeout(() => {
            $('#dataTablePrediction').DataTable({
               paging: false,
