@@ -43,7 +43,7 @@ export class SketchStructureComponent implements OnInit {
         let modeltab =  document.getElementById('build-tab-line');
         modeltab.click();
         this.toastr.success('Successfully', 'Saved '+this.compound.sketchstructure['name'], {
-          timeOut: 5000, positionClass: 'toast-top-right'
+          timeOut: 2000, positionClass: 'toast-top-right', progressBar: true
         });
       
 

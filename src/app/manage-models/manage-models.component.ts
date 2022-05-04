@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service';
-import { Compound, Model, Prediction } from '../Globals';
+import { Compound, Model, Prediction, Globals } from '../Globals';
 import { PredictorService } from './predictor.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class ManageModelsComponent implements OnInit {
     public model: Model,
     public compound: Compound,
     public commonService: CommonService,
+    private globals:Globals,
     private prediction: Prediction,
     private service: PredictorService
   ) {
@@ -56,8 +57,9 @@ export class ManageModelsComponent implements OnInit {
     console.log(this.compound.sketchstructure)
     this.service.predictSketchStructure(this.prediction.name,this.compound.sketchstructure['result'],this.compound.sketchstructure['name'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result => {
-        if(result) this.commonService.dtPredictionVisible.emit(true);
-          
+        // I need boolean. not string message 
+        if(result) this.globals.dtPredictionVisible = true
+        //add toastr pending
          
       
       })
@@ -66,7 +68,9 @@ export class ManageModelsComponent implements OnInit {
    this.filterModels();
     this.service.predictInputFile(this.prediction.name,this.compound.input_file['result'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result =>{
-        if(result) this.commonService.dtPredictionVisible.emit(true);
+        // I need boolean. not string message 
+        if(result) this.globals.dtPredictionVisible = true
+          //add toastr pending
       },
       error =>{
         console.log("error");  

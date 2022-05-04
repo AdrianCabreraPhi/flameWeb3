@@ -10,7 +10,8 @@ export class CommonService {
   currentCompoundTab = new EventEmitter<string>();
   isValidCompound$ = new EventEmitter<boolean>();
   currentSelection$ = new EventEmitter<{}>();
-  dtPredictionVisible = new  EventEmitter<boolean>();
+  currentPrediction$ = new EventEmitter<any>();
+  molIndex$ = new EventEmitter<number>();
 
 constructor(private http: HttpClient) {}
    /**
@@ -59,4 +60,11 @@ constructor(private http: HttpClient) {}
         "/parameters";
       return this.http.get(url);
     }
+
+    getModel(model: string, version: string): Observable<any> {
+      const url: string =
+        environment.baseUrl_manage + "model/" + model + "/version/" + version;
+      return this.http.get(url);
+    }
+
 }

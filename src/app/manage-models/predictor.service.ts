@@ -35,6 +35,11 @@ export class PredictorService {
   }
 
 
+profileItem(profileName:string, indxModel: number){
+  const url = environment.baseUrl_manage + 'profile/'+profileName+ '/' + indxModel
+  return this.http.get(url)
+}
+
 profileSummary(profileName: string){
   const url = environment.baseUrl_manage + 'profile/'+profileName+'/summary';
   return this.http.get(url);

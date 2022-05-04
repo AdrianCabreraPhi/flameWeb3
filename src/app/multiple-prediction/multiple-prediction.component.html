@@ -4,14 +4,14 @@
             <thead>
                 <tr>
                     <th style="width:20%"></th>
-                    <th class="text-center border" *ngFor="let model of this.result['endpoint']"> {{model}}</th>
+                    <th class="text-center border" *ngFor="let model of this.prediction.profileSummary['endpoint']"> {{model}}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let compound of this.result['obj_nam'];let i = index">
+                <tr *ngFor="let compound of this.prediction.profileSummary['obj_nam'];let i = index">
                     <td class="border font-weight-bold">{{compound}}</td>
-                    <td id="values" class="result border border-secondary" data-toggle="tooltip" data-placement="bottom" (click)="showPrediction($event)" (mouseover)="generateTooltip($event,compound,value)" [ngStyle]="{background: value == 1 ? '#2ecc71': value == -1 ? '#95a5a6': '#e74c3c'}"
-                        *ngFor="let value of this.result['values'][i]"></td>
+                    <td id="values" class="text-center result border border-secondary" data-toggle="tooltip" data-placement="bottom" (click)="showPrediction($event,i)" (mouseover)="generateTooltip($event,compound,value)" [ngStyle]="{background: value == 1 ? '#3ae374': value == -1 ? '#95a5a6': '#e74c3c'}"
+                        *ngFor="let value of this.prediction.profileSummary['values'][i]"></td>
                 </tr>
             </tbody>
         </table>
