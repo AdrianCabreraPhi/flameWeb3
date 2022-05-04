@@ -55,8 +55,9 @@ export class InputListComponent implements OnInit {
         'Successfully',
         'Saved ' + this.compound.input_list['name'],
         {
-          timeOut: 5000,
+          timeOut: 2000,
           positionClass: 'toast-top-right',
+          progressBar: true
         }
       );
     }

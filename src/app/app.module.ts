@@ -23,6 +23,7 @@ import { CurrentSelectionComponent } from './current-selection/current-selection
 import { InputFileComponent } from './input-file/input-file.component';
 import { InputListComponent } from './input-list/input-list.component';
 import { MultiplePredictionComponent } from './multiple-prediction/multiple-prediction.component';
+import { PredictionComponent } from './prediction/prediction.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -42,7 +43,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     CurrentSelectionComponent,
     InputFileComponent,
     InputListComponent,
-    MultiplePredictionComponent
+    MultiplePredictionComponent,
+    PredictionComponent
   ],
   imports: [
     BrowserModule,

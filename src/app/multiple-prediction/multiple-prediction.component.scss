@@ -1,5 +1,5 @@
 #dataTablePrediction {
-    color: #22577A;
+    color: black;
     tbody tr {
         height: 45px;
     }
@@ -8,10 +8,12 @@
 .result {
     transition: transform .2s;
     &:hover {
+        border: 1.5px solid black !important;
         transform: scale(1.025);
     }
 }
 
 .selected {
-    border: 2px solid #22577A !important;
+    background: #22577A !important;
+    border: 2px solid black !important;
 }
