@@ -49,12 +49,15 @@ export class Prediction {
     modelParameters: any;
     modelDocumentation: any = undefined;
     predictions = [];
+    profileSummary: any = undefined;
     predicting = {};
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     date = undefined;
     modelID = undefined;
+    predictionSelected = undefined;
+    molSelected = undefined
 }
 
 
@@ -66,6 +69,7 @@ export class Globals {
     mainTabActive: string = undefined;
     read_only = environment.read_only;
     compoundTabActive: string = undefined;
+    dtPredictionVisible: boolean = undefined;
 }
 @Injectable()
 export class CustomHTMLElement extends HTMLElement {
