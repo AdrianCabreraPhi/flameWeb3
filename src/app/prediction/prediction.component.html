@@ -1,15 +1,15 @@
 <div *ngIf="this.prediction.predictionSelected">
     <div class="card-body">
-        <div class="row" style="background-color: #22577a;color:white">
+        <div class="row">
             <div class="col-3 border">
-                {{this.prediction.name}}
+                <strong> {{this.prediction.name}}</strong>
             </div>
             <div class="col-6 border">
-                Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})
+                <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
             </div>
             <div class="col-3 border">
-                <!--No obtengo la fecha de la prediccion de ningun sitio-->
-                {{this.prediction.date}}
+                <!--fake date -->
+                <strong> Date 05/04/2022</strong>
             </div>
         </div>
         <div class="row">
