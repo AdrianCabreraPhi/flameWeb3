@@ -12,7 +12,6 @@ export class PredictionComponent implements OnInit {
   objectKeys = Object.keys;
   molIndex: number = undefined;
   molSelected: string = '';
-  predResult: any = undefined;
   modelBuildInfo = {};
   submodels = [];
   modelPresent: boolean;

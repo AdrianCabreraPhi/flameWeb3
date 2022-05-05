@@ -36,38 +36,37 @@ export class MultiplePredictionComponent implements OnInit {
 
 
   showPrediction(event, molIndex) {
-    this.selectionStyle(event);
     const column = event.target._DT_CellIndex.column - 1;
+    this.selectedClass(event,column);
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
     const modelObj = this.model.listModels[modelName];
     this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
     this.prediction.modelID = modelObj['modelID']
 
-
-
-
+    
     this.service.profileItem(this.prediction.name, column).subscribe(result => {
-      this.prediction.predictionSelected = result;
-      setTimeout(() => {
-        this.commonService.molIndex$.emit(molIndex);
-      }, 10)
-
+      if(result) {
+        this.prediction.predictionSelected = result;
+        setTimeout(() => {
+          this.commonService.molIndex$.emit(molIndex);
+        }, 10)
+      }
     }, error => {
+      alert('Not found this item:'+column)
       console.log(error);
     })
 
   }
 
   /**
-   * Function to add specific styles to the selected prediction
+   * Function to add specific styles to the selected prediction.
    * @param event 
    */
-  selectionStyle(event) {
+  selectedClass(event,indxModel) {
     if (this.beforeSelection) this.beforeSelection.classList.remove('selected');
     this.beforeSelection = event.target
     event.target.classList.add('selected')
-
   }
 
   getProfileSummary() {
@@ -77,7 +76,6 @@ export class MultiplePredictionComponent implements OnInit {
           this.prediction.profileSummary = res;
           this.globals.dtPredictionVisible = true;
           setTimeout(() => {
-
             $('#dataTablePrediction').DataTable({
               paging: false,
               ordering: false,
