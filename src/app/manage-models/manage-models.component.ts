@@ -57,11 +57,14 @@ export class ManageModelsComponent implements OnInit {
     console.log(this.compound.sketchstructure)
     this.service.predictSketchStructure(this.prediction.name,this.compound.sketchstructure['result'],this.compound.sketchstructure['name'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result => {
+        console.log(result)
         // I need boolean. not string message 
         if(result) this.globals.dtPredictionVisible = true
         //add toastr pending
          
-      
+      },
+      error => {
+        console.log(error)
       })
   }
   predict() {
