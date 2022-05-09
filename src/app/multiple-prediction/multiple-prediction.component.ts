@@ -13,6 +13,8 @@ declare var $: any;
 export class MultiplePredictionComponent implements OnInit {
   result: any;
   beforeSelection: any = undefined;
+  Smodel: number = undefined;
+  Smol:number = undefined;
   constructor(
     private service: PredictorService,
     public prediction: Prediction,
@@ -29,7 +31,7 @@ export class MultiplePredictionComponent implements OnInit {
 
   generateTooltip(event, compound, value) {
     const column = event.target._DT_CellIndex.column - 1;
-    const val = this.commonFunctions.castValue(value)
+    const val = this.commonFunctions.castValue(value);
     const text = compound + "\n" + this.prediction.profileSummary['endpoint'][column] + "\n" + val;
     event.target.setAttribute('title', text);
   }
@@ -37,12 +39,12 @@ export class MultiplePredictionComponent implements OnInit {
 
   showPrediction(event, molIndex) {
     const column = event.target._DT_CellIndex.column - 1;
-    this.selectedClass(event,column);
+    this.selectedClass(event);
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
     const modelObj = this.model.listModels[modelName];
     this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
-    this.prediction.modelID = modelObj['modelID']
+    this.prediction.modelID = modelObj['modelID'];
 
     
     this.service.profileItem(this.prediction.name, column).subscribe(result => {
@@ -63,10 +65,19 @@ export class MultiplePredictionComponent implements OnInit {
    * Function to add specific styles to the selected prediction.
    * @param event 
    */
-  selectedClass(event,indxModel) {
+  selectedClass(event) {
+    if((this.Smodel,this.Smol)!=undefined){
+      $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'white');
+      $("#dataTablePrediction tr:eq("+this.Smol+") td:first").css("background", "white");
+    }
+    this.Smodel = event.target._DT_CellIndex.column;
+    this.Smol = event.target._DT_CellIndex.row +1;
+    $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'#f7f9ea');
+    $("#dataTablePrediction tr:eq("+this.Smol+") td:first").css("background", "#f7f9ea");
+    
     if (this.beforeSelection) this.beforeSelection.classList.remove('selected');
-    this.beforeSelection = event.target
-    event.target.classList.add('selected')
+    this.beforeSelection = event.target;
+    event.target.classList.add('selected');
   }
 
   getProfileSummary() {
@@ -79,7 +90,7 @@ export class MultiplePredictionComponent implements OnInit {
             $('#dataTablePrediction').DataTable({
               paging: false,
               ordering: false,
-              searching: true,
+              searching: false,
               info: false,
             });
           }, 10)
