@@ -283,8 +283,4 @@ export class CommonFunctions {
       }
     );
   }
-  //comment
-  castValue(value:number) {
-    return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
-  }
 }

@@ -33,7 +33,7 @@
                 <strong>Prediction</strong>
             </div>
             <div class="col-9 border">
-                <span *ngIf="this.prediction.predictionSelected.values" class="prediction_text"> {{this.commonFunctions.castValue(this.prediction.predictionSelected.values[this.molIndex])}} </span>
+                <span *ngIf="this.prediction.predictionSelected.values" class="prediction_text"> {{this.castValue(this.prediction.predictionSelected.values[this.molIndex])}} </span>
                 <!-- <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span> -->
             </div>
         </div>
@@ -43,7 +43,7 @@
                 <strong>Experimental activity</strong>
             </div>
             <div class="col-9 border">
-                <span *ngIf="this.prediction.predictionSelected">{{this.commonFunctions.castValue(this.prediction.predictionSelected.ymatrix[molIndex])}}</span>
+                <span *ngIf="this.prediction.predictionSelected">{{this.castValue(prediction.predictionSelected.ymatrix[molIndex])}}</span>
             </div>
         </div>
 
@@ -59,10 +59,8 @@
             {{this.prediction.predictionSelected.lower_limit[molIndex].toFixed(3)}} 
          to {{this.prediction.predictionSelected.upper_limit[molIndex].toFixed(3)}}</span>
                 <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
-
                 <span *ngIf="this.prediction.predictionSelected.p0"><br>Prob. Class 0: {{(this.prediction.predictionSelected.p0[molIndex].toFixed(3))}} </span>
                 <span *ngIf="this.prediction.predictionSelected.p1"><br>Prob. Class 1: {{(this.prediction.predictionSelected.p1[molIndex].toFixed(3))}} </span>
-
             </div>
         </div>
         <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
@@ -134,7 +132,7 @@
                             <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
                             <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
                             <td class="p-0 text-left">{{this.prediction.predictionSelected.search_results[this.molIndex].obj_nam[j]}}</td>
-                            <td class="p-0 text-right">{{this.commonFunctions.castValue(this.prediction.predictionSelected.search_results[this.molIndex].ymatrix[j])}}</td>
+                            <td class="p-0 text-right">{{this.castValue(this.prediction.predictionSelected.search_results[this.molIndex].ymatrix[j])}}</td>
                         </tr>
 
                     </tbody>
@@ -191,12 +189,9 @@
                 <span *ngIf="this.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
                 <br>
                 <!-- <a href="javascript:void(0);">QMRF report</a> -->
-
             </div>
         </div>
         <!--REPORT PREDICTIONS END-->
     </div>
     <!--PROJECT PREDICTIONS-->
-    <div>
-    </div>
 </div>
