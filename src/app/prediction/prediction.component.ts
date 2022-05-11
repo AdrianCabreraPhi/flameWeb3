@@ -320,6 +320,11 @@ export class PredictionComponent implements OnInit {
   isInteger(value) {
     return value % 1 == 0;
   }
+  castValue(value:number) {
+
+    if (this.modelBuildInfo['quantitative']) return value.toFixed(3) 
+    return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
+  }
   getInfo(): void {
 
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
@@ -372,7 +377,6 @@ export class PredictionComponent implements OnInit {
         this.modelMatch = true; // prevent showing also this error!
       }
     );
-    console.log(this.modelBuildInfo)
   }
 
 }

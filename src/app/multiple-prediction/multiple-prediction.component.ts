@@ -12,7 +12,7 @@ declare var $: any;
 })
 export class MultiplePredictionComponent implements OnInit {
   result: any;
-  beforeSelection: any = undefined;
+  prevSelection: any = undefined;
   Smodel: number = undefined;
   Smol:number = undefined;
   constructor(
@@ -31,7 +31,7 @@ export class MultiplePredictionComponent implements OnInit {
 
   generateTooltip(event, compound, value) {
     const column = event.target._DT_CellIndex.column - 1;
-    const val = this.commonFunctions.castValue(value);
+    const val = this.castValue(value);
     const text = compound + "\n" + this.prediction.profileSummary['endpoint'][column] + "\n" + val;
     event.target.setAttribute('title', text);
   }
@@ -75,8 +75,8 @@ export class MultiplePredictionComponent implements OnInit {
     $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'#f7f9ea');
     $("#dataTablePrediction tr:eq("+this.Smol+") td:first").css("background", "#f7f9ea");
     
-    if (this.beforeSelection) this.beforeSelection.classList.remove('selected');
-    this.beforeSelection = event.target;
+    if (this.prevSelection) this.prevSelection.classList.remove('selected');
+    this.prevSelection = event.target;
     event.target.classList.add('selected');
   }
 
@@ -101,4 +101,8 @@ export class MultiplePredictionComponent implements OnInit {
       }
     );
   }
+  castValue(value:number) {
+    return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
+  }
+
 }
