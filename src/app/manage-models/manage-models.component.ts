@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
 import { Compound, Model, Prediction, Globals } from '../Globals';
 import { PredictorService } from './predictor.service';
@@ -19,7 +20,8 @@ export class ManageModelsComponent implements OnInit {
     public commonService: CommonService,
     private globals:Globals,
     private prediction: Prediction,
-    private service: PredictorService
+    private service: PredictorService,
+    private toastr: ToastrService,
   ) {
     this.prediction.name = 'postman';
   }
@@ -60,7 +62,9 @@ export class ManageModelsComponent implements OnInit {
         console.log(result)
         // I need boolean. not string message 
         if(result) this.globals.dtPredictionVisible = true
-        //add toastr pending
+        this.toastr.success(this.compound.sketchstructure['name'] , 'PREDICTION COMPLETED', {
+          timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+        });
          
       },
       error => {
@@ -71,16 +75,21 @@ export class ManageModelsComponent implements OnInit {
    this.filterModels();
     this.service.predictInputFile(this.prediction.name,this.compound.input_file['result'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result =>{
-        // I need boolean. not string message 
-        if(result) this.globals.dtPredictionVisible = true
-          //add toastr pending
+        if(result){
+          this.globals.dtPredictionVisible = true;
+             //add toastr pending
+             this.toastr.success(this.compound.input_file['name'] , 'PREDICTION COMPLETED', {
+              timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+            });
+
+        } 
+       
       },
       error =>{
         console.log("error");  
       }
     )
   }
-
 // TO DO
 predictInputList(profileName:string){
 
