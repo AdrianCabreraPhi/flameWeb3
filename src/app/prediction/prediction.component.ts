@@ -189,7 +189,6 @@ export class PredictionComponent implements OnInit {
   updatePlotCombo() {
     const xi = this.prediction.predictionSelected.xmatrix[this.molIndex];
     // console.log (xi);
-     
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
@@ -326,7 +325,7 @@ export class PredictionComponent implements OnInit {
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
   getInfo(): void {
-
+    
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
         for (const info of result) {
