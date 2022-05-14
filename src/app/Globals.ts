@@ -69,7 +69,6 @@ export class Globals {
     mainTabActive: string = undefined;
     read_only = environment.read_only;
     compoundTabActive: string = undefined;
-    dtPredictionVisible: boolean = undefined;
 }
 @Injectable()
 export class CustomHTMLElement extends HTMLElement {

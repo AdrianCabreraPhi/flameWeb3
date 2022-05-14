@@ -26,9 +26,12 @@ export class MultiplePredictionComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getProfileSummary();
+    this.commonService.predictionExec$.subscribe(() => {
+      setTimeout(() => {
+        this.getProfileSummary(); 
+      },1000)  
+    })
   }
-
   generateTooltip(event, compound, value) {
     const column = event.target._DT_CellIndex.column - 1;
     const val = this.castValue(value);
@@ -51,7 +54,7 @@ export class MultiplePredictionComponent implements OnInit {
       if(result) {
         this.prediction.predictionSelected = result;
         setTimeout(() => {
-          this.commonService.molIndex$.emit(molIndex);
+          this.commonService.setMolIndex(molIndex);
         }, 10)
       }
     }, error => {
@@ -79,20 +82,24 @@ export class MultiplePredictionComponent implements OnInit {
     this.prevSelection = event.target;
     event.target.classList.add('selected');
   }
-
   getProfileSummary() {
+    this.prediction.profileSummary = undefined;
     this.service.profileSummary(this.prediction.name).subscribe(
       (res) => {
         if (res) {
           this.prediction.profileSummary = res;
-          this.globals.dtPredictionVisible = true;
+          console.log(this.prediction.profileSummary)
+          $('#dataTablePrediction').DataTable().destroy();
+          $('#dataTablePrediction').DataTable().clear().draw();
           setTimeout(() => {
             $('#dataTablePrediction').DataTable({
+              autoWidth: false,
+              destroy: true,
               paging: false,
               ordering: false,
               searching: false,
               info: false,
-            });
+              })
           }, 10)
         }
       },
