@@ -28,7 +28,7 @@ export class InputListComponent implements OnInit {
 
   ngOnInit(): void {
     this.refresh_list();
-    this.commonService.currentCompoundTab.subscribe( tab => {
+    this.commonService.currentCompoundTab$.subscribe( tab => {
       if(tab == 'input-list-tab') {
         setTimeout(() => {
           this.show_basket();
@@ -43,8 +43,8 @@ export class InputListComponent implements OnInit {
         name: this.inputListName,
         result: this.compound_list,
       };
-      this.commonService.isValidCompound$.emit(true);
-      this.commonService.currentSelection$.emit({
+      this.commonService.setIsvalidCompound(true);
+      this.commonService.setCurrentSelection({
         option: 'Input List',
         name: this.inputListName,
       });
@@ -135,7 +135,7 @@ export class InputListComponent implements OnInit {
       }
     );
   }
-
+  
   cleanOtherOptions() {
     this.compound.sketchstructure = undefined;
     this.compound.input_file = undefined;

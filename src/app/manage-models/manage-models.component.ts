@@ -3,14 +3,13 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
 import { Compound, Model, Prediction, Globals } from '../Globals';
 import { PredictorService } from './predictor.service';
-
 @Component({
   selector: 'app-manage-models',
   templateUrl: './manage-models.component.html',
   styleUrls: ['./manage-models.component.scss'],
 })
 export class ManageModelsComponent implements OnInit {
-  isValidCompound: boolean = false;
+  isValidCompound: boolean;
   currentSelection: {} = undefined;
   endpoints = [];
   versions = [];
@@ -56,7 +55,6 @@ export class ManageModelsComponent implements OnInit {
 
   predictStructure(){
     this.filterModels();
-    console.log(this.compound.sketchstructure)
     this.service.predictSketchStructure(this.prediction.name,this.compound.sketchstructure['result'],this.compound.sketchstructure['name'],JSON.stringify(this.endpoints),JSON.stringify(this.versions)).subscribe(
       result => {
         console.log(result)
@@ -65,7 +63,6 @@ export class ManageModelsComponent implements OnInit {
         this.toastr.success(this.compound.sketchstructure['name'] , 'PREDICTION COMPLETED', {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
-         
       },
       error => {
         console.log(error)
@@ -81,6 +78,7 @@ export class ManageModelsComponent implements OnInit {
              this.toastr.success(this.compound.input_file['name'] , 'PREDICTION COMPLETED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
             });
+        
 
         } 
        

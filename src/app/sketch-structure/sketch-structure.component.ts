@@ -36,8 +36,8 @@ export class SketchStructureComponent implements OnInit {
       this.sketchSmiles = span.innerText
       //check name
       if(this.isvalidSketch && this.sketchSmiles){
-        this.commonService.isValidCompound$.emit(true);
-        this.commonService.currentSelection$.emit({'option':'Sketch structure','name':this.sketchName});
+        this.commonService.setIsvalidCompound(true);
+        this.commonService.setCurrentSelection({'option':'Sketch structure','name':this.sketchName});
         this.compound.sketchstructure = {'name':this.sketchName,'result':this.sketchSmiles}
         this.cleanOtherOptions();
         let modeltab =  document.getElementById('build-tab-line');

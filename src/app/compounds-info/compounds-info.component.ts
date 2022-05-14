@@ -13,7 +13,7 @@ export class CompoundsInfoComponent implements OnInit {
   constructor(private commonService : CommonService, public model:Model,public compound:Compound) { }
 
   ngOnInit(): void {
-    this.commonService.currentCompoundTab.subscribe(result => {
+    this.commonService.currentCompoundTab$.subscribe(result => {
       this.currentTab = result;
     })
   }
