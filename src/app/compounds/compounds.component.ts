@@ -15,7 +15,7 @@ export class CompoundsComponent implements OnInit {
  
   }
   currentTab(event){
-   this.commonService.currentCompoundTab.emit(event.target.id);
+   this.commonService.setCurrentCompoundTab(event.target.id)
   }
 
 }

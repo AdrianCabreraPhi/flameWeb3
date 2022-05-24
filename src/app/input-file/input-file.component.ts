@@ -19,8 +19,8 @@ export class InputFileComponent implements OnInit {
 
   }
   Save(){
-    this.commonService.isValidCompound$.emit(true);
-    this.commonService.currentSelection$.emit({'option':'Input File','name':this.compound.file_info['name']});
+    this.commonService.setIsvalidCompound(true);
+    this.commonService.setCurrentSelection({'option':'Input File','name':this.compound.file_info['name']});
     this.compound.input_file = {'name': this.compound.file_info['name'] ,'result':this.file}
     this.cleanOtherOptions();
     var modeltab =  document.getElementById('build-tab-line');

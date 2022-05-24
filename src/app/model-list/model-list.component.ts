@@ -13,7 +13,6 @@ export class ModelListComponent implements OnInit {
   models: Array<any>;
   objectKeys = Object.keys;
   modelsDocumentation: Array<any> = [];
-  isValidCompound: boolean = false;
 
   constructor( public model: Model,
     public globals: Globals,

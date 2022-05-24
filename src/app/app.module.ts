@@ -24,6 +24,7 @@ import { InputFileComponent } from './input-file/input-file.component';
 import { InputListComponent } from './input-list/input-list.component';
 import { MultiplePredictionComponent } from './multiple-prediction/multiple-prediction.component';
 import { PredictionComponent } from './prediction/prediction.component';
+import { PredictButtonComponent } from './predict-button/predict-button.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -44,7 +45,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     InputFileComponent,
     InputListComponent,
     MultiplePredictionComponent,
-    PredictionComponent
+    PredictionComponent,
+    PredictButtonComponent
   ],
   imports: [
     BrowserModule,
