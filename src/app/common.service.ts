@@ -11,9 +11,9 @@ export class CommonService {
   currentCompoundTab$ = this.currentCompoundTab.asObservable();
   private currentSelection = new Subject<{}>();
   currentSelection$ = this.currentSelection.asObservable();
-  //communicates to the component in charge of displaying the prediction, which molecule should present
-  private molIndex = new Subject<number>();
-  molIndex$ = this.molIndex.asObservable();
+  //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
+  private idxmodelmol = new Subject<any>();
+  molIndex$ = this.idxmodelmol.asObservable();
   // check if the selected compound is valid
   private isValidCompound = new BehaviorSubject<boolean>(false);
   isValidCompound$ = this.isValidCompound.asObservable();
@@ -23,7 +23,7 @@ export class CommonService {
 
   constructor(private http: HttpClient) {}
   /**
-   * Retrives the list of all models form the server
+   * Retrives the list of all models from the server
    */
   getModelList(): Observable<any> {
     const url: string = environment.baseUrl_manage + 'models';
@@ -73,6 +73,8 @@ export class CommonService {
       environment.baseUrl_manage + 'model/' + model + '/version/' + version;
     return this.http.get(url);
   }
+
+  
   setCurrentCompoundTab(compoundTab: string) {
     this.currentCompoundTab.next(compoundTab);
   }
@@ -80,8 +82,8 @@ export class CommonService {
     this.currentSelection.next(selection);
   }
 
-  setMolIndex(molIndex: number) {
-    this.molIndex.next(molIndex);
+  setMolAndModelIndex(molidx:number,modelidx:number) {
+    this.idxmodelmol.next([molidx,modelidx]);
   }
   setIsvalidCompound(valid: boolean) {
     this.isValidCompound.next(valid);

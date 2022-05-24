@@ -3,10 +3,6 @@ import { Compound, Globals } from '../Globals';
 import { Renderer2 } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
-// import { ToastrService } from 'ngx-toastr';
-// import 'jsme-editor';
-
-// declare var $: any;
 @Component({
   selector: 'app-sketch-structure',
   templateUrl: './sketch-structure.component.html',
@@ -28,8 +24,6 @@ export class SketchStructureComponent implements OnInit {
     public compound: Compound,
     public commonService: CommonService,
     private toastr: ToastrService
-    
-    // private toastr: ToastrService,
     ) { }
     saveStructure(){
       var span = document.getElementById('molclipboard')

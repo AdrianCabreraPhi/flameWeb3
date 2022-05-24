@@ -4,6 +4,7 @@ import { CommonService } from '../common.service';
 import { Prediction, Globals, Model } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 import 'datatables.net-bs4';
+import chroma from "chroma-js";
 declare var $: any;
 @Component({
   selector: 'app-multiple-prediction',
@@ -15,6 +16,7 @@ export class MultiplePredictionComponent implements OnInit {
   prevSelection: any = undefined;
   Smodel: number = undefined;
   Smol:number = undefined;
+  gamaColor = undefined;
   constructor(
     private service: PredictorService,
     public prediction: Prediction,
@@ -29,12 +31,12 @@ export class MultiplePredictionComponent implements OnInit {
     this.commonService.predictionExec$.subscribe(() => {
       setTimeout(() => {
         this.getProfileSummary(); 
-      },1000)  
+      },2000)  
     })
   }
   generateTooltip(event, compound, value) {
     const column = event.target._DT_CellIndex.column - 1;
-    const val = this.castValue(value);
+    const val = this.castValue(value,column);
     const text = compound + "\n" + this.prediction.profileSummary['endpoint'][column] + "\n" + val;
     event.target.setAttribute('title', text);
   }
@@ -47,22 +49,10 @@ export class MultiplePredictionComponent implements OnInit {
     const modelObj = this.model.listModels[modelName];
     this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
-    this.prediction.modelID = modelObj['modelID'];
-
-    
-    this.service.profileItem(this.prediction.name, column).subscribe(result => {
-      if(result) {
-        this.prediction.predictionSelected = result;
-        setTimeout(() => {
-          this.commonService.setMolIndex(molIndex);
-        }, 10)
+    this.prediction.modelID = modelObj['modelID'];    
+    this.commonService.setMolAndModelIndex(molIndex,column);
+      
       }
-    }, error => {
-      alert('Not found this item:'+column)
-      console.log(error);
-    })
-
-  }
 
   /**
    * Function to add specific styles to the selected prediction.
@@ -88,7 +78,7 @@ export class MultiplePredictionComponent implements OnInit {
       (res) => {
         if (res) {
           this.prediction.profileSummary = res;
-          console.log(this.prediction.profileSummary)
+          this.escaleColor()
           $('#dataTablePrediction').DataTable().destroy();
           $('#dataTablePrediction').DataTable().clear().draw();
           setTimeout(() => {
@@ -100,7 +90,7 @@ export class MultiplePredictionComponent implements OnInit {
               searching: false,
               info: false,
               })
-          }, 10)
+          }, 20)
         }
       },
       (error) => {
@@ -108,7 +98,26 @@ export class MultiplePredictionComponent implements OnInit {
       }
     );
   }
-  castValue(value:number) {
+  
+  escaleColor(){
+    var chr = chroma.scale('RdBu').domain([10,0]);
+    var globalArr = []
+    for (let i = 0; i < this.prediction.profileSummary.values.length; i++) {
+      var arrValues = []
+      for (let y = 0; y < this.prediction.profileSummary.endpoint.length; y++) {
+        if(this.prediction.profileSummary.quantitative[y]){
+          arrValues[y] = chr(this.prediction.profileSummary.values[i][y])._rgb
+        }else {
+          arrValues[y] = -1
+        }
+      }
+      globalArr[i] = arrValues
+    }
+    this.prediction.profileSummary['escaleColor'] = globalArr
+  }
+
+  castValue(value:number,column?:number) {
+    if(this.prediction.profileSummary['quantitative'][column]) return value.toFixed(1);
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
 

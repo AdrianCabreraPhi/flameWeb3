@@ -43,9 +43,7 @@ export class PredictButtonComponent implements OnInit {
     }
   }
   predictStructure() {
-    console.log(this.compound.sketchstructure['name'])
     this.filterModels();
-    console.log(this.endpoints)
     this.service
       .predictSketchStructure(
         this.prediction.name,
@@ -76,7 +74,6 @@ export class PredictButtonComponent implements OnInit {
       );
   }
   predict() {
-    console.log(this.model.listModelsSelected)
     this.filterModels();
     this.service
       .predictInputFile(
@@ -108,6 +105,9 @@ export class PredictButtonComponent implements OnInit {
 
   // TO DO
   predictInputList(profileName: string) {}
+
+
+
   filterModels() {
     this.endpoints = [];
     this.versions = [];
