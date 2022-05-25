@@ -25,6 +25,7 @@ import { InputListComponent } from './input-list/input-list.component';
 import { MultiplePredictionComponent } from './multiple-prediction/multiple-prediction.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { PredictButtonComponent } from './predict-button/predict-button.component';
+import { AngularSplitModule } from 'angular-split';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -56,7 +57,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AngularSplitModule
   ],
   providers: [Model, Prediction, Globals,Compound],
   bootstrap: [AppComponent]
