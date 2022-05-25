@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../common.service';
 import { CustomHTMLElement, Prediction } from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonFunctions } from '../common.functions';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PredictorService } from '../manage-models/predictor.service';
+import { SplitComponent } from 'angular-split';
 @Component({
   selector: 'app-prediction',
   templateUrl: './prediction.component.html',
@@ -23,6 +24,7 @@ export class PredictionComponent implements OnInit {
   isMajority: boolean;
   dmodx_val = [];
   activity_val = [];
+
   predictData = [{
     offset: 45, 
     r: [],
@@ -339,6 +341,38 @@ export class PredictionComponent implements OnInit {
          
     });
   }
+  // angular-split function
+  @ViewChild('mySplit') mySplitEl: SplitComponent
+    // area size
+    _size1=100;
+    _size2=0;
+  get size1() {
+    return this._size1;
+  }
+
+  set size1(value) {
+      this._size1 = value;
+  }
+  get size2() {
+    return this._size2;
+  }
+
+  set size2(value) {
+      this._size2 = value;
+  }
+  // e: {gutterNum: number, sizes: Array<number>}
+  gutterClick(e) {
+    if(e.gutterNum === 1) {
+        if(e.sizes[1] > 0) {
+          this.size2 = 0;
+          this.size1 = 100
+        }
+        else {
+            this.size1 = 50;
+            this.size2 = 50;
+        }
+    }
+}
   getValidation(){
     this.commonService.getValidation(this.prediction.modelName,this.prediction.modelVersion).subscribe(
       result => {

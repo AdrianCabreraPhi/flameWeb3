@@ -1,7 +1,7 @@
 <div class="container-fluid app-base">
     <div class="row" id="top-bar">
 
-        <div class="col-4 p-0">
+        <div class="col-5 p-0">
             <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" aria-disabled="true" id="compounds-tab-line" data-toggle="tab" href="#compounds" role="tab" aria-controls="compounds-tab" aria-selected="true">Compounds</a>
@@ -27,7 +27,7 @@
     <div class="tab-content">
         <div class="tab-pane fade show active" id="compounds" role="tabpanel" aria-labelledby="compounds-tab">
             <div class="row">
-                <div class="col-4 p-0">
+                <div class="col-5 p-0">
                     <app-compounds></app-compounds>
                 </div>
 
@@ -38,7 +38,7 @@
         </div>
         <div class="tab-pane fade" id="build" role="tabpanel" aria-labelledby="build-tab">
             <div class="row">
-                <div class="col-4 p-0">
+                <div class="col-5 p-0">
                     <app-model-list></app-model-list>
                 </div>
 
@@ -52,20 +52,30 @@
             </div>
         </div>
 
+
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab">
+
+
+            <!-- <div style=" width:auto; height: 1000px;">
+                <as-split direction="horizontal">
+                    <as-split-area [size]="33">
+                        <app-multiple-prediction> </app-multiple-prediction>
+                    </as-split-area>
+                    <as-split-area [size]="67">
+                        <app-prediction></app-prediction>
+                    </as-split-area>
+                </as-split>
+            </div>
+        </div> -->
             <div class="row">
-                <div class="col-4 ml-2 p-0">
+                <div class="col-5 ml-2 p-0">
                     <app-multiple-prediction> </app-multiple-prediction>
                 </div>
-
                 <div class="col p-0 info scrollable">
                     <app-prediction></app-prediction>
                 </div>
             </div>
-
         </div>
+
+
     </div>
-
-
-
-</div>
