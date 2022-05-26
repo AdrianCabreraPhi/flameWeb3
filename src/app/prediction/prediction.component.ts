@@ -24,6 +24,7 @@ export class PredictionComponent implements OnInit {
   isMajority: boolean;
   dmodx_val = [];
   activity_val = [];
+  showConcentration = false;
 
   predictData = [{
     offset: 45, 
@@ -332,13 +333,12 @@ export class PredictionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.commonService.molIndex$.subscribe((index) => {
+    this.commonService.idxmodelmol$.subscribe((index) => {
       this.molIndex = index[0];
       this.getInfo();
-        this.getProfileItem(index[1]);
-        this.getValidation();
-        this.renderData();
-         
+      this.getValidation();
+      this.getProfileItem(index[1]);
+      this.renderData();   
     });
   }
   // angular-split function
@@ -360,17 +360,16 @@ export class PredictionComponent implements OnInit {
   set size2(value) {
       this._size2 = value;
   }
-  // e: {gutterNum: number, sizes: Array<number>}
   gutterClick(e) {
     if(e.gutterNum === 1) {
-        if(e.sizes[1] > 0) {
+        if(e.sizes[1] !== 0 ) {
+          this.size1 = 100;
           this.size2 = 0;
-          this.size1 = 100
         }
-        else {
-            this.size1 = 50;
-            this.size2 = 50;
-        }
+        else{
+          this.size2 = 50;
+          this.size1 = 50;
+        } 
     }
 }
   getValidation(){
@@ -413,7 +412,7 @@ export class PredictionComponent implements OnInit {
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
             
-          }, 100);
+          }, 10);
         }
       }
     )
@@ -422,7 +421,6 @@ export class PredictionComponent implements OnInit {
   getProfileItem(idxModel:number){
     this.service.profileItem(this.prediction.name,idxModel).subscribe(result => {
       if(result) {
-        console.log(result)
         this.prediction.profileItem = result;
         this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
         this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
@@ -456,14 +454,11 @@ export class PredictionComponent implements OnInit {
         
         setTimeout(() => {
           this.setScoresPlot(result)
-        },10)
-      
+        },40)
       }
     }, error => {
       console.log(error);
     })
-    console.log("here!")
-    console.log(this.plotScores.data)
   }
 
   drawReportHeader() {
@@ -481,16 +476,58 @@ export class PredictionComponent implements OnInit {
     );
   }
 
+  backConc(value: any) {
+    return (Math.pow(10,6-value).toFixed(4))
+  }
+
   renderData() {
     this.prediction.molSelected = this.prediction.profileSummary.obj_nam[this.molIndex];
     setTimeout(() => {
+      this.showConcentration = false;
       this.commonService.getDocumentation(this.prediction.modelName ,this.prediction.modelVersion,'JSON').subscribe((res) => {
         this.prediction.modelDocumentation = res;
+        let unit = this.prediction.modelDocumentation['Endpoint_units'].value;
+        if (unit != null) {
+          if (unit.slice(-3)=='(M)') {
+            if (unit.slice(0,1)=='p') {
+              this.showConcentration = true;
+            }
+            if (unit.slice(0,4)=='-log') {
+              this.showConcentration = true;
+            }
+          }
+
+          //update plots with "Activity" and replace with units
+        }
+
+
       },error => {
         console.log(error)
       })
       this.drawReportHeader();
+      this.drawSimilars();
     },20)
+  }
+
+  drawSimilars () {
+    setTimeout(() => {
+      // draw similar compounds (if applicable)
+      if (this.prediction.profileItem.hasOwnProperty('search_results')) {
+        const optionsA = {'width': 400, 'height': 150};
+        const smiles = this.prediction.profileItem.search_results[this.molIndex].SMILES;
+        let iteratorCount = 0;
+        for (var value of smiles) {
+          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
+          SmilesDrawer.parse(value, function(tree) {
+            let canvasName = 'one_canvas';
+            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
+          }, function (err) {
+            console.log(err);
+          });
+          iteratorCount++;
+        };  
+      };
+    },0);
   }
 
   updatePlotCombo() {
@@ -681,9 +718,7 @@ export class PredictionComponent implements OnInit {
         this.modelPresent = false;
         this.modelMatch = true; // prevent showing also this error!
       }
-    );
-    
-    
+    );    
   }
   public changeProjectStyleTrainingMark (event:any) {
     var value = event.target.value;
@@ -950,7 +985,6 @@ export class PredictionComponent implements OnInit {
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
       if (eventdata != null && 'points' in eventdata) {
         var points = eventdata.points;
-        console.log(points);
         points.forEach(function(pt) {
           const tr = tbl.insertRow();
 

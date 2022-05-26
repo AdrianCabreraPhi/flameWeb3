@@ -3,3 +3,39 @@
     font-weight: bold;
     color: #e59300;
 }
+
+.concentration_text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #22577A;
+}
+
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+    th {
+        padding-left: 1px;
+        padding-right: 1px;
+        border-bottom: 1px solid #B8DCED;
+        color: #0076a3;
+    }
+    td {
+        padding: 5px;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        border-bottom: 1px solid #B8DCED;
+        vertical-align: middle;
+    }
+    tr {
+        cursor: pointer;
+    }
+    tbody {
+        tr {
+            &:hover {
+                background: #f7f9ea;
+            }
+        }
+    }
+}
