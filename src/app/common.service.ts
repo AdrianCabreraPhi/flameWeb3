@@ -13,7 +13,7 @@ export class CommonService {
   currentSelection$ = this.currentSelection.asObservable();
   //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
   private idxmodelmol = new Subject<any>();
-  molIndex$ = this.idxmodelmol.asObservable();
+  idxmodelmol$ = this.idxmodelmol.asObservable();
   // check if the selected compound is valid
   private isValidCompound = new BehaviorSubject<boolean>(false);
   isValidCompound$ = this.isValidCompound.asObservable();

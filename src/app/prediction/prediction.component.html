@@ -30,13 +30,25 @@
                         <canvas id="one_canvas"></canvas>
                     </div>
                 </div>
+
+
+                <div *ngIf="this.prediction.profileItem.values && this.showConcentration" class="row">
+                    <div class="col-3 border">
+                        <strong>Prediction (as conc.)</strong>
+                    </div>
+                    <div class="col-9 border">
+                        <span class="concentration_text"> {{backConc(this.prediction.profileItem.values[this.molIndex])}} &mu;M</span>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="col-3 border">
                         <strong>Prediction</strong>
                     </div>
                     <div class="col-9 border">
                         <span *ngIf="this.prediction.profileItem.values" class="prediction_text"> {{this.castValue(this.prediction.profileItem.values[this.molIndex])}} </span>
-                        <!-- <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span> -->
+                        <span *ngIf="this.prediction.modelDocumentation != undefined && this.prediction.modelDocumentation['Endpoint_units']"> {{this.prediction.modelDocumentation['Endpoint_units'].value}}</span>
                     </div>
                 </div>
 
@@ -57,9 +69,9 @@
                     <div class="col-9 border">
                         <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
                         <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
-                        <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
-                                {{this.prediction.profileItem?.lower_limit[molIndex].toFixed(3)}}
-                                 to {{this.prediction.profileItem?.upper_limit[molIndex].toFixed(3)}}
+                        <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative'] && this.prediction.profileItem.hasOwnProperty('lower_limit')">
+                                {{this.prediction.profileItem.lower_limit[molIndex].toFixed(3)}}
+                                 to {{this.prediction.profileItem.upper_limit[molIndex].toFixed(3)}}
                                 </span>
                         <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
                         <span *ngIf="this.prediction.profileItem.p0"><br>Prob. Class 0: {{(this.prediction.profileItem.p0[molIndex].toFixed(3))}} </span>
@@ -119,7 +131,6 @@
 
                     <div class="col-9 border">
                         <!-- <div class="row pl-3"> -->
-
                         <table class="table ml-0">
                             <thead>
                                 <tr>
