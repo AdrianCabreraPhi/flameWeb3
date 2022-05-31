@@ -1,1 +1,1 @@
-<button (click)="select_prediction()" [ngClass]="{disabled: !this.isValidCompound || this.model.listModelsSelected.length < 2}" class="btn btn-ets-do">Predict</button>
+<button [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2" (click)="select_prediction()" class="btn btn-ets-do">Predict</button>

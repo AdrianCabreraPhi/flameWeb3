@@ -3,17 +3,16 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
 import { Compound, Globals, Model, Prediction } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
-
+declare var $:any
 @Component({
   selector: 'predict-button',
   templateUrl: './predict-button.component.html',
   styleUrls: ['./predict-button.component.scss'],
 })
 export class PredictButtonComponent implements OnInit {
-  isValidCompound: boolean;
   endpoints = [];
   versions = [];
-  
+  isValidCompound: boolean = false;
   constructor(
     public commonService: CommonService,
     public compound: Compound,
@@ -28,7 +27,7 @@ export class PredictButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.isValidCompound$.subscribe(
-      (value) => (this.isValidCompound = value)
+      value => (this.isValidCompound = value)
     );
   }
   select_prediction() {
