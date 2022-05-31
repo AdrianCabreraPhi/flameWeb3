@@ -49,13 +49,11 @@ export class InputListComponent implements OnInit {
         name: this.inputListName,
       });
       this.cleanOtherOptions();
-      var modeltab = document.getElementById('build-tab-line');
-      modeltab.click();
       this.toastr.success(
         'Successfully',
         'Saved ' + this.compound.input_list['name'],
         {
-          timeOut: 2000,
+          timeOut: 3000,
           positionClass: 'toast-top-right',
           progressBar: true
         }
