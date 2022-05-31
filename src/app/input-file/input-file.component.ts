@@ -23,8 +23,6 @@ export class InputFileComponent implements OnInit {
     this.commonService.setCurrentSelection({'option':'Input File','name':this.compound.file_info['name']});
     this.compound.input_file = {'name': this.compound.file_info['name'] ,'result':this.file}
     this.cleanOtherOptions();
-    var modeltab =  document.getElementById('build-tab-line');
-    modeltab.click();
     this.toastr.success('Successfully', 'Saved '+this.compound.file_info['name'], {
      timeOut: 2000, positionClass: 'toast-top-right', progressBar: true
    });
