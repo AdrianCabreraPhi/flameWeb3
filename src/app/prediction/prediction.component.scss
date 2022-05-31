@@ -1,7 +1,12 @@
+@import '../../assets/scss/colors.scss';
 .prediction_text {
     font-size: 18px;
     font-weight: bold;
     color: #e59300;
+}
+
+::ng-deep .as-split-gutter-icon {
+    background-color: $color1 !important;
 }
 
 .concentration_text {

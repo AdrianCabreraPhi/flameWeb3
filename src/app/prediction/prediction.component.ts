@@ -574,7 +574,7 @@ export class PredictionComponent implements OnInit {
           var cib = xi[i] - cilist[i*2];
 
           // avoid using c0 and c1 as CI ranges. c0/c1 are integers -1, 0 or 1
-          if (!this.isInteger(cia) && !this.isInteger(cib) ) {
+          if (!Number.isInteger(cia) && !Number.isInteger(cib) ) {
             this.plotComboQ.data[0].error_x.array[i] = cia;
             this.plotComboQ.data[0].error_x.arrayminus[i] = cib;
           }
@@ -660,9 +660,6 @@ export class PredictionComponent implements OnInit {
     }
   }
 
-  isInteger(value) {
-    return value % 1 == 0;
-  }
   castValue(value:number) {
     if (this.modelBuildInfo['quantitative']) return value.toFixed(3) 
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';

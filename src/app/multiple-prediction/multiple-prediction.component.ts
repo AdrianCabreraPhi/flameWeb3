@@ -100,7 +100,7 @@ export class MultiplePredictionComponent implements OnInit {
   }
   
   escaleColor(){
-    var chr = chroma.scale('RdBu').domain([10,0]);
+    var chr = chroma.scale('RdBu').domain([3,9]);
     var globalArr = []
     for (let i = 0; i < this.prediction.profileSummary.values.length; i++) {
       var arrValues = []
