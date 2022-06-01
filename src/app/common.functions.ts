@@ -283,4 +283,8 @@ export class CommonFunctions {
       }
     );
   }
+  resetDataTable(dtID,options){
+    $(`#${dtID}`).DataTable().destroy();
+      $(`#${dtID}`).DataTable(options)
+  }
 }
