@@ -5,7 +5,6 @@ import { Prediction, Globals, Model } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 import 'datatables.net-bs4';
 import chroma from "chroma-js";
-import { ViewChild } from '@angular/core';
 declare var $: any;
 @Component({
   selector: 'app-multiple-prediction',
@@ -14,10 +13,19 @@ declare var $: any;
 })
 export class MultiplePredictionComponent implements OnInit {
   result: any;
+  dtID: string = "dataTablePrediction"
   prevSelection: any = undefined;
   Smodel: number = undefined;
   Smol:number = undefined;
   gamaColor = undefined;
+  opt = {
+    autoWidth: false,
+    destroy: true,
+    paging: false,
+    ordering: true,
+    searching: false,
+    info: false
+  }
   constructor(
     private service: PredictorService,
     public prediction: Prediction,
@@ -53,10 +61,11 @@ export class MultiplePredictionComponent implements OnInit {
     this.selectedClass(event,td);      
       }
 
-  /**
-   * Function to add specific styles to the selected prediction.
-   * @param event 
-   */
+/**
+ * Function to add specific styles to the selected prediction.
+ * @param event 
+ * @param td 
+ */
   selectedClass(event,td) {
   if((this.Smol,this.Smodel)!=undefined){
     this.renderer2.setStyle(this.Smol,'background','white')
@@ -79,27 +88,22 @@ export class MultiplePredictionComponent implements OnInit {
       (res) => {
         if (res) {
           this.prediction.profileSummary = res;
-          this.escaleColor()
-          $('#dataTablePrediction').DataTable().destroy();
-          $('#dataTablePrediction').DataTable().clear().draw();
-          setTimeout(() => {
-            $('#dataTablePrediction').DataTable({
-              autoWidth: false,
-              destroy: true,
-              paging: false,
-              ordering: true,
-              searching: false,
-              info: false,
-              })
-          }, 30)
+          this.escaleColor();
         }
       },
       (error) => {
         console.log(error);
       }
     );
+    setTimeout(() => {
+      this.commonFunctions.resetDataTable(this.dtID,this.opt)
+    }, 20);
+      
   }
-  
+  /**
+   * modifies the "profileSummary" array to add a new field 
+   * where you set the color that belongs to the field
+   */
   escaleColor(){
     var chr = chroma.scale('RdBu').domain([3,9]);
     var globalArr = []
