@@ -46,8 +46,7 @@ export class ModelListComponent implements OnInit {
       const endpoint = documentation.result['Endpoint'].value || 'na'  //get endpoint values
 
       
-      // check if model is quantitative or qualitative
-      if(quantitative){ quantitative = 'quantitative'} else quantitative = "qualitative";
+   
 
       const obj = {
         name: name,

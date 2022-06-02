@@ -1,11 +1,18 @@
-.selected-list {
-    width: 98%;
-    margin: auto;
-    margin-bottom: 15px;
-    height: 250px;
+#models_selected {
+    max-height: 400px;
     overflow: auto;
+}
+
+.card-header {
+    text-align: center;
+    border-top: 2px solid #22577A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table tbody tr td {
     color: #22577A;
-    span {
-        padding-left: 10px;
+    i {
+        color: #51cf66
     }
 }
