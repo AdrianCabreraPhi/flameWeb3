@@ -504,13 +504,15 @@ export class PredictionComponent implements OnInit {
       },error => {
         console.log(error)
       })
-      this.drawReportHeader();
-      this.drawSimilars();
+      setTimeout(() => {
+        this.drawReportHeader();
+        this.drawSimilars();
+      }, 50);
+      
     },20)
   }
 
   drawSimilars () {
-    setTimeout(() => {
       // draw similar compounds (if applicable)
       if (this.prediction.profileItem.hasOwnProperty('search_results')) {
         const optionsA = {'width': 400, 'height': 150};
@@ -527,7 +529,6 @@ export class PredictionComponent implements OnInit {
           iteratorCount++;
         };  
       };
-    },0);
   }
 
   updatePlotCombo() {
