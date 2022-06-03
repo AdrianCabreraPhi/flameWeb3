@@ -1,7 +1,19 @@
-#dataTablePrediction {
-    color: black;
-    tbody tr {
-        height: 50px;
+#container-dt {
+    max-height: 820px;
+    overflow: auto;
+    table {
+        thead tr:nth-child(1) th {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        max-height: 400px;
+        overflow: auto;
+        color: black;
+        tbody tr {
+            height: 50px;
+        }
     }
 }
 

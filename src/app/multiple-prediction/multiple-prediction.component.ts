@@ -13,18 +13,20 @@ declare var $: any;
 })
 export class MultiplePredictionComponent implements OnInit {
   result: any;
-  dtID: string = "dataTablePrediction"
   prevSelection: any = undefined;
   Smodel: number = undefined;
   Smol:number = undefined;
   gamaColor = undefined;
   opt = {
+    columnDefs: [
+      { "width": "20%", "targets": 0 }
+    ],
     autoWidth: false,
     destroy: true,
     paging: false,
     ordering: true,
     searching: false,
-    info: false
+    info: false,
   }
   constructor(
     private service: PredictorService,
@@ -89,16 +91,17 @@ export class MultiplePredictionComponent implements OnInit {
         if (res) {
           this.prediction.profileSummary = res;
           this.escaleColor();
+          $('#dataTablePrediction').DataTable().destroy();
+          $('#dataTablePrediction').DataTable().clear().draw();
+          setTimeout(() => {
+          $('#dataTablePrediction').DataTable(this.opt)
+          }, 20);
         }
       },
       (error) => {
         console.log(error);
       }
     );
-    setTimeout(() => {
-      this.commonFunctions.resetDataTable(this.dtID,this.opt)
-    }, 20);
-      
   }
   /**
    * modifies the "profileSummary" array to add a new field 
