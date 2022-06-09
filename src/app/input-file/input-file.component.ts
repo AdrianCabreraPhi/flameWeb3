@@ -18,6 +18,9 @@ export class InputFileComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  /**
+   *
+   */
   Save(){
     this.commonService.setIsvalidCompound(true);
     this.commonService.setCurrentSelection({'option':'Input File','name':this.compound.file_info['name']});
@@ -61,6 +64,9 @@ export class InputFileComponent implements OnInit {
       fileReader.readAsText(file);
     }
   }
+  /**
+   * Clean up the other options available for prediction
+   */
   cleanOtherOptions(){
     this.compound.input_list = undefined;
     this.compound.sketchstructure = undefined

@@ -47,10 +47,16 @@ export class MultiplePredictionComponent implements OnInit {
     })
   }
   generateTooltip(event, compound, value) {
-    const column = event.target._DT_CellIndex.column - 1;
-    const val = this.castValue(value,column);
-    const text = compound + "\n" + this.prediction.profileSummary['endpoint'][column] + "\n" + val;
-    event.target.setAttribute('title', text);
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+     const column = event.target._DT_CellIndex.column - 1;
+     const val = this.castValue(value,column);
+     const text = compound + "<br>" + this.prediction.profileSummary['endpoint'][column] + "<br>" + val;
+     event.target.setAttribute('data-content', text);
+
+
+      
   }
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 1;
