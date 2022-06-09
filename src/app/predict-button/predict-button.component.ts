@@ -16,7 +16,6 @@ export class PredictButtonComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     public compound: Compound,
-    private globals: Globals,
     private service: PredictorService,
     private prediction: Prediction,
     private toastr: ToastrService,
@@ -26,6 +25,9 @@ export class PredictButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
     this.commonService.isValidCompound$.subscribe(
       value => (this.isValidCompound = value)
     );
@@ -43,6 +45,7 @@ export class PredictButtonComponent implements OnInit {
   }
   predictStructure() {
     this.filterModels();
+    
     this.service
       .predictSketchStructure(
         this.prediction.name,
@@ -74,6 +77,10 @@ export class PredictButtonComponent implements OnInit {
   }
   predict() {
     this.filterModels();
+
+    this.toastr.info('Running!', 'Prediction ' + this.prediction.name , {
+      disableTimeOut: true, positionClass: 'toast-top-right'});
+
     this.service
       .predictInputFile(
         this.prediction.name,
@@ -84,16 +91,18 @@ export class PredictButtonComponent implements OnInit {
       .subscribe(
         (result) => {
           if (result) {
+            console.log(result)
+            this.toastr.clear()
             this.commonService.setPredictionExec(true);
-            this.toastr.success(
-              this.compound.input_file['name'],
-              'PREDICTION COMPLETED',
-              {
-                timeOut: 4000,
-                positionClass: 'toast-top-right',
-                progressBar: true,
-              }
-            );
+            // this.toastr.success(
+            //   this.compound.input_file['name'],
+            //   'PREDICTION COMPLETED',
+            //   {
+            //     timeOut: 4000,
+            //     positionClass: 'toast-top-right',
+            //     progressBar: true,
+            //   }
+            // );
           }
         },
         (error) => {
@@ -105,7 +114,17 @@ export class PredictButtonComponent implements OnInit {
   // TO DO
   predictInputList(profileName: string) {}
 
+  popoverMsg(btn){
 
+    // check if class disabled exist.
+   if(btn.hasAttribute('disabled')){
+     btn.setAttribute('data-content','Please select one of the options on the compound page and a minimum of 2 models. ')
+   }else {
+    btn.removeAttribute('title')
+    btn.removeAttribute('data-content')
+   }
+    
+  }
 
   filterModels() {
     this.endpoints = [];
