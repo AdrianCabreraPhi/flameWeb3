@@ -113,19 +113,6 @@ export class PredictButtonComponent implements OnInit {
 
   // TO DO
   predictInputList(profileName: string) {}
-
-  popoverMsg(btn){
-
-    // check if class disabled exist.
-   if(btn.hasAttribute('disabled')){
-     btn.setAttribute('data-content','Please select one of the options on the compound page and a minimum of 2 models. ')
-   }else {
-    btn.removeAttribute('title')
-    btn.removeAttribute('data-content')
-   }
-    
-  }
-
   filterModels() {
     this.endpoints = [];
     this.versions = [];
