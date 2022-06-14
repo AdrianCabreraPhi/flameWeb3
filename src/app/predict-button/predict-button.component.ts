@@ -45,7 +45,6 @@ export class PredictButtonComponent implements OnInit {
   }
   predictStructure() {
     this.filterModels();
-    
     this.service
       .predictSketchStructure(
         this.prediction.name,
@@ -94,15 +93,15 @@ export class PredictButtonComponent implements OnInit {
             console.log(result)
             this.toastr.clear()
             this.commonService.setPredictionExec(true);
-            // this.toastr.success(
-            //   this.compound.input_file['name'],
-            //   'PREDICTION COMPLETED',
-            //   {
-            //     timeOut: 4000,
-            //     positionClass: 'toast-top-right',
-            //     progressBar: true,
-            //   }
-            // );
+             this.toastr.success(
+               this.compound.input_file['name'],
+               'PREDICTION COMPLETED',
+               {
+                 timeOut: 4000,
+                 positionClass: 'toast-top-right',
+                 progressBar: true,
+               }
+             );
           }
         },
         (error) => {

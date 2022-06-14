@@ -16,6 +16,7 @@ export class PredictionComponent implements OnInit {
   molIndex: number = undefined;
   molSelected: string = '';
   dmodx = false;
+  isConfidential: boolean = false;
   modelBuildInfo = {};
   submodels = [];
   modelPresent: boolean;
@@ -671,7 +672,7 @@ export class PredictionComponent implements OnInit {
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
         }
-
+        this.isConfidential = this.modelBuildInfo['confidential']
         //support for legacy models using significance instead of confidence
         if (this.modelBuildInfo['conformal_significance']!=undefined){
           this.modelBuildInfo['conformal_confidence'] = 1.0 - this.modelBuildInfo["conformal_significance"];
