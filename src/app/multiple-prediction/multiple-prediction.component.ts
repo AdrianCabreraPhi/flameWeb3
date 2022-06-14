@@ -53,11 +53,9 @@ export class MultiplePredictionComponent implements OnInit {
      const column = event.target._DT_CellIndex.column - 1;
      const val = this.castValue(value,column);
      const text = compound + "<br>" + this.prediction.profileSummary['endpoint'][column] + "<br>" + val;
-     event.target.setAttribute('data-content', text);
-
-
-      
+     event.target.setAttribute('data-content', text);  
   }
+  
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 1;
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
