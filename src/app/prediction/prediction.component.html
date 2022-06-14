@@ -86,17 +86,14 @@
                         <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
                         <br><br>
                         <!--SUBMODEL RESULTS-->
-
                         <div class="row" *ngIf="this.isMajority == false">
                             <plotly-plot [data]="this.plotComboQ.data" [layout]="this.plotComboQ.layout" [config]="this.plotComboQ.config">
                             </plotly-plot>
                         </div>
-
                         <div class="row" *ngIf="this.isMajority">
                             <plotly-plot [data]="this.plotComboC.data" [layout]="this.plotComboC.layout" [config]="this.plotComboC.config">
                             </plotly-plot>
                         </div>
-
                         <!-- <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
                   <table class="table table-striped w-auto">
                     <thead>
@@ -206,14 +203,11 @@
                     </div>
                 </div>
                 <!--REPORT PREDICTIONS END-->
-
             </div>
         </as-split-area>
-
-
+        <!--PROJECT PREDICTIONS-->
         <as-split-area [order]="2" [size]="size2">
-            <!--PROJECT PREDICTIONS-->
-            <div>
+            <div *ngIf="!this.isConfidential; else Confidential">
                 <div class="card-body">
                     <div class="row justify-content-between">
                         <div class="col">
@@ -295,11 +289,12 @@
                 </div>
 
             </div>
-            <!--PROJECT PREDICTIONS END-->
+            <ng-template #Confidential>
+                <div class="alert alert-info text-center mt-3" role="alert">
+                    Confidential models do not provide training series information.
+                </div>
+            </ng-template>
         </as-split-area>
-
     </as-split>
-
-
-
+    <!--PROJECT PREDICTIONS END-->
 </div>
