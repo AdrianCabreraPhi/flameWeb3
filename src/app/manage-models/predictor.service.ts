@@ -11,18 +11,15 @@ export class PredictorService {
   constructor(private http:HttpClient) { }
 
   predictInputFile(profileName: string, file: any, endpoints: any,versions: any ): Observable<any> {
-
     const formData = new FormData();
     formData.append('SDF', file);
     formData.append('endpoints', endpoints);
     formData.append('versions',versions);
     const url: string = environment.baseUrl_predict + 'profile/profileName/' +profileName;
     return this.http.put(url, formData);
-
   }
 
  predictSketchStructure(profileName: string,smiles: string,name:string, endpoints:any,versions:any){
-
   const formData = new FormData();
   formData.append('SMILES',smiles);
   formData.append('name',name);
@@ -30,20 +27,22 @@ export class PredictorService {
   formData.append('versions',versions);
   const url: string = environment.baseUrl_predict + 'profile/profileName/' + profileName + '/smiles';
   return this.http.put(url,formData);
-
-
   }
 
 
-profileItem(profileName:string, indxModel: number){
+  profileItem(profileName:string, indxModel: number){
   const url = environment.baseUrl_manage + 'profile/'+profileName+ '/' + indxModel
   return this.http.get(url)
-}
+  }
 
-profileSummary(profileName: string){
+  profileSummary(profileName: string){
   const url = environment.baseUrl_manage + 'profile/'+profileName+'/summary';
   return this.http.get(url);
+  }
 
+  profileList(){
+    const url = environment.baseUrl_manage + 'profiles'
+    return this.http.get(url);
   }
 
   getBasketList(): Observable<any>{

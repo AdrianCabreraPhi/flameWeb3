@@ -1,17 +1,17 @@
-<div style="width:99%;height:99%" *ngIf="this.prediction.profileItem">
+<div id="container-pred" style="width:99%;height:99%" *ngIf="this.prediction.profileItem">
     <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
         <as-split-area [order]="1" [size]="size1">
             <div class="card-body">
                 <div class="row">
                     <div class="col-3 border">
-                        <strong> {{this.prediction.name}}</strong>
+                        <strong> {{this.prediction.profileName}}</strong>
                     </div>
                     <div class="col-6 border">
                         <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
                     </div>
                     <div class="col-3 border">
                         <!--fake date -->
-                        <strong> Date 05/04/2022</strong>
+                        <strong> Date {{this.prediction.date}}</strong>
                     </div>
                 </div>
                 <div class="row">
@@ -30,8 +30,6 @@
                         <canvas id="one_canvas"></canvas>
                     </div>
                 </div>
-
-
                 <div *ngIf="this.prediction.profileItem.values && this.showConcentration" class="row">
                     <div class="col-3 border">
                         <strong>Prediction (as conc.)</strong>
@@ -40,8 +38,6 @@
                         <span class="concentration_text"> {{backConc(this.prediction.profileItem.values[this.molIndex])}} &mu;M</span>
                     </div>
                 </div>
-
-
                 <div class="row">
                     <div class="col-3 border">
                         <strong>Prediction</strong>
@@ -60,8 +56,6 @@
                         <span *ngIf="this.prediction.profileItem">{{this.castValue(prediction.profileItem.ymatrix[molIndex])}}</span>
                     </div>
                 </div>
-
-
                 <div class="row" *ngIf="this.modelBuildInfo['conformal']">
                     <div class="col-3 border">
                         <strong>Reliability</strong>
@@ -277,17 +271,9 @@
                                 <tbody>
                                 </tbody>
                             </table>
-
                         </div>
-
-
-
-
                     </div>
-
-
                 </div>
-
             </div>
             <ng-template #Confidential>
                 <div class="alert alert-info text-center mt-3" role="alert">

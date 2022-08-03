@@ -133,7 +133,6 @@ export class InputListComponent implements OnInit {
       }
     );
   }
-  
   cleanOtherOptions() {
     this.compound.sketchstructure = undefined;
     this.compound.input_file = undefined;
