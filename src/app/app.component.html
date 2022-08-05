@@ -42,12 +42,10 @@
                     <app-model-list></app-model-list>
                 </div>
 
-
                 <div class="col p-0 info scrollable">
                     <div *ngIf="(this.model.name != undefined)">
                         <app-validations [name]=this.model.name [version]=this.model.version></app-validations>
                     </div>
-                    <app-model-selected-info></app-model-selected-info>
                 </div>
             </div>
         </div>

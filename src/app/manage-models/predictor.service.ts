@@ -29,6 +29,17 @@ export class PredictorService {
   return this.http.put(url,formData);
   }
 
+  predictInputList(profileName:string,smiles:any,name:string,endpoints:any,versions:any){
+    const formData = new FormData();
+    formData.append("smiles_list",smiles)
+    formData.append("name",name)
+    formData.append("endpoints",endpoints)
+    formData.append("versions",versions)
+    const url: string = environment.baseUrl_predict + 'profile/profileName/' + profileName +'/smiles_list'
+    return this.http.put(url,formData)
+    
+  }
+
 
   profileItem(profileName:string, indxModel: number){
   const url = environment.baseUrl_manage + 'profile/'+profileName+ '/' + indxModel
