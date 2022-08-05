@@ -1,1 +1,9 @@
-<button data-toggle="popover" data-trigger="hover" [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2" (click)="select_prediction()" class="btn btn-ets-do">Predict</button>
+<label for="profileName">Series name</label>
+<input type="text" class="form-control is-valid" [class.is-valid]="isvalidProfile" [class.is-invalid]="!isvalidProfile" id="profileName" [(ngModel)]="this.prediction.profileName" (ngModelChange)="profileNameChange()" required>
+<div class="valid-feedback">
+    Valid Name!
+</div>
+<div class="invalid-feedback">
+    The structure name entered is not valid
+</div>
+<button data-toggle="popover" data-trigger="hover" [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2 || !isvalidProfile" (click)="select_prediction()" class="btn btn-ets-do">Predict</button>
