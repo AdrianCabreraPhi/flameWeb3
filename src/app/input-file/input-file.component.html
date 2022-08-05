@@ -1,4 +1,9 @@
 <!-- input file -->
+<div class="row mt-4">
+    <div class="col">
+        <app-current-selection> </app-current-selection>
+    </div>
+</div>
 <div class="row">
     <div class="col">
         <div class="input-file">
@@ -17,10 +22,5 @@
                 <button [disabled]="!isValidSDFile" (click)="Save()" type="button" class="btn float-right">Save</button>
             </div>
         </div>
-    </div>
-</div>
-<div class="row mt-4">
-    <div class="col">
-        <app-current-selection> </app-current-selection>
     </div>
 </div>

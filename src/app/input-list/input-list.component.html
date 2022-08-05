@@ -1,3 +1,8 @@
+<div class="row mt-4">
+    <div class="col">
+        <app-current-selection> </app-current-selection>
+    </div>
+</div>
 <ng-template #elseBlock>
     <div class="alert alert-danger mt-2 text-center" role="alert">
         There isn't a input list!
@@ -35,10 +40,5 @@
         <div class="col-2 align-self-end">
             <button type="button" [disabled]="!this.isvalidSeries" class="btn float-right" (click)="Save()">Save</button>
         </div>
-    </div>
-</div>
-<div class="row mt-4">
-    <div class="col">
-        <app-current-selection> </app-current-selection>
     </div>
 </div>
