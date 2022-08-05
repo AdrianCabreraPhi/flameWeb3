@@ -420,7 +420,9 @@ export class PredictionComponent implements OnInit {
   }
 
   getProfileItem(idxModel:number){
-    this.service.profileItem(this.prediction.name,idxModel).subscribe(result => {
+    console.log("ProfileName")
+    console.log(this.prediction.profileName)
+    this.service.profileItem(this.prediction.profileName,idxModel).subscribe(result => {
       if(result) {
         this.prediction.profileItem = result;
         this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];

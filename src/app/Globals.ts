@@ -43,7 +43,7 @@ export class Model {
 
 @Injectable()
 export class Prediction {
-    name: string = undefined;   // Name of the model selected in the first step
+    profileName: string = undefined;   
     modelName: string = undefined;
     modelVersion: string = undefined;
     modelParameters: any;

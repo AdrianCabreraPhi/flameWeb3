@@ -17,6 +17,8 @@ export class MultiplePredictionComponent implements OnInit {
   Smodel: number = undefined;
   Smol:number = undefined;
   gamaColor = undefined;
+  profileList: any  = [];
+  profileSelected = undefined;
   opt = {
     columnDefs: [
       { "width": "20%", "targets": 0 }
@@ -40,12 +42,24 @@ export class MultiplePredictionComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getProfileList();
+    setTimeout(() => {
+      if(this.profileList[1].length){
+        this.getProfileSummary();
+      }
+    },1000)
     this.commonService.predictionExec$.subscribe(() => {
       setTimeout(() => {
-        this.getProfileSummary(); 
-      },2000)  
+        this.getProfileList(); 
+      },1000)  
+      setTimeout(() => {
+        this.getProfileSummary();
+      },2000)
     })
   }
+  
+
+
   generateTooltip(event, compound, value) {
     $(function () {
       $('[data-toggle="popover"]').popover()
@@ -64,7 +78,8 @@ export class MultiplePredictionComponent implements OnInit {
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
     this.prediction.modelID = modelObj['modelID'];    
     this.commonService.setMolAndModelIndex(molIndex,column);
-    this.selectedClass(event,td);      
+    this.selectedClass(event,td);
+    $('#container-pred').show()      
       }
 
 /**
@@ -82,30 +97,57 @@ export class MultiplePredictionComponent implements OnInit {
     this.renderer2.setStyle(td,'background','#f7f9ea')
     $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'#f7f9ea');
     
-
     if (this.prevSelection) this.prevSelection.classList.remove('selected');
     this.prevSelection = event.target;
     event.target.classList.add('selected');
     
   }
-  getProfileSummary() {
-    this.prediction.profileSummary = undefined;
-    this.service.profileSummary(this.prediction.name).subscribe(
-      (res) => {
-        if (res) {
-          this.prediction.profileSummary = res;
-          this.escaleColor();
-          $('#dataTablePrediction').DataTable().destroy();
-          $('#dataTablePrediction').DataTable().clear().draw();
-          setTimeout(() => {
-          $('#dataTablePrediction').DataTable(this.opt)
-          }, 20);
+  getProfileList(){
+    this.service.profileList().subscribe(res => {
+      this.profileList = res
+      this.profileSelected = this.profileList[1][0]
+      this.profileList = []
+        for(let i = 0; i < res[1].length;i++){
+          let aux = []
+          aux.push(res[1][i][0])
+          aux.push(res[1][i][3])
+          this.profileList.push(aux)
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    },
+    error => {
+      console.log(error)
+    })
+  }
+
+  getProfileSummary() {
+    $('#container-pred').hide()
+    this.prediction.profileSummary = undefined;
+    if(typeof this.profileSelected === 'string'){
+      this.prediction.date = this.profileSelected.match(/([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})/)[0]
+      this.profileSelected = this.profileSelected.split(',')[0]
+    }else{
+      this.prediction.date  = this.profileSelected[3]
+      this.profileSelected = this.profileSelected[0] 
+    }
+    setTimeout(() => {
+      this.prediction.profileName = this.profileSelected;
+      this.service.profileSummary(this.profileSelected).subscribe(
+        (res) => {
+          if (res) {
+            this.prediction.profileSummary = res;
+            this.escaleColor();
+            $('#dataTablePrediction').DataTable().destroy();
+            $('#dataTablePrediction').DataTable().clear().draw();
+            setTimeout(() => {
+            $('#dataTablePrediction').DataTable(this.opt)
+            }, 20);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },1000)
   }
   /**
    * modifies the "profileSummary" array to add a new field 

@@ -1,5 +1,20 @@
-<div id="container-dt" *ngIf="this.prediction.profileSummary" class="col mt-3">
-    <table id="dataTablePrediction" style="width:100%;">
+<ng-template #elseBlock>
+    <div class="alert alert-danger mt-2 ml-2 text-center" role="alert">
+        ¡¡ No profiles available !!
+    </div>
+</ng-template>
+
+<div id="container-dt" *ngIf="this.profileList[1]?.length else elseBlock" class="col mt-3">
+    <div class="box">
+        <select (change)="this.getProfileSummary()" id="basket-list" class="form-control" [(ngModel)]=this.profileSelected>
+    <option *ngFor="let value of this.profileList"   [value]='value'>
+    <div *ngIf="value!=null">
+    {{value}}
+    </div>   
+    </option>
+    </select>
+    </div>
+    <table *ngIf="this.prediction.profileSummary" id="dataTablePrediction" style="width:100%;">
         <thead>
             <tr>
                 <th></th>

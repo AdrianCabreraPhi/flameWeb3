@@ -13,6 +13,7 @@ export class PredictButtonComponent implements OnInit {
   endpoints = [];
   versions = [];
   isValidCompound: boolean = false;
+  predictionName: string = '';
   constructor(
     public commonService: CommonService,
     public compound: Compound,
@@ -21,7 +22,7 @@ export class PredictButtonComponent implements OnInit {
     private toastr: ToastrService,
     public model: Model
   ) {
-    this.prediction.name = 'postman';
+    this.predictionName ='test';
   }
 
   ngOnInit(): void {
@@ -47,7 +48,7 @@ export class PredictButtonComponent implements OnInit {
     this.filterModels();
     this.service
       .predictSketchStructure(
-        this.prediction.name,
+        this.predictionName,
         this.compound.sketchstructure['result'],
         this.compound.sketchstructure['name'],
         JSON.stringify(this.endpoints),
@@ -77,12 +78,12 @@ export class PredictButtonComponent implements OnInit {
   predict() {
     this.filterModels();
 
-    this.toastr.info('Running!', 'Prediction ' + this.prediction.name , {
+    this.toastr.info('Running!', 'Prediction ' + this.predictionName , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
 
     this.service
       .predictInputFile(
-        this.prediction.name,
+        this.predictionName,
         this.compound.input_file['result'],
         JSON.stringify(this.endpoints),
         JSON.stringify(this.versions)
@@ -112,6 +113,7 @@ export class PredictButtonComponent implements OnInit {
 
   // TO DO
   predictInputList(profileName: string) {}
+
   filterModels() {
     this.endpoints = [];
     this.versions = [];
