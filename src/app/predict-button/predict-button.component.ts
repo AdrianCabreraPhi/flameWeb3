@@ -34,7 +34,7 @@ export class PredictButtonComponent implements OnInit {
       (value) => (this.isValidCompound = value)
     );
   }
-
+  
   select_prediction() {
     if (this.compound.input_file) {
       this.predict();
@@ -108,16 +108,13 @@ export class PredictButtonComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(()=> {
            if(iter < 500){
-
           this.checkProfile(this.predictionName,inserted,intervalId)
            }else {
             this.toastr.clear(inserted.toastId);
             this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
               timeOut: 10000, positionClass: 'toast-top-right'});
-
            }
            iter+=1
-
           },2000)
         },
         error => {
@@ -152,9 +149,8 @@ export class PredictButtonComponent implements OnInit {
           $('#dataTablePredictions').DataTable().destroy();
         }
        }
-     )
+     )}
 
-  }
   // TO DO
   predictInputList() {
     this.filterModels();
