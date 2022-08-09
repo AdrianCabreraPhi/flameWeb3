@@ -52,38 +52,6 @@ export class ModelListComponent implements OnInit {
         );
     }
   }
-
-  // angular-split function
-  @ViewChild('Splitter') mySplitEl: SplitComponent;
-  // area size
-  _size1 = 2;
-  _size2 = 98;
-  get size1() {
-    return this._size1;
-  }
-
-  set size1(value) {
-    this._size1 = value;
-  }
-  get size2() {
-    return this._size2;
-  }
-
-  set size2(value) {
-    this._size2 = value;
-  }
-  gutterClick(e) {
-    if(e.gutterNum === 1) {
-        if(e.sizes[1] !== 0 ) {
-          this.size1 = 100;
-          this.size2 = 0;
-        }
-        else{
-          this.size2 = 98;
-          this.size1 = 2;
-        } 
-    }
-}
   onChange(name, version, quantitative, type, event): void {
     const documentation = this.modelsDocumentation.find(
       (el) => el.name == name + '-' + version
