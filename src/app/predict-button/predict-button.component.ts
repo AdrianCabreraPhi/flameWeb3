@@ -151,7 +151,7 @@ export class PredictButtonComponent implements OnInit {
        }
      )}
 
-  // TO DO
+
   predictInputList() {
     this.filterModels();
     this.service.predictInputList(
