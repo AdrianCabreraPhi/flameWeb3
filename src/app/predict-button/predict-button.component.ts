@@ -156,7 +156,7 @@ export class PredictButtonComponent implements OnInit {
     this.filterModels();
     this.service.predictInputList(
       this.predictionName,
-      this.compound.input_list['result'],
+      JSON.stringify(this.compound.input_list['result']),
       this.compound.input_list['name'],
       JSON.stringify(this.endpoints),
       JSON.stringify(this.versions)
