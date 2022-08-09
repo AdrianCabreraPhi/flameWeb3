@@ -1,4 +1,4 @@
-<label for="profileName">Series name</label>
+<label for="profileName">Profile name</label>
 <input type="text" class="form-control is-valid" [class.is-valid]="isvalidProfile" [class.is-invalid]="!isvalidProfile" id="profileName" [(ngModel)]="this.prediction.profileName" (ngModelChange)="profileNameChange()" required>
 <div class="valid-feedback">
     Valid Name!

@@ -1,93 +1,136 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Model, Prediction, Globals, Compound } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import 'datatables.net-bs4';
+import { SplitComponent } from 'angular-split';
 declare var $: any;
 @Component({
   selector: 'app-model-list',
   templateUrl: './model-list.component.html',
-  styleUrls: ['./model-list.component.scss']
+  styleUrls: ['./model-list.component.scss'],
 })
 export class ModelListComponent implements OnInit {
   models: Array<any>;
   objectKeys = Object.keys;
   modelsDocumentation: Array<any> = [];
 
-  constructor( public model: Model,
+  constructor(
+    public model: Model,
     public globals: Globals,
     public prediction: Prediction,
-    public func: CommonFunctions, private commonService: CommonService,public compound: Compound, ) { }
+    public func: CommonFunctions,
+    private commonService: CommonService,
+    public compound: Compound
+  ) {}
 
-    ngOnInit():void {
-      this.model.name = undefined;
-      this.model.version = undefined;
-      this.func.getModelList();
-      
-      // preload the documentation of the models to avoid multiple requests to the api.
-      setTimeout(() => {this.getAllDocumentation() },200)
-      
+  ngOnInit(): void {
+    this.model.name = undefined;
+    this.model.version = undefined;
+    this.func.getModelList();
+
+    // preload the documentation of the models to avoid multiple requests to the api.
+    setTimeout(() => {
+      this.getAllDocumentation();
+    }, 200);
+  }
+  getAllDocumentation() {
+    for (let key of Object.keys(this.model.listModels)) {
+      this.commonService
+        .getDocumentation(
+          this.model.listModels[key].name,
+          this.model.listModels[key].version,
+          'JSON'
+        )
+        .subscribe(
+          (result) => {
+            this.modelsDocumentation.push({ name: key, result: result });
+          },
+          (error) => {
+            console.log('documentation file not found:', key);
+          }
+        );
     }
-    getAllDocumentation(){
-     for (let key of Object.keys(this.model.listModels)){
-       this.commonService.getDocumentation(this.model.listModels[key].name,this.model.listModels[key].version, 'JSON').subscribe(
-         result => {
-           this.modelsDocumentation.push({'name':key,'result':result});
-         },
-         error => {
-           console.log('documentation file not found:',key);
-         }
-       );
-     }
+  }
+
+  // angular-split function
+  @ViewChild('Splitter') mySplitEl: SplitComponent;
+  // area size
+  _size1 = 2;
+  _size2 = 98;
+  get size1() {
+    return this._size1;
+  }
+
+  set size1(value) {
+    this._size1 = value;
+  }
+  get size2() {
+    return this._size2;
+  }
+
+  set size2(value) {
+    this._size2 = value;
+  }
+  gutterClick(e) {
+    if(e.gutterNum === 1) {
+        if(e.sizes[1] !== 0 ) {
+          this.size1 = 100;
+          this.size2 = 0;
+        }
+        else{
+          this.size2 = 98;
+          this.size1 = 2;
+        } 
     }
+}
+  onChange(name, version, quantitative, type, event): void {
+    const documentation = this.modelsDocumentation.find(
+      (el) => el.name == name + '-' + version
+    ); //get documentation of model
+    const endpoint = documentation.result['Endpoint'].value || 'na'; //get endpoint values
 
-    onChange(name,version,quantitative,type, event):void {
-      const documentation = this.modelsDocumentation.find(el =>  el.name == name+'-'+version) //get documentation of model
-      const endpoint = documentation.result['Endpoint'].value || 'na'  //get endpoint values
+    const obj = {
+      name: name,
+      quantitative: quantitative,
+      type: type,
+      version: version,
+      endpoint: endpoint,
+    };
 
-      
-   
-
-      const obj = {
-        name: name,
-        quantitative: quantitative,
-        type: type,
-        version:version,
-        endpoint:endpoint
-      }
-
-      const isChecked = event.target.checked;
-      if(isChecked) {
-        this.model.listModelsSelected.push(obj);
-      } else {
-        this.model.listModelsSelected.splice(
-          this.model.listModelsSelected.findIndex(
-            model => model.name === name && model.version === version),1);
-      }
-
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      this.model.listModelsSelected.push(obj);
+    } else {
+      this.model.listModelsSelected.splice(
+        this.model.listModelsSelected.findIndex(
+          (model) => model.name === name && model.version === version
+        ),
+        1
+      );
     }
+  }
 
-    selectAll(event){
-      //pending comment
-      const isChecked = event.target.checked;
-      var lastPage = false;
-      
-      let ctxPage = document.getElementsByClassName('page-link') 
-      let startPage = <HTMLElement>ctxPage[1]
-      startPage.click()
+  selectAll(event) {
+    //pending comment
+    const isChecked = event.target.checked;
+    var lastPage = false;
 
-       while(!lastPage){
-         let checkBoxes = document.querySelectorAll<HTMLElement | any>('.form-check-input');
-         checkBoxes.forEach(chckbox =>  {
+    let ctxPage = document.getElementsByClassName('page-link');
+    let startPage = <HTMLElement>ctxPage[1];
+    startPage.click();
 
-          if (chckbox.checked != isChecked)  chckbox.click();
+    while (!lastPage) {
+      let checkBoxes = document.querySelectorAll<HTMLElement | any>(
+        '.form-check-input'
+      );
+      checkBoxes.forEach((chckbox) => {
+        if (chckbox.checked != isChecked) chckbox.click();
+      });
+      let nextPage = document.getElementById('dataTableModels_next');
 
-         })
-         let nextPage = document.getElementById('dataTableModels_next')
-
-         lastPage = nextPage.className.includes('disabled')
-         nextPage.click();
-         
-       }
+      lastPage = nextPage.className.includes('disabled');
+      nextPage.click();
     }
+  }
 }
