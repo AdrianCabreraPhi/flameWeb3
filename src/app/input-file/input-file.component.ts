@@ -63,6 +63,7 @@ export class InputFileComponent implements OnInit {
       }
       fileReader.readAsText(file);
     }
+    this.Save()
   }
   /**
    * Clean up the other options available for prediction
