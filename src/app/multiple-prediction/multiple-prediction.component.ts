@@ -39,8 +39,6 @@ export class MultiplePredictionComponent implements OnInit {
     private model: Model,
     private renderer2: Renderer2,
   ) { }
-
-
   ngOnInit(): void {
     this.getProfileList();
     setTimeout(() => {
@@ -57,9 +55,6 @@ export class MultiplePredictionComponent implements OnInit {
       },2000)
     })
   }
-  
-
-
   generateTooltip(event, compound, value) {
     $(function () {
       $('[data-toggle="popover"]').popover()
@@ -105,33 +100,26 @@ export class MultiplePredictionComponent implements OnInit {
   getProfileList(){
     this.service.profileList().subscribe(res => {
       this.profileList = res
-      this.profileSelected = this.profileList[1][0]
       this.profileList = []
         for(let i = 0; i < res[1].length;i++){
-          let aux = []
-          aux.push(res[1][i][0])
-          aux.push(res[1][i][3])
-          this.profileList.push(aux)
+          this.profileList.push(res[1][i][0]+","+res[1][i][3])
         }
+        this.profileSelected = this.profileList[0]
     },
     error => {
       console.log(error)
     })
   }
-
+  
   getProfileSummary() {
     $('#container-pred').hide()
     this.prediction.profileSummary = undefined;
-    if(typeof this.profileSelected === 'string'){
+  
       this.prediction.date = this.profileSelected.match(/([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})/)[0]
-      this.profileSelected = this.profileSelected.split(',')[0]
-    }else{
-      this.prediction.date  = this.profileSelected[3]
-      this.profileSelected = this.profileSelected[0] 
-    }
+      this.prediction.profileName = this.profileSelected.split(',')[0]
     setTimeout(() => {
-      this.prediction.profileName = this.profileSelected;
-      this.service.profileSummary(this.profileSelected).subscribe(
+    
+      this.service.profileSummary(this.prediction.profileName).subscribe(
         (res) => {
           if (res) {
             this.prediction.profileSummary = res;
