@@ -151,9 +151,13 @@ export class PredictButtonComponent implements OnInit {
        }
      )}
 
-
   predictInputList() {
     this.filterModels();
+    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictionName, {
+      disableTimeOut: true,
+      positionClass: 'toast-top-right',
+    });
+
     this.service.predictInputList(
       this.predictionName,
       JSON.stringify(this.compound.input_list['result']),
@@ -161,7 +165,17 @@ export class PredictButtonComponent implements OnInit {
       JSON.stringify(this.endpoints),
       JSON.stringify(this.versions)
     ).subscribe(result => {
-      console.log(result)
+      let iter = 0;
+      const intervalId = setInterval(()=> {
+        if(iter < 500){
+       this.checkProfile(this.predictionName,inserted,intervalId)
+        }else {
+         this.toastr.clear(inserted.toastId);
+         this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
+           timeOut: 10000, positionClass: 'toast-top-right'});
+        }
+        iter+=1
+       },2000)
     },error => {
       console.log('error');
     });

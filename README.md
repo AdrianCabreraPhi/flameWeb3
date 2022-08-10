@@ -12,7 +12,7 @@ Flame_API should have been also installed and be running. Refer to to the [flame
 Download the repository:
 
 ```bash
-git clone https://github.com/phi-grib/flameWeb3.git
+git clone https://github.com/AdrianCabreraPhi/flameWeb3.git
 ```
 
 Go to the source repository directory 
