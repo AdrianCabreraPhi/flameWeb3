@@ -1,3 +1,4 @@
+import { ComponentFactoryResolver } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
@@ -50,6 +51,12 @@ export class PredictButtonComponent implements OnInit {
   profileNameChange(){
     this.isvalidProfile = true;
     const letters = /^[A-Za-z0-9_]+$/;
+    this.prediction.profileList.forEach(profile => {
+      profile = profile.split(',')[0]
+      if(profile.toUpperCase() === this.predictionName.toUpperCase()){
+        this.isvalidProfile = false;
+      }
+    });
     if (!this.predictionName.match(letters) || this.predictionName == '') {
       this.isvalidProfile = false;
     }
