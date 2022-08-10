@@ -57,7 +57,8 @@ export class Prediction {
     date = undefined;
     modelID = undefined;
     profileItem = undefined;
-    molSelected = undefined
+    molSelected = undefined;
+    profileList: any  = [];
 }
 
 

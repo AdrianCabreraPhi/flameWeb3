@@ -17,7 +17,6 @@ export class MultiplePredictionComponent implements OnInit {
   Smodel: number = undefined;
   Smol:number = undefined;
   gamaColor = undefined;
-  profileList: any  = [];
   profileSelected = undefined;
   opt = {
     columnDefs: [
@@ -42,7 +41,7 @@ export class MultiplePredictionComponent implements OnInit {
   ngOnInit(): void {
     this.getProfileList();
     setTimeout(() => {
-      if(this.profileList[1].length){
+      if(this.prediction.profileList[1].length){
         this.getProfileSummary();
       }
     },1000)
@@ -99,12 +98,12 @@ export class MultiplePredictionComponent implements OnInit {
   }
   getProfileList(){
     this.service.profileList().subscribe(res => {
-      this.profileList = res
-      this.profileList = []
+      this.prediction.profileList = res
+      this.prediction.profileList = []
         for(let i = 0; i < res[1].length;i++){
-          this.profileList.push(res[1][i][0]+","+res[1][i][3])
+          this.prediction.profileList.push(res[1][i][0]+","+res[1][i][3])
         }
-        this.profileSelected = this.profileList[0]
+        this.profileSelected = this.prediction.profileList[0]
     },
     error => {
       console.log(error)
