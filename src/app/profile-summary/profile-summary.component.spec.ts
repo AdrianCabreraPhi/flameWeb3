@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MultiplePredictionComponent } from './multiple-prediction.component';
+import { ProfileSummaryComponent } from './profile-summary.component';
 
-describe('MultiplePredictionComponent', () => {
-  let component: MultiplePredictionComponent;
-  let fixture: ComponentFixture<MultiplePredictionComponent>;
+describe('ProfileSummaryComponent', () => {
+  let component: ProfileSummaryComponent;
+  let fixture: ComponentFixture<ProfileSummaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MultiplePredictionComponent ]
+      declarations: [ ProfileSummaryComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MultiplePredictionComponent);
+    fixture = TestBed.createComponent(ProfileSummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

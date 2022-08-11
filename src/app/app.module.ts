@@ -22,10 +22,10 @@ import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 import { InputFileComponent } from './input-file/input-file.component';
 import { InputListComponent } from './input-list/input-list.component';
-import { MultiplePredictionComponent } from './multiple-prediction/multiple-prediction.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { PredictButtonComponent } from './predict-button/predict-button.component';
 import { AngularSplitModule } from 'angular-split';
+import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -45,9 +45,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     CurrentSelectionComponent,
     InputFileComponent,
     InputListComponent,
-    MultiplePredictionComponent,
     PredictionComponent,
-    PredictButtonComponent
+    PredictButtonComponent,
+    ProfileSummaryComponent
   ],
   imports: [
     BrowserModule,
