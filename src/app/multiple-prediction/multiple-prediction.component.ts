@@ -41,11 +41,9 @@ export class MultiplePredictionComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.getProfileList();
-    setTimeout(() => {
-      if(this.prediction.profileList[1].length){
-        this.getProfileSummary();
-      }
-    },1000)
+    /**
+     * when create a new profile.
+     */
     this.commonService.predictionExec$.subscribe(() => {
       setTimeout(() => {
         this.getProfileList(); 
