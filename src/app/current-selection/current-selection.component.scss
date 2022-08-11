@@ -1,10 +1,14 @@
+@import '../../assets/scss/colors.scss';
 .table {
     background-color: white;
     background: white;
     color: #22577A;
 }
 
-.title-table {
-    color: #22577A;
+.model_name {
+    color: $color1;
     font-weight: bold;
+    font-size: 1.2rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

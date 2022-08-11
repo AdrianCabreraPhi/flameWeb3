@@ -1,28 +1,21 @@
 <div class="container">
-
     <div class="row">
         <div class="col-4 mr-4 ml-4">
-            <div class="title-table">Selected compounds</div>
+            <div class="model_name">Selected compounds</div>
             <table class="table table-sm">
                 <tbody>
                     <tr>
-                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>enalapril</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left text-capitalize"><strong>parazetamol</strong></td>
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>sadasd</strong></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="col-4">
-            <div class="title-table">Selected models</div>
+            <div class="model_name">Selected models</div>
             <table class="table table-sm">
                 <tbody>
-                    <tr>
-                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>PXR</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left text-capitalize"><strong>BSEP</strong></td>
+                    <tr *ngFor="let model of this.model.listModelsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{model.name}} v.{{model.version}}</strong></td>
                     </tr>
                 </tbody>
             </table>
