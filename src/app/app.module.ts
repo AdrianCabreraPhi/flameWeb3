@@ -25,6 +25,7 @@ import { PredictButtonComponent } from './predict-button/predict-button.componen
 import { AngularSplitModule } from 'angular-split';
 import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
 import { SelectorComponent } from './selector/selector.component';
+import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -45,7 +46,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictionComponent,
     PredictButtonComponent,
     ProfileSummaryComponent,
-    SelectorComponent
+    SelectorComponent,
+    CurrentSelectionComponent
   ],
   imports: [
     BrowserModule,
