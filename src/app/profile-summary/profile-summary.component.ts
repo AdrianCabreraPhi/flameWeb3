@@ -8,11 +8,11 @@ import 'datatables.net-bs4';
 import chroma from "chroma-js";
 declare var $: any;
 @Component({
-  selector: 'app-multiple-prediction',
-  templateUrl: './multiple-prediction.component.html',
-  styleUrls: ['./multiple-prediction.component.scss'],
+  selector: 'app-profile-summary',
+  templateUrl: './profile-summary.component.html',
+  styleUrls: ['./profile-summary.component.scss']
 })
-export class MultiplePredictionComponent implements OnInit {
+export class ProfileSummaryComponent implements OnInit {
   result: any;
   prevSelection: any = undefined;
   Smodel: number = undefined;
