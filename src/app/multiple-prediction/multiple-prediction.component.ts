@@ -3,6 +3,7 @@ import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import { Prediction, Globals, Model } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
+import * as SmilesDrawer from 'smiles-drawer';
 import 'datatables.net-bs4';
 import chroma from "chroma-js";
 declare var $: any;
@@ -48,25 +49,26 @@ export class MultiplePredictionComponent implements OnInit {
     this.commonService.predictionExec$.subscribe(() => {
       setTimeout(() => {
         this.getProfileList(); 
-      },1000)  
+      },500)  
       setTimeout(() => {
         this.getProfileSummary();
-      },2000)
+      },1000)
     })
   }
   generateTooltip(event, compound, value) {
     $(function () {
       $('[data-toggle="popover"]').popover()
     })
-     const column = event.target._DT_CellIndex.column - 1;
+     const column = event.target._DT_CellIndex.column;
      const val = this.castValue(value,column);
      const text = compound + "<br>" + this.prediction.profileSummary['endpoint'][column] + "<br>" + val;
      event.target.setAttribute('data-content', text);  
   }
   
   showPrediction(event, molIndex,td) {
-    const column = event.target._DT_CellIndex.column - 1;
+    const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
+    console.log("column:"+column)
     const modelObj = this.model.listModels[modelName];
     this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
@@ -75,7 +77,6 @@ export class MultiplePredictionComponent implements OnInit {
     this.selectedClass(event,td);
     $('#container-pred').show()      
       }
-
 /**
  * Function to add specific styles to the selected prediction.
  * @param event 
@@ -109,15 +110,12 @@ export class MultiplePredictionComponent implements OnInit {
       console.log(error)
     })
   }
-  
   getProfileSummary() {
     $('#container-pred').hide()
     this.prediction.profileSummary = undefined;
-  
       this.prediction.date = this.profileSelected.match(/([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})/)[0]
       this.prediction.profileName = this.profileSelected.split(',')[0]
     setTimeout(() => {
-    
       this.service.profileSummary(this.prediction.profileName).subscribe(
         (res) => {
           if (res) {
@@ -127,6 +125,7 @@ export class MultiplePredictionComponent implements OnInit {
             $('#dataTablePrediction').DataTable().clear().draw();
             setTimeout(() => {
             $('#dataTablePrediction').DataTable(this.opt)
+            this.addStructure();
             }, 20);
           }
         },
@@ -134,8 +133,34 @@ export class MultiplePredictionComponent implements OnInit {
           console.log(error);
         }
       );
-    },1000)
+    },500)
   }
+  zoomCanvas(){
+
+  }
+  addStructure(){
+    var options = { width: 100, height: 75 }
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    for (let i = 0; i < this.prediction.profileSummary["obj_num"]; i++) {
+    let td = document.getElementById("canvas"+i)
+    const icanvas = document.createElement('canvas');
+    td.appendChild(icanvas)
+      SmilesDrawer.parse(
+       this.prediction.profileSummary['SMILES'][i],
+       function (tree) {
+         smilesDrawer.draw(tree, icanvas, 'light', false);
+       },
+       function (err) {
+         console.log(err);
+       }
+     );
+
+      
+      // 
+    }
+   
+  }
+
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
