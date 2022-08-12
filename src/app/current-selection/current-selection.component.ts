@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model } from '../Globals';
+import { Compound, Model } from '../Globals';
 
 @Component({
   selector: 'app-current-selection',
@@ -8,7 +8,7 @@ import { Model } from '../Globals';
 })
 export class CurrentSelectionComponent implements OnInit {
 
-  constructor( public model: Model) { }
+  constructor( public model: Model,public compound: Compound) { }
 
   ngOnInit(): void {
   }

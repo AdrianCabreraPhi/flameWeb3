@@ -4,8 +4,8 @@
             <div class="model_name">Selected compounds</div>
             <table class="table table-sm">
                 <tbody>
-                    <tr>
-                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>sadasd</strong></td>
+                    <tr *ngFor="let compound of this.compound.listCompoundsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{compound.substr(6)}}</strong></td>
                     </tr>
                 </tbody>
             </table>
