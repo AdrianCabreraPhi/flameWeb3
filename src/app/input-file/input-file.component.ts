@@ -32,6 +32,7 @@ export class InputFileComponent implements OnInit {
 
    }
    public change(event): void {
+     this.compound.listCompoundsSelected = [];
     const file:File = event.target.files[0];
     if(file) this.file = file;
     this.compound.file_info = {};
