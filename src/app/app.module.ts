@@ -15,17 +15,17 @@ import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal
 import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { ModelSelectedInfoComponent } from './model-selected-info/model-selected-info.component';
-import { CompoundsInfoComponent } from './compounds-info/compounds-info.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
-import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 import { InputFileComponent } from './input-file/input-file.component';
 import { InputListComponent } from './input-list/input-list.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { PredictButtonComponent } from './predict-button/predict-button.component';
 import { AngularSplitModule } from 'angular-split';
 import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
+import { SelectorComponent } from './selector/selector.component';
+import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -40,14 +40,14 @@ PlotlyModule.plotlyjs = PlotlyJS;
     QuantitConformalComponent,
     SketchStructureComponent,
     ModelSelectedInfoComponent,
-    CompoundsInfoComponent,
     ManageModelsComponent,
-    CurrentSelectionComponent,
     InputFileComponent,
     InputListComponent,
     PredictionComponent,
     PredictButtonComponent,
-    ProfileSummaryComponent
+    ProfileSummaryComponent,
+    SelectorComponent,
+    CurrentSelectionComponent
   ],
   imports: [
     BrowserModule,

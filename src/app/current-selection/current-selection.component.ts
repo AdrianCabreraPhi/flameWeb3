@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { CommonService } from '../common.service';
+import { Component, OnInit } from '@angular/core';
+import { Compound, Model } from '../Globals';
 
 @Component({
   selector: 'app-current-selection',
@@ -8,12 +8,9 @@ import { CommonService } from '../common.service';
 })
 export class CurrentSelectionComponent implements OnInit {
 
-  currentSelection: {} = undefined;
-  constructor(public commonService: CommonService) { }
+  constructor( public model: Model,public compound: Compound) { }
 
   ngOnInit(): void {
-    
-    this.commonService.currentSelection$.subscribe(result => this.currentSelection = result)
   }
 
 }

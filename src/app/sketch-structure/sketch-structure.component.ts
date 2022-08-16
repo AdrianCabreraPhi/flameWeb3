@@ -26,6 +26,7 @@ export class SketchStructureComponent implements OnInit {
     private toastr: ToastrService
     ) { }
     saveStructure(){
+      this.compound.listCompoundsSelected = []
       var span = document.getElementById('molclipboard')
       this.sketchSmiles = span.innerText
       //check name
@@ -33,6 +34,7 @@ export class SketchStructureComponent implements OnInit {
         this.commonService.setIsvalidCompound(true);
         this.commonService.setCurrentSelection({'option':'Sketch structure','name':this.sketchName});
         this.compound.sketchstructure = {'name':this.sketchName,'result':this.sketchSmiles}
+        this.compound.listCompoundsSelected.push(this.compound.sketchstructure['name'])
         this.cleanOtherOptions();
         this.toastr.success('Successfully', 'Saved '+this.compound.sketchstructure['name'], {
           timeOut: 2000, positionClass: 'toast-top-right', progressBar: true

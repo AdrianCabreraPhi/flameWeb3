@@ -39,6 +39,7 @@ export class Model {
     sketchstructure: {} = undefined;
     input_list: {} = undefined;
     input_file = undefined;
+    listCompoundsSelected = [];
   }
 
 @Injectable()

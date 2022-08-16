@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompoundsInfoComponent } from './compounds-info.component';
+import { SelectorComponent } from './selector.component';
 
-describe('CompoundsInfoComponent', () => {
-  let component: CompoundsInfoComponent;
-  let fixture: ComponentFixture<CompoundsInfoComponent>;
+describe('SelectorComponent', () => {
+  let component: SelectorComponent;
+  let fixture: ComponentFixture<SelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompoundsInfoComponent ]
+      declarations: [ SelectorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CompoundsInfoComponent);
+    fixture = TestBed.createComponent(SelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

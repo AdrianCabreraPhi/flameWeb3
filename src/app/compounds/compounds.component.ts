@@ -9,9 +9,8 @@ export class CompoundsComponent implements OnInit {
 
   constructor(private commonService: CommonService) { }
 
-
   ngOnInit(): void {
- 
+
   }
   currentTab(event){
    this.commonService.setCurrentCompoundTab(event.target.id)

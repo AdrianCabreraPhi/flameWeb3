@@ -32,6 +32,7 @@ export class InputFileComponent implements OnInit {
 
    }
    public change(event): void {
+     this.compound.listCompoundsSelected = [];
     const file:File = event.target.files[0];
     if(file) this.file = file;
     this.compound.file_info = {};
@@ -46,7 +47,7 @@ export class InputFileComponent implements OnInit {
       this.isValidSDFile = true;
       fileReader.onloadend = function(x) {
         self.fileContent = fileReader.result;
-        //var listNameMols = self.fileContent.matchAll(/<name>\s+(.+)\s*/ig)
+        self.compound.listCompoundsSelected = self.fileContent.match(/<name>\s+(.+)\s*/ig)
         self.compound.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
         const res_array = self.fileContent.match(/>( )*<(.*)>/g);
         const res_dict = {};

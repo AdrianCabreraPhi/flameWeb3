@@ -1,8 +1,14 @@
-.card-header {
-    border-top: 2px solid orange !important;
-    text-align: center;
+@import '../../assets/scss/colors.scss';
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
 }
 
-table tbody tr td {
-    color: #22577A;
+.model_name {
+    color: $color1;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

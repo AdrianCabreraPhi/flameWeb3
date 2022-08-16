@@ -81,7 +81,7 @@ export class PredictButtonComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(()=> {
             if(iter < 500){
-              this.checkProfile(this.predictionName,inserted,intervalId)
+              this.checkProfile(result,inserted,intervalId)
             }else{
               clearInterval(intervalId)
               this.toastr.clear(inserted.toastId);
@@ -115,7 +115,7 @@ export class PredictButtonComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(()=> {
            if(iter < 500){
-          this.checkProfile(this.predictionName,inserted,intervalId)
+          this.checkProfile(result,inserted,intervalId)
            }else {
             this.toastr.clear(inserted.toastId);
             this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
@@ -175,7 +175,7 @@ export class PredictButtonComponent implements OnInit {
       let iter = 0;
       const intervalId = setInterval(()=> {
         if(iter < 500){
-       this.checkProfile(this.predictionName,inserted,intervalId)
+       this.checkProfile(result,inserted,intervalId)
         }else {
          this.toastr.clear(inserted.toastId);
          this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
