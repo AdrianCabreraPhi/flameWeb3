@@ -1,12 +1,14 @@
 @import '../../assets/scss/colors.scss';
-a {
+ul li.nav-item a {
+    background: white;
     color: $color1;
     font-size: 1.2rem;
     &.active {
-        color: #22577A !important;
+        background: white;
+        color: #22577A;
         font-weight: bold;
         font-size: 1.2rem;
-        border: 5px solid transparent !important;
-        border-bottom-color: $color2 !important;
+        border-bottom: 4px solid $color2;
+        border-radius: 0;
     }
 }
