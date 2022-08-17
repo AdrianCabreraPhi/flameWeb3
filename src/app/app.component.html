@@ -27,12 +27,12 @@
                     <app-selector></app-selector>
                 </div>
                 <div style="margin-top: 1.4rem;" class="col p-0 info scrollable">
-                    <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
-                        <as-split-area [order]="1" [size]="30">
+                    <as-split #mySplit direction="vertical" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
+                        <as-split-area [order]="1" [size]="size1">
                             <app-current-selection>
                             </app-current-selection>
                         </as-split-area>
-                        <as-split-area [order]="2" [size]="70">
+                        <as-split-area [order]="2" [size]="size2">
                             <div *ngIf="(this.model.name != undefined)">
                                 <app-validations [name]=this.model.name [version]=this.model.version></app-validations>
                             </div>
@@ -40,9 +40,6 @@
                     </as-split>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="build" role="tabpanel" aria-labelledby="build-tab">
-            <app-model-list></app-model-list>
         </div>
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab">
             <div class="row">

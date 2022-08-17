@@ -66,7 +66,6 @@ export class ProfileSummaryComponent implements OnInit {
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
-    console.log("column:"+column)
     const modelObj = this.model.listModels[modelName];
     this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
     this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
@@ -102,7 +101,6 @@ export class ProfileSummaryComponent implements OnInit {
         for(let i = 0; i < res[1].length;i++){
           this.prediction.profileList.push(res[1][i][0]+","+res[1][i][3])
         }
-        this.profileSelected = this.prediction.profileList[0]
     },
     error => {
       console.log(error)
@@ -132,9 +130,6 @@ export class ProfileSummaryComponent implements OnInit {
         }
       );
     },500)
-  }
-  zoomCanvas(){
-
   }
   addStructure(){
     var options = { width: 100, height: 75 }

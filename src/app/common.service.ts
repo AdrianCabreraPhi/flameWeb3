@@ -20,7 +20,10 @@ export class CommonService {
   //reports that a prediction has been launched
   private predictionExec = new Subject<boolean>();
   predictionExec$ = this.predictionExec.asObservable();
-
+  //checks if the modal where the component list is displayed or hidden
+  private statusModelTab = new BehaviorSubject<boolean>(false);
+  statusModelTab$ = this.statusModelTab.asObservable();
+  
   constructor(private http: HttpClient) {}
   /**
    * Retrives the list of all models from the server
@@ -90,5 +93,8 @@ export class CommonService {
   }
   setPredictionExec(pred: boolean){
     this.predictionExec.next(pred)
+  }
+  setStatusModelTab(status: boolean){
+    this.statusModelTab.next(status)
   }
 }
