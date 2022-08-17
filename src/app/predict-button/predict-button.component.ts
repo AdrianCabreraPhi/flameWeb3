@@ -27,7 +27,7 @@ export class PredictButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.predictionName = 'Profile3'
+    this.predictionName = 'Profile'
     $(function () {
       $('[data-toggle="popover"]').popover();
     });

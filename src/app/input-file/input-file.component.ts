@@ -14,6 +14,7 @@ export class InputFileComponent implements OnInit {
   isValidSDFile: boolean = false;
   fileContent: any;
   file = undefined;
+  listmols = []
   constructor(public model: Model,public compound: Compound,private commonService: CommonService,private toastr: ToastrService) { }
   ngOnInit(): void {
 
@@ -47,7 +48,11 @@ export class InputFileComponent implements OnInit {
       this.isValidSDFile = true;
       fileReader.onloadend = function(x) {
         self.fileContent = fileReader.result;
-        self.compound.listCompoundsSelected = self.fileContent.match(/<name>\s+(.+)\s*/ig)
+        // self.compound.listCompoundsSelected = self.fileContent.match(/\$\$\$\$\s+(.+)\s*/ig);
+        self.listmols = self.fileContent.match(/\$\$\$\$\s+(.+)\s*/ig);
+        self.listmols.forEach((item) => {
+          self.compound.listCompoundsSelected.push(item.substring(4))
+        })
         self.compound.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
         const res_array = self.fileContent.match(/>( )*<(.*)>/g);
         const res_dict = {};
