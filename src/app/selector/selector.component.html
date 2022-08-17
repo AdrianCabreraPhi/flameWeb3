@@ -1,6 +1,6 @@
 <div class="accordion mt-3 ml-3" id="buildingAccordion">
     <div class="card">
-        <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+        <div #compoundtb (click)="modelTab(compoundtb)" class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
             <h5 class="mb-0">
                 Add compound
                 <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
@@ -12,9 +12,8 @@
             </div>
         </div>
     </div>
-
     <div class="card">
-        <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <div #modeltb (click)="modelTab(modeltb)" class="card-header collapsed" id="headingModels" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
             <h5 class="mb-0">
                 Add model
                 <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>

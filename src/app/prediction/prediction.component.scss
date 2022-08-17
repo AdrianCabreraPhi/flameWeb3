@@ -6,7 +6,9 @@
 }
 
 ::ng-deep .as-split-gutter-icon {
-    background-color: $color1 !important;
+    &:hover {
+        background-color: $color1 !important;
+    }
 }
 
 .concentration_text {

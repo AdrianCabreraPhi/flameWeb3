@@ -25,7 +25,7 @@
         <tbody>
             <tr *ngFor="let compound of this.prediction.profileSummary['obj_nam'];let i = index">
                 <td #td class="border text-center font-weight-bold">{{compound}}</td>
-                <td (mouseover)="zoomCanvas()" id="canvas{{i}}" class="border text-center"></td>
+                <td id="canvas{{i}}" class="border text-center"></td>
                 <ng-container *ngFor="let value of this.prediction.profileSummary['values'][i]; let pos = index">
                     <td data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="" *ngIf="!this.prediction.profileSummary.quantitative[pos]" id="values" class="text-center result border" (click)="showPrediction($event,i,td)" (mouseover)="generateTooltip($event,compound,value)"
                         [ngStyle]="{background: value == 1 ? 'rgb(255,0,0)': value == -1 ? '#95a5a6': 'rgb(0,0,255)'}"></td>
