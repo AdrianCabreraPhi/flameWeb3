@@ -3,7 +3,6 @@ import { CommonService } from '../common.service';
 import { PredictorService } from '../manage-models/predictor.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Compound } from '../Globals';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-input-list',
@@ -23,7 +22,6 @@ export class InputListComponent implements OnInit {
     public commonService: CommonService,
     public service: PredictorService,
     private compound: Compound,
-    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -53,15 +51,6 @@ export class InputListComponent implements OnInit {
         name: this.inputListName,
       });
       this.cleanOtherOptions();
-      this.toastr.success(
-        'Successfully',
-        'Saved ' + this.compound.input_list['name'],
-        {
-          timeOut: 3000,
-          positionClass: 'toast-top-right',
-          progressBar: true
-        }
-      );
     }
   }
   show_basket() {
