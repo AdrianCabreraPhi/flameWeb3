@@ -420,8 +420,6 @@ export class PredictionComponent implements OnInit {
   }
 
   getProfileItem(idxModel:number){
-    console.log("ProfileName")
-    console.log(this.prediction.profileName)
     this.service.profileItem(this.prediction.profileName,idxModel).subscribe(result => {
       if(result) {
         this.prediction.profileItem = result;
@@ -431,6 +429,7 @@ export class PredictionComponent implements OnInit {
         this.plotScores.data[1].text = [this.prediction.molSelected];
 
         this.activity_val = this.prediction.profileItem.values[this.molIndex]
+
         if (!this.isQuantitative){
           for (var i=0; i<this.activity_val.length; i++){
             if (this.activity_val[i]<0.0) {
@@ -456,7 +455,7 @@ export class PredictionComponent implements OnInit {
         this.updatePlotCombo();
         
         setTimeout(() => {
-          this.setScoresPlot(result)
+          this.setScoresPlot(result,this.molIndex)
         },40)
       }
     }, error => {
@@ -933,7 +932,7 @@ export class PredictionComponent implements OnInit {
 
 
 
-  setScoresPlot (result) {
+  setScoresPlot (result,molIndex) {
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
@@ -947,10 +946,11 @@ export class PredictionComponent implements OnInit {
     let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
     
     // on hover, draw the molecule
+    
     myPlot.on('plotly_hover', function(eventdata){ 
       var points = eventdata.points[0];
       if (points.curveNumber === 1) {
-        SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+        SmilesDrawer.parse(result['SMILES'][molIndex], function(tree) {
           smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
           // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
         });   
