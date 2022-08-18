@@ -4,7 +4,7 @@
     </div>
 </ng-template>
 
-<div id="container-dt" *ngIf="this.prediction.profileList[1]?.length else elseBlock" class="col mt-3">
+<div id="container-dt" *ngIf="this.prediction.profileList.length else elseBlock" class="col mt-3">
     <div class="box mb-4">
         <select (change)="this.getProfileSummary()" id="basket-list" class="form-control" [(ngModel)]=this.profileSelected>
     <option *ngFor="let value of this.prediction.profileList"   [value]='value'>

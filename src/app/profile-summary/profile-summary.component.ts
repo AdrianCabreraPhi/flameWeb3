@@ -96,7 +96,8 @@ export class ProfileSummaryComponent implements OnInit {
   }
   getProfileList(){
     this.service.profileList().subscribe(res => {
-      this.prediction.profileList = res
+      console.log("Profile List")
+      console.log(res)
       this.prediction.profileList = []
         for(let i = 0; i < res[1].length;i++){
           this.prediction.profileList.push(res[1][i][0]+","+res[1][i][3])
