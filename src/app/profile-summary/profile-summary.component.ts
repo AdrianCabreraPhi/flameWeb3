@@ -57,10 +57,11 @@ export class ProfileSummaryComponent implements OnInit {
     $(function () {
       $('[data-toggle="popover"]').popover()
     })
-     const column = event.target._DT_CellIndex.column;
+     const column = event.target._DT_CellIndex.column-2;
      const val = this.castValue(value,column);
      const text = compound + "<br>" + this.prediction.profileSummary['endpoint'][column] + "<br>" + val;
      event.target.setAttribute('data-content', text);  
+     
   }
   
   showPrediction(event, molIndex,td) {
