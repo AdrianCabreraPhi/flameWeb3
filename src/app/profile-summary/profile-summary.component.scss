@@ -1,5 +1,6 @@
+@import '../../assets/scss/colors.scss';
 #container-dt {
-    max-height: 820px;
+    height: 100%;
     overflow: auto;
     table {
         thead tr:nth-child(1) th {
@@ -35,4 +36,33 @@
     color: white;
     margin: 0px;
     border-radius: 0px;
+}
+
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+    th {
+        padding-left: 1px;
+        padding-right: 1px;
+        color: $color1;
+    }
+    td {
+        padding: 5px;
+        font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+        border-bottom: 1px solid #B8DCED;
+        vertical-align: middle;
+    }
+    tr {
+        cursor: pointer;
+        &.selected {
+            background: #f7f9ea;
+        }
+    }
+}
+
+.table tbody tr:hover {
+    background: #f7f9ea;
 }
