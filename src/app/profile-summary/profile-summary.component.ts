@@ -149,6 +149,7 @@ gutterClick(e) {
   }
 }
   getProfileSummary(profileName) {
+    $("#profilebtn").click();
     this.prediction.profileName = profileName
 
     if(this.size1 == 100){
@@ -158,7 +159,6 @@ gutterClick(e) {
       this.size1 = 100;
       this.size2 = 0
     }
-   
     $('#container-pred').hide()
     this.prediction.profileSummary = undefined;
     setTimeout(() => {
@@ -180,6 +180,19 @@ gutterClick(e) {
         }
       );
     },500)
+  }
+  deleteProfile() {
+    this.service.deleteProfile(this.prediction.profileName).subscribe(
+      result => {
+
+
+        this.prediction.profileName = undefined ;
+        this.getProfileList();
+      },
+      error => {
+        alert('Delete ERROR');
+      }
+    );
   }
   addStructure(){
     var options = { width: 100, height: 75 }
