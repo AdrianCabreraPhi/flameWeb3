@@ -1,9 +1,18 @@
-<label for="profileName">Profile name</label>
-<input type="text" class="form-control is-valid" [class.is-valid]="isvalidProfile" [class.is-invalid]="!isvalidProfile" id="profileName" [(ngModel)]="this.predictionName" (ngModelChange)="profileNameChange()" required>
-<div class="valid-feedback">
-    Valid Name!
+
+
+<div class="row">
+    <div class="col-10">
+        <label for="profileName">Profile name</label>
+        <input type="text" class="form-control is-valid" [class.is-valid]="isvalidProfile" [class.is-invalid]="!isvalidProfile" id="profileName" [(ngModel)]="this.predictionName" (ngModelChange)="profileNameChange()" required>
+        <div class="valid-feedback">
+            Valid Name!
+        </div>
+        <div class="invalid-feedback">
+            The structure name entered is not valid
+        </div>
+    </div>
+<div class="col-2 align-self-end">
+    <button data-toggle="popover" data-trigger="hover" [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2 || !isvalidProfile" (click)="select_prediction()" class="btn btn-ets-do float-right">Predict</button>
 </div>
-<div class="invalid-feedback">
-    The structure name entered is not valid
 </div>
-<button data-toggle="popover" data-trigger="hover" [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2 || !isvalidProfile" (click)="select_prediction()" class="btn btn-ets-do float-right">Predict</button>
+
