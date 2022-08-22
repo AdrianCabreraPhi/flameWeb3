@@ -20,6 +20,7 @@ export class ProfileSummaryComponent implements OnInit {
   Smol:number = undefined;
   gamaColor = undefined;
   profileSelected = undefined;
+  prevTR = undefined;
 
   opt2 = {
     columnDefs: [
@@ -103,9 +104,9 @@ export class ProfileSummaryComponent implements OnInit {
     this.renderer2.setStyle(td,'background','#f7f9ea')
     $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'#f7f9ea');
     
-    if (this.prevSelection) this.prevSelection.classList.remove('selected');
+    if (this.prevSelection) this.prevSelection.classList.remove('pselected');
     this.prevSelection = event.target;
-    event.target.classList.add('selected');
+    event.target.classList.add('pselected');
     
   }
   getProfileList(){
@@ -148,8 +149,17 @@ gutterClick(e) {
       }
   }
 }
-  getProfileSummary(profileName) {
-    $("#profilebtn").click();
+  getProfileSummary(profileName,tr) {
+    if(this.prevTR){
+      this.prevTR.classList.remove('selected')
+      tr.classList.add('selected')
+    }
+    this.prevTR = tr;
+    
+  tr.classList.add('selected')
+  
+
+  $("#profilebtn").click();
     this.prediction.profileName = profileName
 
     if(this.size1 == 100){
@@ -184,9 +194,8 @@ gutterClick(e) {
   deleteProfile() {
     this.service.deleteProfile(this.prediction.profileName).subscribe(
       result => {
-
-
         this.prediction.profileName = undefined ;
+        this.prediction.profileSummary = undefined;
         this.getProfileList();
       },
       error => {

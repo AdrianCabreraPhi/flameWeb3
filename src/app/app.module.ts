@@ -26,6 +26,7 @@ import { AngularSplitModule } from 'angular-split';
 import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
 import { SelectorComponent } from './selector/selector.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
+import { SaveProfileButtonComponent } from './save-profile-button/save-profile-button.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -47,7 +48,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictButtonComponent,
     ProfileSummaryComponent,
     SelectorComponent,
-    CurrentSelectionComponent
+    CurrentSelectionComponent,
+    SaveProfileButtonComponent
   ],
   imports: [
     BrowserModule,

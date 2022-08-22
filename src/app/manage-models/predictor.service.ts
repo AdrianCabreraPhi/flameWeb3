@@ -39,6 +39,11 @@ export class PredictorService {
     return this.http.put(url,formData)
     
   }
+  deleteProfile(profileName: string){
+    const url: string = environment.baseUrl_manage + 'profile/' + profileName;
+    return this.http.delete(url);
+
+  }
 
 
   profileItem(profileName:string, indxModel: number){

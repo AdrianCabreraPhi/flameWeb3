@@ -4,9 +4,7 @@
     </div>
 </ng-template>
 <div id="container-dt" *ngIf="this.prediction.profileList.length else elseBlock" class="col mt-3">
-    <!-- <div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar with button groups">
-        <button (click)="deleteProfile()" type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#delete" [ngClass]="{'disabled': this.prediction.profileName === undefined}">Delete</button>
-    </div> -->
+
     <div class="accordion mt-3" id="buildingAccordion">
         <div class="card">
             <div   class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
@@ -16,8 +14,15 @@
                 </h5>
             </div>
             <div  id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+                <div class="card">
+                    <div class="card-body p-2 pr-5">
+                        <div class="btn-toolbar m-2" role="toolbar" aria-label="Toolbar with button groups">
+                            <button (click)="deleteProfile()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#delete" [ngClass]="{'disabled': this.prediction.profileName === undefined}">Delete</button>
+                        </div> 
+                    </div>
+                </div>
                 <div class="card-body p-2 pr-5">
-                    <table class="table display compact" id="dataTableProfiles" style="width:100%;">
+                    <table  class="table display compact" id="dataTableProfiles" style="width:100%;">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -25,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="this.getProfileSummary(profile[0])"  *ngFor="let profile of this.prediction.profileList[1]">
+                        <tr #tr  (click)="this.getProfileSummary(profile[0],tr)"  *ngFor="let profile of this.prediction.profileList[1]">
                             <td>{{profile[0]}}</td>
                             <td>{{profile[3]}}</td>
                         </tr>
