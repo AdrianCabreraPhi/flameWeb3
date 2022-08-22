@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import { Prediction, Globals, Model } from '../Globals';
@@ -6,6 +6,7 @@ import { PredictorService } from '../manage-models/predictor.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import 'datatables.net-bs4';
 import chroma from "chroma-js";
+import { SplitComponent } from 'angular-split';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -19,6 +20,18 @@ export class ProfileSummaryComponent implements OnInit {
   Smol:number = undefined;
   gamaColor = undefined;
   profileSelected = undefined;
+
+  opt2 = {
+    columnDefs: [
+      { "width": "20%", "targets": 0 }
+    ],
+    autoWidth: true,
+    destroy: true,
+    paging: true,
+    ordering: true,
+    searching: true,
+    info: true,
+  }
   opt = {
     columnDefs: [
       { "width": "20%", "targets": 0 }
@@ -49,7 +62,7 @@ export class ProfileSummaryComponent implements OnInit {
         this.getProfileList(); 
       },500)  
       setTimeout(() => {
-        this.getProfileSummary();
+        // this.getProfileSummary();
       },1000)
     })
   }
@@ -63,7 +76,7 @@ export class ProfileSummaryComponent implements OnInit {
      event.target.setAttribute('data-content', text);  
      
   }
-  
+
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
@@ -96,23 +109,58 @@ export class ProfileSummaryComponent implements OnInit {
     
   }
   getProfileList(){
+    this.prediction.profileList = []
+    $('#dataTableProfiles').DataTable().destroy();
+    $('#dataTableProfiles').DataTable().clear().draw();
     this.service.profileList().subscribe(res => {
-      console.log("Profile List")
-      console.log(res)
-      this.prediction.profileList = []
-        for(let i = 0; i < res[1].length;i++){
-          this.prediction.profileList.push(res[1][i][0]+","+res[1][i][3])
-        }
+      this.prediction.profileList = res;
+      setTimeout(() => {
+        $('#dataTableProfiles').DataTable(this.opt2)
+      }, 20);
     },
     error => {
       console.log(error)
     })
   }
-  getProfileSummary() {
+@ViewChild('mySplit') mySplitEl: SplitComponent
+  // area size
+  _size1=100;
+  _size2=0;
+get size1() {
+  return this._size1;
+}
+
+set size1(value) {
+    this._size1 = value;
+}
+get size2() {
+  return this._size2;
+}
+
+set size2(value) {
+    this._size2 = value;
+}
+gutterClick(e) {
+  if(e.gutterNum === 1) {
+      if(e.sizes[1] == 100 ) {
+        this.size1 = 100;
+        this.size2 = 0;
+      }
+  }
+}
+  getProfileSummary(profileName) {
+    $("#profilebtn").click();
+    this.prediction.profileName = profileName
+
+    if(this.size1 == 100){
+      this.size1 = 0;
+      this.size2 = 100;
+    }else{
+      this.size1 = 100;
+      this.size2 = 0
+    }
     $('#container-pred').hide()
     this.prediction.profileSummary = undefined;
-      this.prediction.date = this.profileSelected.match(/([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})/)[0]
-      this.prediction.profileName = this.profileSelected.split(',')[0]
     setTimeout(() => {
       this.service.profileSummary(this.prediction.profileName).subscribe(
         (res) => {
@@ -132,6 +180,19 @@ export class ProfileSummaryComponent implements OnInit {
         }
       );
     },500)
+  }
+  deleteProfile() {
+    this.service.deleteProfile(this.prediction.profileName).subscribe(
+      result => {
+
+
+        this.prediction.profileName = undefined ;
+        this.getProfileList();
+      },
+      error => {
+        alert('Delete ERROR');
+      }
+    );
   }
   addStructure(){
     var options = { width: 100, height: 75 }
