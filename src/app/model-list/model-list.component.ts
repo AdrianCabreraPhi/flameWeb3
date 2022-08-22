@@ -3,7 +3,6 @@ import { Model, Prediction, Globals, Compound } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import 'datatables.net-bs4';
-import { SplitComponent } from 'angular-split';
 declare var $: any;
 @Component({
   selector: 'app-model-list',
