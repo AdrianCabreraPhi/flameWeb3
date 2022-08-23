@@ -62,9 +62,6 @@ export class ProfileSummaryComponent implements OnInit {
       setTimeout(() => {
         this.getProfileList(); 
       },500)  
-      setTimeout(() => {
-        // this.getProfileSummary();
-      },1000)
     })
   }
   generateTooltip(event, compound, value) {
@@ -149,18 +146,14 @@ gutterClick(e) {
       }
   }
 }
-  getProfileSummary(profileName,tr) {
+  getProfileSummary(profile,tr) {
     if(this.prevTR){
       this.prevTR.classList.remove('selected')
       tr.classList.add('selected')
     }
     this.prevTR = tr;
-    
-  tr.classList.add('selected')
-  
-
-  $("#profilebtn").click();
-    this.prediction.profileName = profileName
+    tr.classList.add('selected')
+    this.prediction.profileName = profile[0]
 
     if(this.size1 == 100){
       this.size1 = 0;
@@ -169,6 +162,7 @@ gutterClick(e) {
       this.size1 = 100;
       this.size2 = 0
     }
+    this.prediction.date = profile[3];
     $('#container-pred').hide()
     this.prediction.profileSummary = undefined;
     setTimeout(() => {
@@ -219,13 +213,8 @@ gutterClick(e) {
          console.log(err);
        }
      );
-
-      
-      // 
     }
-   
   }
-
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
