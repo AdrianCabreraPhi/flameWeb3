@@ -19,9 +19,6 @@ export class InputFileComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  /**
-   *
-   */
   Save(){
     this.commonService.setIsvalidCompound(true);
     this.commonService.setCurrentSelection({'option':'Input File','name':this.compound.file_info['name']});
@@ -46,9 +43,13 @@ export class InputFileComponent implements OnInit {
         self.fileContent = fileReader.result;
         // self.compound.listCompoundsSelected = self.fileContent.match(/\$\$\$\$\s+(.+)\s*/ig);
         self.listmols = self.fileContent.match(/\$\$\$\$\s+(.+)\s*/ig);
+        var firstMol = self.fileContent.match(/.+/g)[0]
+        self.compound.listCompoundsSelected.push(firstMol)
+        if(self.listmols){
         self.listmols.forEach((item) => {
           self.compound.listCompoundsSelected.push(item.substring(4))
         })
+       } 
         self.compound.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
         const res_array = self.fileContent.match(/>( )*<(.*)>/g);
         const res_dict = {};
