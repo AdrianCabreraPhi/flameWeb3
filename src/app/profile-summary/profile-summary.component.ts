@@ -190,6 +190,7 @@ gutterClick(e) {
       result => {
         this.prediction.profileName = undefined ;
         this.prediction.profileSummary = undefined;
+        this.prediction.profileItem = undefined;
         this.getProfileList();
       },
       error => {
