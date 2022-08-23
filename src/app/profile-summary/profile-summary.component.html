@@ -30,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr #tr  (click)="this.getProfileSummary(profile[0],tr)"  *ngFor="let profile of this.prediction.profileList[1]">
+                        <tr #tr  (click)="this.getProfileSummary(profile,tr)"  *ngFor="let profile of this.prediction.profileList[1]">
                             <td>{{profile[0]}}</td>
                             <td>{{profile[3]}}</td>
                         </tr>
