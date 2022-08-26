@@ -14,8 +14,9 @@ export class PredictButtonComponent implements OnInit {
   endpoints = [];
   versions = [];
   isValidCompound: boolean = false;
-  predictionName: string = '';
+  profileName: string = '';
   isvalidProfile: boolean = true;
+  profilesNames = [];
   constructor(
     public commonService: CommonService,
     public compound: Compound,
@@ -27,13 +28,16 @@ export class PredictButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.predictionName = 'Profile'
+    setTimeout(() => {
+      this.defaultProfileName();
+    },1000)
     $(function () {
       $('[data-toggle="popover"]').popover();
     });
     this.commonService.isValidCompound$.subscribe(
       (value) => (this.isValidCompound = value)
     );
+
   }
   
   select_prediction() {
@@ -46,31 +50,65 @@ export class PredictButtonComponent implements OnInit {
     if (this.compound.input_list) {
       this.predictInputList();
     }
+    setTimeout(() => {
+      this.defaultProfileName();
+    },3000)
+  }
+  defaultProfileName(){
+    for(const name of this.prediction.profileList[1]){
+      this.profilesNames.push(name[0])
+    }
+    let i = 1;
+    let nameFound = false;
+    while (!nameFound){
+      let istr = i.toString().padStart(4,'0');
+      this.profileName = 'Profile_' + istr;
+      let keyFound = false;
+      for (const ikey of this.profilesNames) {
+        if (ikey.startsWith(this.profileName)) {
+          keyFound=true;
+        }
+      }
+      if (!keyFound){
+        nameFound = true;
+        this.isvalidProfile = true;
+      }
+      i=i+1;
+    }
   }
 
   profileNameChange(){
     this.isvalidProfile = true;
     const letters = /^[A-Za-z0-9_]+$/;
-    this.prediction.profileList.forEach(profile => {
-      profile = profile.split(',')[0]
-      if(profile.toUpperCase() === this.predictionName.toUpperCase()){
-        this.isvalidProfile = false;
-      }
-    });
-    if (!this.predictionName.match(letters) || this.predictionName == '') {
+    this.prediction.profileList[1].forEach(profile => {
+       let name = profile[0]
+       if(name.toUpperCase() === this.profileName.toUpperCase()){
+         this.isvalidProfile = false;
+       }
+     });
+    if (!this.profileName.match(letters) || this.profileName == '') {
       this.isvalidProfile = false;
+    }
+
+    if (!(this.profileName.match(letters)) || this.profileName in this.profilesNames || this.profileName.startsWith('ensemble')) {
+      this.isvalidProfile = false;
+    }
+    for (const ikey of this.profilesNames) {
+      if (ikey.startsWith(this.profileName)) {
+        this.isvalidProfile=false;
+      }
     }
   }
 
   predictStructure() {
     this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictionName, {
+    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
       disableTimeOut: true,
       positionClass: 'toast-top-right',
     });
     this.service
       .predictSketchStructure(
-        this.predictionName,
+        this.profileName,
         this.compound.sketchstructure['result'],
         this.compound.sketchstructure['name'],
         JSON.stringify(this.endpoints),
@@ -85,7 +123,7 @@ export class PredictButtonComponent implements OnInit {
             }else{
               clearInterval(intervalId)
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
+              this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
                 timeOut: 10000, positionClass: 'toast-top-right'});
             }
             iter +=1;
@@ -98,14 +136,14 @@ export class PredictButtonComponent implements OnInit {
   }
   predict() {
     this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictionName, {
+    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
       disableTimeOut: true,
       positionClass: 'toast-top-right',
     });
 
     this.service
       .predictInputFile(
-        this.predictionName,
+        this.profileName,
         this.compound.input_file['result'],
         JSON.stringify(this.endpoints),
         JSON.stringify(this.versions)
@@ -118,7 +156,7 @@ export class PredictButtonComponent implements OnInit {
           this.checkProfile(result,inserted,intervalId)
            }else {
             this.toastr.clear(inserted.toastId);
-            this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
+            this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
               timeOut: 10000, positionClass: 'toast-top-right'});
            }
            iter+=1
@@ -134,9 +172,9 @@ export class PredictButtonComponent implements OnInit {
        result => {
         if (result['aborted']) {
           this.toastr.clear(inserted.toastId);
-          this.toastr.error("Prediction \"" + name + "\" task has not completed. Check the browser console for more information", 
+          this.toastr.error("Profile \"" + name + "\" task has not completed. Check the browser console for more information", 
             'Aborted', {timeOut: 10000, positionClass: 'toast-top-right'});
-          console.log('ERROR report produced by prediction task ', name);
+          console.log('ERROR report produced by profile task ', name);
           console.log(result['aborted']);
           clearInterval(intervalId);
           return;
@@ -144,11 +182,11 @@ export class PredictButtonComponent implements OnInit {
         if (!result ['waiting']) {
           this.toastr.clear(inserted.toastId);
           if (result['error']){
-            this.toastr.warning('Profile ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
+            this.toastr.warning('Profile ' + name + ' finished with error ' + result['error'] , 'PROFILE COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
           }
           else {
-             this.toastr.success('Profile ' + name + ' created' , 'PREDICTION COMPLETED', {
+             this.toastr.success('Profile ' + name + ' created' , 'PROFILE COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
               this.commonService.setPredictionExec(true);
           }
@@ -160,13 +198,13 @@ export class PredictButtonComponent implements OnInit {
 
   predictInputList() {
     this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictionName, {
+    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
       disableTimeOut: true,
       positionClass: 'toast-top-right',
     });
 
     this.service.predictInputList(
-      this.predictionName,
+      this.profileName,
       JSON.stringify(this.compound.input_list['result']),
       this.compound.input_list['name'],
       JSON.stringify(this.endpoints),
@@ -178,7 +216,7 @@ export class PredictButtonComponent implements OnInit {
        this.checkProfile(result,inserted,intervalId)
         }else {
          this.toastr.clear(inserted.toastId);
-         this.toastr.warning( 'Prediction ' + this.predictionName + ' \n Time Out' , 'Warning', {
+         this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
            timeOut: 10000, positionClass: 'toast-top-right'});
         }
         iter+=1
