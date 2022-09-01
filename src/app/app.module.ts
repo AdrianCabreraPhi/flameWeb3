@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { Model, Prediction, Globals, Compound } from './Globals';
+import { Model, Prediction, Globals, Compound, Profile } from './Globals';
 import { ModelListComponent } from './model-list/model-list.component';
 import { CompoundsComponent } from './compounds/compounds.component';
 import { ValidationsComponent } from './validations/validations.component';
@@ -62,7 +62,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     BrowserAnimationsModule,
     AngularSplitModule
   ],
-  providers: [Model, Prediction, Globals,Compound],
+  providers: [Model, Prediction, Globals,Compound,Profile],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

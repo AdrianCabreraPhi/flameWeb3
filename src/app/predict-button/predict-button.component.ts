@@ -2,7 +2,7 @@ import { ComponentFactoryResolver } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
-import { Compound, Globals, Model, Prediction } from '../Globals';
+import { Compound, Globals, Model, Prediction, Profile } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 declare var $: any;
 @Component({
@@ -23,7 +23,8 @@ export class PredictButtonComponent implements OnInit {
     private service: PredictorService,
     public prediction: Prediction,
     private toastr: ToastrService,
-    public model: Model
+    public model: Model,
+    public profile: Profile
   ) {
   }
 
@@ -55,7 +56,7 @@ export class PredictButtonComponent implements OnInit {
     },3000)
   }
   defaultProfileName(){
-    for(const name of this.prediction.profileList[1]){
+    for(const name of this.profile.profileList[1]){
       this.profilesNames.push(name[0])
     }
     let i = 1;
@@ -80,7 +81,7 @@ export class PredictButtonComponent implements OnInit {
   profileNameChange(){
     this.isvalidProfile = true;
     const letters = /^[A-Za-z0-9_]+$/;
-    this.prediction.profileList[1].forEach(profile => {
+    this.profile.profileList[1].forEach(profile => {
        let name = profile[0]
        if(name.toUpperCase() === this.profileName.toUpperCase()){
          this.isvalidProfile = false;
