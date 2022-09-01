@@ -3,6 +3,7 @@ import { Model, Prediction, Globals, Compound } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import 'datatables.net-bs4';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 @Component({
   selector: 'app-model-list',
@@ -20,7 +21,8 @@ export class ModelListComponent implements OnInit {
     public prediction: Prediction,
     public func: CommonFunctions,
     private commonService: CommonService,
-    public compound: Compound
+    public compound: Compound,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -31,28 +33,28 @@ export class ModelListComponent implements OnInit {
     this.model.version = undefined;
     this.func.getModelList();
     // preload the documentation of the models to avoid multiple requests to the api.
-    setTimeout(() => {
-      this.getAllDocumentation();
-    }, 200);
+    // setTimeout(() => {
+    //   this.getAllDocumentation();
+    // }, 200);
   }
-  getAllDocumentation() {
-    for (let key of Object.keys(this.model.listModels)) {
-      this.commonService
-        .getDocumentation(
-          this.model.listModels[key].name,
-          this.model.listModels[key].version,
-          'JSON'
-        )
-        .subscribe(
-          (result) => {
-            this.modelsDocumentation.push({ name: key, result: result });
-          },
-          (error) => {
-            console.log('documentation file not found:', key);
-          }
-        );
-    }
-  }
+  // getAllDocumentation() {
+  //   for (let key of Object.keys(this.model.listModels)) {
+  //     this.commonService
+  //       .getDocumentation(
+  //         this.model.listModels[key].name,
+  //         this.model.listModels[key].version,
+  //         'JSON'
+  //       )
+  //       .subscribe(
+  //         (result) => {
+  //           this.modelsDocumentation.push({ name: key, result: result });
+  //         },
+  //         (error) => {
+  //           console.log('documentation file not found:', key);
+  //         }
+  //       );
+  //   }
+  // }
   checkCollection(collect: Object){
        var notFound = []
        for (let i = 0; i < collect['endpoints'].length; i++) {
@@ -65,18 +67,16 @@ export class ModelListComponent implements OnInit {
          }
          if(!found) notFound.push(element)
        }    
-
        if(notFound.length > 0){
-         alert("Tu colección contiene modelos que no existen en el repositorio actual")
          console.log(notFound)
+         this.toastr.error( 'Collection ' + collect['name'] + ' \n Contains models not found in the current repository'+ '\n'+notFound , 'Failed', {
+          timeOut: 10000, positionClass: 'toast-top-right'});
        }else{
          this.loadCollection(collect);
        }
-
   }
-
   loadCollection(collect: Object){
-    let checkboxes = []
+    const self = this;
     $('#dataTableModels').DataTable().rows().every( function ( idx, tableLoop, rowLoop ) {
       var data = this.data();
       var node = this.node()
@@ -84,25 +84,20 @@ export class ModelListComponent implements OnInit {
       for (let i = 0; i < collect['endpoints'].length; i++) {
           if(data[2] == collect['endpoints'][i] && data[3] == collect['versions'][i] ){
               checkbox.checked = true;
+              const obj = {
+                name: data[2],
+                version: data[3],
+              };
+              self.model.listModelsSelected.push(obj)
           }
       }  
   } );
   }
-
-  onChange(name, version, quantitative, type, event): void {
-    const documentation = this.modelsDocumentation.find(
-      (el) => el.name == name + '-' + version
-    ); //get documentation of model
-    const endpoint = documentation.result['Endpoint'].value || 'na'; //get endpoint values
-
+  onChange(name, version, event): void {
     const obj = {
       name: name,
-      quantitative: quantitative,
-      type: type,
       version: version,
-      endpoint: endpoint,
     };
-
     const isChecked = event.target.checked;
     if (isChecked) {
       this.model.listModelsSelected.push(obj);
