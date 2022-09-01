@@ -24,10 +24,12 @@ export class ModelListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.commonService.loadCollection$.subscribe(res => {
+      this.checkCollection(res);
+    })
     this.model.name = undefined;
     this.model.version = undefined;
     this.func.getModelList();
-
     // preload the documentation of the models to avoid multiple requests to the api.
     setTimeout(() => {
       this.getAllDocumentation();
@@ -51,6 +53,42 @@ export class ModelListComponent implements OnInit {
         );
     }
   }
+  checkCollection(collect: Object){
+       var notFound = []
+       for (let i = 0; i < collect['endpoints'].length; i++) {
+         var found = false
+         const element = collect['endpoints'][i]+'-'+collect['versions'][i]
+         for (let key in this.model.listModels){
+             if(element == key){
+               found = true
+             }
+         }
+         if(!found) notFound.push(element)
+       }    
+
+       if(notFound.length > 0){
+         alert("Tu colección contiene modelos que no existen en el repositorio actual")
+         console.log(notFound)
+       }else{
+         this.loadCollection(collect);
+       }
+
+  }
+
+  loadCollection(collect: Object){
+    let checkboxes = []
+    $('#dataTableModels').DataTable().rows().every( function ( idx, tableLoop, rowLoop ) {
+      var data = this.data();
+      var node = this.node()
+      let checkbox =  node.childNodes[0].childNodes[0]
+      for (let i = 0; i < collect['endpoints'].length; i++) {
+          if(data[2] == collect['endpoints'][i] && data[3] == collect['versions'][i] ){
+              checkbox.checked = true;
+          }
+      }  
+  } );
+  }
+
   onChange(name, version, quantitative, type, event): void {
     const documentation = this.modelsDocumentation.find(
       (el) => el.name == name + '-' + version

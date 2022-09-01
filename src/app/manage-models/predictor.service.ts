@@ -78,5 +78,9 @@ export class PredictorService {
     formData.append("versions",versions)
     return this.http.put(url,formData)
   }
+  getCollections(): Observable<any> {
+    const url = environment.baseUrl_manage + "collections"
+    return this.http.get(url);
+  }
   
 }

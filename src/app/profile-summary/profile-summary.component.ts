@@ -64,6 +64,7 @@ export class ProfileSummaryComponent implements OnInit {
       },500)  
     })
   }
+
   generateTooltip(event, compound, value) {
     $(function () {
       $('[data-toggle="popover"]').popover()
@@ -74,7 +75,7 @@ export class ProfileSummaryComponent implements OnInit {
      event.target.setAttribute('data-content', text);  
      
   }
-
+  
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
