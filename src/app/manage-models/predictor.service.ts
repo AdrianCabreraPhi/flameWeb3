@@ -70,5 +70,17 @@ export class PredictorService {
     const url = environment.baseUrl_manage + "basket/"+ num
     return this.http.get(url);
   }
+
+  collection(name:string,endpoints,versions){
+    const url = environment.baseUrl_manage + "collection/"+name
+    const formData = new FormData();
+    formData.append("endpoints",endpoints)
+    formData.append("versions",versions)
+    return this.http.put(url,formData)
+  }
+  getCollections(): Observable<any> {
+    const url = environment.baseUrl_manage + "collections"
+    return this.http.get(url);
+  }
   
 }

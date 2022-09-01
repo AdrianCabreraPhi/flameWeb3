@@ -2,8 +2,6 @@
 @import '../../assets/scss/buttons.scss';
 
 #container-dt {
-    height: 100%;
-    overflow: auto;
     table {
         thead tr:nth-child(1) th {
             background: white;

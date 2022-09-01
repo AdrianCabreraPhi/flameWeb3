@@ -23,7 +23,10 @@ export class CommonService {
   //checks if the modal where the component list is displayed or hidden
   private statusModelTab = new BehaviorSubject<boolean>(false);
   statusModelTab$ = this.statusModelTab.asObservable();
-  
+  // communicates to the component containing the list of models, which models should be selected
+  private loadCollection = new Subject<{}>();
+  loadCollection$ = this.loadCollection.asObservable();
+
   constructor(private http: HttpClient) {}
   /**
    * Retrives the list of all models from the server
@@ -96,5 +99,8 @@ export class CommonService {
   }
   setStatusModelTab(status: boolean){
     this.statusModelTab.next(status)
+  }
+  setCollection(collection: object){
+    this.loadCollection.next(collection);
   }
 }
