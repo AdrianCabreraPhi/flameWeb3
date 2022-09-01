@@ -69,7 +69,7 @@ export class ModelListComponent implements OnInit {
     }
     if (notFound.length > 0) {
       console.log(notFound)
-      this.toastr.error('Collection ' + collect['name'] + ' \n Contains models not found in the current repository' + '\n' + notFound, 'Failed', {
+      this.toastr.error('Collection ' + collect['name'] + ' \n Contains models not found in the current repository:' + '\n' + notFound, 'Failed', {
         timeOut: 10000, positionClass: 'toast-top-right'
       });
     } else {
@@ -95,7 +95,7 @@ export class ModelListComponent implements OnInit {
           checkbox.checked = true;
           const obj = {
             name: data[2],
-            version: data[3],
+            version: parseInt(data[3]),
           };
           self.model.listModelsSelected.push(obj)
         }
