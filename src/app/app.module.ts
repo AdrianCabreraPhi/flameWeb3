@@ -14,7 +14,6 @@ import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.co
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
-import { ModelSelectedInfoComponent } from './model-selected-info/model-selected-info.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
@@ -41,7 +40,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfusionMatrixComponent,
     QuantitConformalComponent,
     SketchStructureComponent,
-    ModelSelectedInfoComponent,
     ManageModelsComponent,
     InputFileComponent,
     InputListComponent,
