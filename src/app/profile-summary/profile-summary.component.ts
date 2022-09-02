@@ -66,16 +66,16 @@ export class ProfileSummaryComponent implements OnInit {
     })
   }
 
-  generateTooltip(event, compound, value) {
-    $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
-     const column = event.target._DT_CellIndex.column-2;
-     const val = this.castValue(value,column);
-     const text = compound + "<br>" + this.profile.summary['endpoint'][column] + "<br>" + val;
-     event.target.setAttribute('data-content', text);  
+  // generateTooltip(event, compound, value) {
+  //   $(function () {
+  //     $('[data-toggle="popover"]').popover()
+  //   })
+  //    const column = event.target._DT_CellIndex.column-2;
+  //    const val = this.castValue(value,column);
+  //    const text = compound + "<br>" + this.profile.summary['endpoint'][column] + "<br>" + val;
+  //    event.target.setAttribute('data-content', text);  
      
-  }
+  // }
   
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 2;
