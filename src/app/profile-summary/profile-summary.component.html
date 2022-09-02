@@ -1,4 +1,4 @@
-<div id="container-dt" *ngIf="this.profile.profileList.length" class="col mt-3">
+<div id="container-dt" *ngIf="this.profile.profileList[1].length else elseBlock" class="col mt-3">
     <div class="accordion mt-3" id="buildingAccordion">
         <div class="card">
             <div   class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
@@ -35,9 +35,6 @@
             </div>
         </div>
     </div>
-
-      
-     
             <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
                 <thead>
                     <tr>
@@ -62,3 +59,8 @@
                 </tbody>
             </table>
 </div>
+<ng-template #elseBlock>
+<div style="width: 99%;" class="alert alert-warning text-center">
+ No profiles
+</div>
+</ng-template>
