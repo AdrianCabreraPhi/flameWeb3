@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
-import { Prediction, Globals, Model } from '../Globals';
+import { Prediction, Globals, Model, Profile } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import 'datatables.net-bs4';
@@ -52,6 +52,7 @@ export class ProfileSummaryComponent implements OnInit {
     public globals: Globals,
     private model: Model,
     private renderer2: Renderer2,
+    public profile: Profile
   ) { }
   ngOnInit(): void {
     this.getProfileList();
@@ -71,17 +72,17 @@ export class ProfileSummaryComponent implements OnInit {
     })
      const column = event.target._DT_CellIndex.column-2;
      const val = this.castValue(value,column);
-     const text = compound + "<br>" + this.prediction.profileSummary['endpoint'][column] + "<br>" + val;
+     const text = compound + "<br>" + this.profile.summary['endpoint'][column] + "<br>" + val;
      event.target.setAttribute('data-content', text);  
      
   }
   
   showPrediction(event, molIndex,td) {
     const column = event.target._DT_CellIndex.column - 2;
-    const modelName = this.prediction.profileSummary['endpoint'][column] + '-' + this.prediction.profileSummary['version'][column];
+    const modelName = this.profile.summary['endpoint'][column] + '-' + this.profile.summary['version'][column];
     const modelObj = this.model.listModels[modelName];
-    this.prediction.modelName = this.prediction.profileSummary['endpoint'][column];
-    this.prediction.modelVersion = this.prediction.profileSummary['version'][column];
+    this.prediction.modelName = this.profile.summary['endpoint'][column];
+    this.prediction.modelVersion = this.profile.summary['version'][column];
     this.prediction.modelID = modelObj['modelID'];    
     this.commonService.setMolAndModelIndex(molIndex,column);
     this.selectedClass(event,td);
@@ -108,11 +109,11 @@ export class ProfileSummaryComponent implements OnInit {
     
   }
   getProfileList(){
-    this.prediction.profileList = []
+    this.profile.profileList = []
     $('#dataTableProfiles').DataTable().destroy();
     $('#dataTableProfiles').DataTable().clear().draw();
     this.service.profileList().subscribe(res => {
-      this.prediction.profileList = res;
+      this.profile.profileList = res;
       setTimeout(() => {
         $('#dataTableProfiles').DataTable(this.opt2)
       }, 20);
@@ -154,7 +155,7 @@ gutterClick(e) {
     }
     this.prevTR = tr;
     tr.classList.add('selected')
-    this.prediction.profileName = profile[0]
+    this.profile.name = profile[0]
 
     if(this.size1 == 100){
       this.size1 = 0;
@@ -165,12 +166,12 @@ gutterClick(e) {
     }
     this.prediction.date = profile[3];
     $('#container-pred').hide()
-    this.prediction.profileSummary = undefined;
+    this.profile.summary = undefined;
     setTimeout(() => {
-      this.service.profileSummary(this.prediction.profileName).subscribe(
+      this.service.profileSummary(this.profile.name).subscribe(
         (res) => {
           if (res) {
-            this.prediction.profileSummary = res;
+            this.profile.summary = res;
             this.escaleColor();
             $('#dataTablePrediction').DataTable().destroy();
             $('#dataTablePrediction').DataTable().clear().draw();
@@ -187,11 +188,11 @@ gutterClick(e) {
     },500)
   }
   deleteProfile() {
-    this.service.deleteProfile(this.prediction.profileName).subscribe(
+    this.service.deleteProfile(this.profile.name).subscribe(
       result => {
-        this.prediction.profileName = undefined ;
-        this.prediction.profileSummary = undefined;
-        this.prediction.profileItem = undefined;
+        this.profile.name = undefined ;
+        this.profile.summary = undefined;
+        this.profile.item = undefined;
         this.getProfileList();
       },
       error => {
@@ -202,12 +203,12 @@ gutterClick(e) {
   addStructure(){
     var options = { width: 100, height: 75 }
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    for (let i = 0; i < this.prediction.profileSummary["obj_num"]; i++) {
+    for (let i = 0; i < this.profile.summary["obj_num"]; i++) {
     let td = document.getElementById("canvas"+i)
     const icanvas = document.createElement('canvas');
     td.appendChild(icanvas)
       SmilesDrawer.parse(
-       this.prediction.profileSummary['SMILES'][i],
+       this.profile.summary['SMILES'][i],
        function (tree) {
          smilesDrawer.draw(tree, icanvas, 'light', false);
        },
@@ -224,22 +225,22 @@ gutterClick(e) {
   escaleColor(){
     var chr = chroma.scale('RdBu').domain([3,9]);
     var globalArr = []
-    for (let i = 0; i < this.prediction.profileSummary.values.length; i++) {
+    for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
-      for (let y = 0; y < this.prediction.profileSummary.endpoint.length; y++) {
-        if(this.prediction.profileSummary.quantitative[y]){
-          arrValues[y] = chr(this.prediction.profileSummary.values[i][y])._rgb
+      for (let y = 0; y < this.profile.summary.endpoint.length; y++) {
+        if(this.profile.summary.quantitative[y]){
+          arrValues[y] = chr(this.profile.summary.values[i][y])._rgb
         }else {
           arrValues[y] = -1
         }
       }
       globalArr[i] = arrValues
     }
-    this.prediction.profileSummary['escaleColor'] = globalArr
+    this.profile.summary['escaleColor'] = globalArr
   }
 
   castValue(value:number,column?:number) {
-    if(this.prediction.profileSummary['quantitative'][column]) return value.toFixed(1);
+    if(this.profile.summary['quantitative'][column]) return value.toFixed(1);
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
 

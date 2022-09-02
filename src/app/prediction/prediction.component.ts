@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../common.service';
-import { CustomHTMLElement, Prediction } from '../Globals';
+import { CustomHTMLElement, Prediction, Profile } from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonFunctions } from '../common.functions';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
@@ -330,7 +330,8 @@ export class PredictionComponent implements OnInit {
     public prediction: Prediction,
     private commonService: CommonService,
     public commonFunctions: CommonFunctions,
-    private service: PredictorService
+    private service: PredictorService,
+    public profile: Profile
   ) {}
 
   ngOnInit(): void {
@@ -420,15 +421,15 @@ export class PredictionComponent implements OnInit {
   }
 
   getProfileItem(idxModel:number){
-    this.service.profileItem(this.prediction.profileName,idxModel).subscribe(result => {
+    this.service.profileItem(this.profile.name,idxModel).subscribe(result => {
       if(result) {
-        this.prediction.profileItem = result;
+        this.profile.item = result;
         this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
         this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
 
         this.plotScores.data[1].text = [this.prediction.molSelected];
 
-        this.activity_val = this.prediction.profileItem.values[this.molIndex]
+        this.activity_val = this.profile.item.values[this.molIndex]
 
         if (!this.isQuantitative){
           for (var i=0; i<this.activity_val.length; i++){
@@ -467,7 +468,7 @@ export class PredictionComponent implements OnInit {
     const options = { width: 600, height: 300 };
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     SmilesDrawer.parse(
-      this.prediction.profileSummary.SMILES[this.molIndex],
+      this.profile.summary.SMILES[this.molIndex],
       function (tree) {
         // Draw to the canvas
         smilesDrawer.draw(tree, 'one_canvas', 'light', false);
@@ -483,7 +484,7 @@ export class PredictionComponent implements OnInit {
   }
 
   renderData() {
-    this.prediction.molSelected = this.prediction.profileSummary.obj_nam[this.molIndex];
+    this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex];
     setTimeout(() => {
       this.showConcentration = false;
       this.commonService.getDocumentation(this.prediction.modelName ,this.prediction.modelVersion,'JSON').subscribe((res) => {
@@ -516,9 +517,9 @@ export class PredictionComponent implements OnInit {
 
   drawSimilars () {
       // draw similar compounds (if applicable)
-      if (this.prediction.profileItem.hasOwnProperty('search_results')) {
+      if (this.profile.item.hasOwnProperty('search_results')) {
         const optionsA = {'width': 400, 'height': 150};
-        const smiles = this.prediction.profileItem.search_results[this.molIndex].SMILES;
+        const smiles = this.profile.item.search_results[this.molIndex].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
           const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
@@ -534,7 +535,7 @@ export class PredictionComponent implements OnInit {
   }
 
   updatePlotCombo() {
-    const xi = this.prediction.profileItem.xmatrix[this.molIndex];
+    const xi = this.profile.item.xmatrix[this.molIndex];
     // console.log (xi);
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
@@ -550,29 +551,29 @@ export class PredictionComponent implements OnInit {
       this.plotComboQ.data[0].error_x.arrayminus = [];
 
       this.plotComboQ.data[0].x = xi;
-      for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
-        const varlist=String(this.prediction.profileItem.var_nam[i]).split(':');
+      for (let i=0; i<this.profile.item.var_nam.length; i++) {
+        const varlist=String(this.profile.item.var_nam[i]).split(':');
         this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
 
         if (this.isQuantitative){
           this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboQ.data[1].x[i] = this.prediction.profileItem.values[this.molIndex];
+          this.plotComboQ.data[1].x[i] = this.profile.item.values[this.molIndex];
         }
 
       }
       var drawCI = false;
-      if (this.prediction.profileItem['ensemble_ci']){
+      if (this.profile.item['ensemble_ci']){
         drawCI = true
-        var cilist = this.prediction.profileItem.ensemble_ci[this.molIndex];
+        var cilist = this.profile.item.ensemble_ci[this.molIndex];
       }
       else {  // support for legacy models where we used ensemble_confidence
-         if (this.prediction.profileItem['ensemble_confidence']){
+         if (this.profile.item['ensemble_confidence']){
           drawCI = true
-          var cilist = this.prediction.profileItem.ensemble_confidence[this.molIndex];
+          var cilist = this.profile.item.ensemble_confidence[this.molIndex];
          }
       }
       if (drawCI){
-        for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
+        for (let i=0; i<this.profile.item.var_nam.length; i++) {
           var cia = cilist[1+(i*2)] - xi[i];
           var cib = xi[i] - cilist[i*2];
 
@@ -583,17 +584,17 @@ export class PredictionComponent implements OnInit {
           }
         }
 
-        if (this.isQuantitative && this.prediction.profileItem['upper_limit']){
-          for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
-            const varlist=String(this.prediction.profileItem.var_nam[i]).split(':');
+        if (this.isQuantitative && this.profile.item['upper_limit']){
+          for (let i=0; i<this.profile.item.var_nam.length; i++) {
+            const varlist=String(this.profile.item.var_nam[i]).split(':');
             this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[i] = this.prediction.profileItem.upper_limit[this.molIndex];
+            this.plotComboQ.data[2].x[i] = this.profile.item.upper_limit[this.molIndex];
           }
-          let j = this.prediction.profileItem.var_nam.length;
-          for (let i=this.prediction.profileItem.var_nam.length-1; i>-1; i--) {
-            const varlist=String(this.prediction.profileItem.var_nam[i]).split(':');
+          let j = this.profile.item.var_nam.length;
+          for (let i=this.profile.item.var_nam.length-1; i>-1; i--) {
+            const varlist=String(this.profile.item.var_nam[i]).split(':');
             this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[j] = this.prediction.profileItem.lower_limit[this.molIndex];
+            this.plotComboQ.data[2].x[j] = this.profile.item.lower_limit[this.molIndex];
             j++;
           }
         }
@@ -609,28 +610,28 @@ export class PredictionComponent implements OnInit {
 
       // Conformal, add classes
       var drawCI = false;
-      if (this.prediction.profileItem['ensemble_ci']){
+      if (this.profile.item['ensemble_ci']){
         drawCI = true
-        var class_list = this.prediction.profileItem.ensemble_ci[this.molIndex];
+        var class_list = this.profile.item.ensemble_ci[this.molIndex];
       }
       else {  // support for legacy models where we used ensemble_confidence
-         if (this.prediction.profileItem['ensemble_confidence']){
+         if (this.profile.item['ensemble_confidence']){
           drawCI = true
-          var class_list = this.prediction.profileItem.ensemble_confidence[this.molIndex];
+          var class_list = this.profile.item.ensemble_confidence[this.molIndex];
          }
       }
 
       if (drawCI) {
 
-        for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
-          const varlist=String(this.prediction.profileItem.var_nam[i]).split(':');
+        for (let i=0; i<this.profile.item.var_nam.length; i++) {
+          const varlist=String(this.profile.item.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
           this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
           
           this.plotComboC.data[0].x[i] = 0;
           this.plotComboC.data[1].x[i] = 0;
         }
-        for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
+        for (let i=0; i<this.profile.item.var_nam.length; i++) {
           if (class_list[i*2]===1) {
             this.plotComboC.data[0].x[i] += -1;
           }
@@ -643,8 +644,8 @@ export class PredictionComponent implements OnInit {
       // non-conformal, just show final result (including uncertain)
       else {
 
-        for (let i=0; i<this.prediction.profileItem.var_nam.length; i++) {
-          const varlist=String(this.prediction.profileItem.var_nam[i]).split(':');
+        for (let i=0; i<this.profile.item.var_nam.length; i++) {
+          const varlist=String(this.profile.item.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
           this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
   
