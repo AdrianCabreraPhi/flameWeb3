@@ -52,4 +52,7 @@ export class LoadProfileButtonComponent implements OnInit {
     this.commonService.setCollection(this.collectionSelected)
     $('#loadModal').modal('hide')
   }
+  deleteCollection(){
+    
+  }
 }

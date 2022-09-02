@@ -9,6 +9,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div class="card-body">
+          <button class="btn btn-ets-delete" (click)="deleteCollection()" [disabled]="!this.collectionSelected">Delete</button>
+        </div>
         <ng-template #elseBlock>
           <div class="alert alert-warning p-3 m-0 text-center" role="alert">
             There aren't collections!
