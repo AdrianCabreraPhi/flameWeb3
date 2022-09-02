@@ -346,8 +346,8 @@ export class PredictionComponent implements OnInit {
   // angular-split function
   @ViewChild('mySplit') mySplitEl: SplitComponent
     // area size
-    _size1=100;
-    _size2=0;
+    _size1=50;
+    _size2=50;
   get size1() {
     return this._size1;
   }
