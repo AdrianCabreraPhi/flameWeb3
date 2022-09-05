@@ -31,6 +31,7 @@ export class LoadProfileButtonComponent implements OnInit {
     $('#dataTableCollections').DataTable().destroy();
     // $('#dataTableCollections').DataTable().clear().draw();
     this.service.getCollections().subscribe(result => {
+      console.log(result)
       this.collections = result
       setTimeout(() => {
         $('#dataTableCollections').DataTable(this.opt)
