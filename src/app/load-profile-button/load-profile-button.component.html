@@ -9,7 +9,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="card-body">
+        <div *ngIf="this.collections?.length" class="card-body">
           <button class="btn btn-ets-delete" (click)="deleteCollection()" [disabled]="!this.collectionSelected">Delete</button>
         </div>
         <ng-template #elseBlock>
@@ -17,7 +17,7 @@
             There aren't collections!
           </div>
       </ng-template>
-        <div *ngIf="this.collections else elseBlock" class="modal-body">
+        <div *ngIf="this.collections?.length else elseBlock" class="modal-body">
                <table  id="dataTableCollections" class="table display compact" style="width:100%">
                 <thead>
                     <tr>
