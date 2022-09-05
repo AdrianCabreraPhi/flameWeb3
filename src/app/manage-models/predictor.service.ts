@@ -70,6 +70,11 @@ export class PredictorService {
     const url = environment.baseUrl_manage + "basket/"+ num
     return this.http.get(url);
   }
+  deleteCollection(name: string){
+    const url = environment.baseUrl_manage + "collection/"+name
+    return this.http.delete(url); 
+
+  }
 
   collection(name:string,endpoints,versions){
     const url = environment.baseUrl_manage + "collection/"+name

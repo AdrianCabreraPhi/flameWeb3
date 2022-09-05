@@ -53,6 +53,11 @@ export class LoadProfileButtonComponent implements OnInit {
     $('#loadModal').modal('hide')
   }
   deleteCollection(){
-    
+    this.service.deleteCollection(this.collectionSelected['name']).subscribe(result => {
+      console.log(result)
+      this.openModal();
+    },error => {
+      console.log(error)
+    })
   }
 }
