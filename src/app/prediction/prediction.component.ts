@@ -19,7 +19,7 @@ export class PredictionComponent implements OnInit {
   isConfidential: boolean = false;
   modelBuildInfo = {};
   submodels = [];
-  modelPresent: boolean;
+  modelPresent: boolean = true;
   modelMatch: boolean;
   isQuantitative: any;
   isMajority: boolean;
@@ -377,6 +377,7 @@ export class PredictionComponent implements OnInit {
   getValidation(){
     this.commonService.getValidation(this.prediction.modelName,this.prediction.modelVersion).subscribe(
       result => {
+        this.modelPresent = true;
         const info = result;
         if ('PC1' in info) {
 
@@ -416,6 +417,8 @@ export class PredictionComponent implements OnInit {
             
           }, 10);
         }
+      },error => {
+        this.modelPresent = false;
       }
     )
   }
