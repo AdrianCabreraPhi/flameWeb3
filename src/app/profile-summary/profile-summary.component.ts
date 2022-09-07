@@ -81,9 +81,10 @@ export class ProfileSummaryComponent implements OnInit {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.profile.summary['endpoint'][column] + '-' + this.profile.summary['version'][column];
     const modelObj = this.model.listModels[modelName];
+    if (modelObj) this.prediction.modelID = modelObj['modelID']; 
+    
     this.prediction.modelName = this.profile.summary['endpoint'][column];
     this.prediction.modelVersion = this.profile.summary['version'][column];
-    this.prediction.modelID = modelObj['modelID'];    
     this.commonService.setMolAndModelIndex(molIndex,column);
     this.selectedClass(event,td);
     $('#container-pred').show()      

@@ -1,13 +1,16 @@
 <div id="container-pred" style="width:99%;height:99%" *ngIf="this.profile.item">
     <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
         <as-split-area [order]="1" [size]="size1">
+            <div *ngIf="!this.modelPresent" class="alert alert-danger text-center" role="alert">
+                Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown 
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-3 border">
                         <strong> {{this.profile.name}}</strong>
                     </div>
                     <div class="col-6 border">
-                        <strong> Model {{this.profile.name}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
+                        <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
                     </div>
                     <div class="col-3 border">
                         <!--fake date -->
@@ -200,7 +203,7 @@
             </div>
         </as-split-area>
         <!--PROJECT PREDICTIONS-->
-        <as-split-area [order]="2" [size]="size2">
+        <as-split-area *ngIf="this.modelPresent" [order]="2" [size]="size2">
             <div *ngIf="!this.isConfidential; else Confidential">
                 <div class="card-body">
                     <div class="row justify-content-between">
