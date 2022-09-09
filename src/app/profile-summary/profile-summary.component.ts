@@ -165,6 +165,9 @@ gutterClick(e) {
       this.size1 = 100;
       this.size2 = 0
     }
+    let profilebtn = document.getElementById('headingCompound')
+    profilebtn.click();
+    
     this.prediction.date = profile[3];
     $('#container-pred').hide()
     this.profile.summary = undefined;
