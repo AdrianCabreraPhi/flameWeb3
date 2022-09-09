@@ -6,6 +6,7 @@ import { CommonFunctions } from '../common.functions';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PredictorService } from '../manage-models/predictor.service';
 import { SplitComponent } from 'angular-split';
+import { ProfilingService } from '../profiling.service';
 @Component({
   selector: 'app-prediction',
   templateUrl: './prediction.component.html',
@@ -331,7 +332,8 @@ export class PredictionComponent implements OnInit {
     private commonService: CommonService,
     public commonFunctions: CommonFunctions,
     private service: PredictorService,
-    public profile: Profile
+    public profile: Profile,
+    private profiling : ProfilingService,
   ) {}
 
   ngOnInit(): void {
@@ -424,7 +426,7 @@ export class PredictionComponent implements OnInit {
   }
 
   getProfileItem(idxModel:number){
-    this.service.profileItem(this.profile.name,idxModel).subscribe(result => {
+    this.profiling.profileItem(this.profile.name,idxModel).subscribe(result => {
       if(result) {
         this.profile.item = result;
         this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];

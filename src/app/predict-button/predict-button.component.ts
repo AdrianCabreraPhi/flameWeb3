@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../common.service';
 import { Compound, Globals, Model, Prediction, Profile } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
+import { ProfilingService } from '../profiling.service';
 declare var $: any;
 @Component({
   selector: 'predict-button',
@@ -24,7 +25,8 @@ export class PredictButtonComponent implements OnInit {
     public prediction: Prediction,
     private toastr: ToastrService,
     public model: Model,
-    public profile: Profile
+    public profile: Profile,
+    private profiling : ProfilingService,
   ) {
   }
 
@@ -169,7 +171,7 @@ export class PredictButtonComponent implements OnInit {
       );
   }
   checkProfile(name,inserted,intervalId){
-     this.service.profileSummary(name).subscribe(
+     this.profiling.profileSummary(name).subscribe(
        result => {
         if (result['aborted']) {
           this.toastr.clear(inserted.toastId);
