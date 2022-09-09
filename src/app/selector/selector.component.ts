@@ -24,7 +24,6 @@ export class SelectorComponent implements OnInit {
       }
     }
     if(event.id == 'headingModels'){
-      console.log(value)
       if (value == 'false'){
         this.modeltab = true;
       }else{
