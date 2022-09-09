@@ -8,7 +8,7 @@
     <thead>
         <tr>
             <th style="width: 5%"><input class="ml-2" type="checkbox" (click)='selectAll($event)' /></th>
-            <th style="width: 5%" class="text-center"></th>
+            <th style="width: 10%"></th>
             <th>Name</th>
             <th style="width: 5%">Ver</th>
             <th style="width: 5%"></th>
@@ -23,7 +23,7 @@
                               'version': model.listModels[key].version > 0}" (click)="this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
                   , model.listModels[key].conformal, model.listModels[key].confidential, model.listModels[key].secret, model.listModels[key].ensemble, model.listModels[key].error)" title="{{model.listModels[key].quantitative ? 'quantitative' : 'qualitative'}} | {{model.listModels[key].type}} {{model.listModels[key].conformal ? 'conformal' : ''}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
             <td><input class="form-check-input" type="checkbox" (change)="onChange(model.listModels[key].name,model.listModels[key].version,$event)" id="flexCheckDefault" /></td>
-            <td class="text-center">
+            <td>
                 <i class="fas" [ngClass]="{
                                   'fa-grip-lines': !model.listModels[key].quantitative,
                                   'fa-circle': model.listModels[key].quantitative,
