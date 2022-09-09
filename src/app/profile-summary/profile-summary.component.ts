@@ -7,6 +7,7 @@ import * as SmilesDrawer from 'smiles-drawer';
 import 'datatables.net-bs4';
 import chroma from "chroma-js";
 import { SplitComponent } from 'angular-split';
+import { ProfilingService } from '../profiling.service';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -52,7 +53,8 @@ export class ProfileSummaryComponent implements OnInit {
     public globals: Globals,
     private model: Model,
     private renderer2: Renderer2,
-    public profile: Profile
+    public profile: Profile,
+    private profiling : ProfilingService,
   ) { }
   ngOnInit(): void {
     this.getProfileList();
@@ -113,7 +115,7 @@ export class ProfileSummaryComponent implements OnInit {
     this.profile.profileList = []
     $('#dataTableProfiles').DataTable().destroy();
     $('#dataTableProfiles').DataTable().clear().draw();
-    this.service.profileList().subscribe(res => {
+    this.profiling.profileList().subscribe(res => {
       this.profile.profileList = res;
       setTimeout(() => {
         $('#dataTableProfiles').DataTable(this.opt2)
@@ -172,7 +174,7 @@ gutterClick(e) {
     $('#container-pred').hide()
     this.profile.summary = undefined;
     setTimeout(() => {
-      this.service.profileSummary(this.profile.name).subscribe(
+      this.profiling.profileSummary(this.profile.name).subscribe(
         (res) => {
           if (res) {
             this.profile.summary = res;
@@ -192,7 +194,7 @@ gutterClick(e) {
     },500)
   }
   deleteProfile() {
-    this.service.deleteProfile(this.profile.name).subscribe(
+    this.profiling.deleteProfile(this.profile.name).subscribe(
       result => {
         this.profile.name = undefined ;
         this.profile.summary = undefined;

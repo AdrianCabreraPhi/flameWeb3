@@ -39,28 +39,6 @@ export class PredictorService {
     return this.http.put(url,formData)
     
   }
-  deleteProfile(profileName: string){
-    const url: string = environment.baseUrl_manage + 'profile/' + profileName;
-    return this.http.delete(url);
-
-  }
-
-
-  profileItem(profileName:string, indxModel: number){
-  const url = environment.baseUrl_manage + 'profile/'+profileName+ '/' + indxModel
-  return this.http.get(url)
-  }
-
-  profileSummary(profileName: string){
-  const url = environment.baseUrl_manage + 'profile/'+profileName+'/summary';
-  return this.http.get(url);
-  }
-
-  profileList(){
-    const url = environment.baseUrl_manage + 'profiles'
-    return this.http.get(url);
-  }
-
   getBasketList(): Observable<any>{
     const url = environment.baseUrl_manage + "baskets"
     return this.http.get(url);
