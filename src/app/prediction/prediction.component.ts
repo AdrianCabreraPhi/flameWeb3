@@ -674,18 +674,21 @@ export class PredictionComponent implements OnInit {
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
   getInfo(): void {
-    this.modelBuildInfo['confidential'] = undefined;
     this.isConfidential = false;
+    this.modelBuildInfo['confidential'] = false;
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
         }
-        if(this.modelBuildInfo['confidential'] != undefined){
+        if(this.modelBuildInfo['confidential']){
           this.isConfidential = true;
           this.size1 = 100;
           this.size2 = 0;
-        } 
+        } else {
+          this.size1 = 50;
+          this.size2 = 50;
+        }
         //support for legacy models using significance instead of confidence
         if (this.modelBuildInfo['conformal_significance']!=undefined){
           this.modelBuildInfo['conformal_confidence'] = 1.0 - this.modelBuildInfo["conformal_significance"];
