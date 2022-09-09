@@ -204,7 +204,7 @@
         </as-split-area>
         <!--PROJECT PREDICTIONS-->
         <as-split-area *ngIf="this.modelPresent" [order]="2" [size]="size2">
-            <div *ngIf="!this.isConfidential; else Confidential">
+            <div *ngIf="!this.isConfidential">
                 <div class="card-body">
                     <div class="row justify-content-between">
                         <div class="col">
@@ -278,11 +278,6 @@
                     </div>
                 </div>
             </div>
-            <ng-template #Confidential>
-                <div class="alert alert-info text-center mt-3" role="alert">
-                    Confidential models do not provide training series information.
-                </div>
-            </ng-template>
         </as-split-area>
     </as-split>
     <!--PROJECT PREDICTIONS END-->
