@@ -36,6 +36,9 @@
             data-target="#delete" [ngClass]="{'disabled': this.profile.name === undefined}">Delete</button>
     </div>
 
+    <div *ngIf="this.profile.summary" class="btn-group m-2" role="group" aria-label="summary buttons">
+        <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
+    </div>
     <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
         <thead>
             <tr>

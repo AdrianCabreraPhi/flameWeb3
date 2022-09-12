@@ -39,6 +39,8 @@
         "font-awesome-animation": "^1.1.1",
         "jquery": "^3.6.0",
         "jsme-editor": "^2022.2.26",
+        "jspdf": "^2.5.1",
+        "jspdf-autotable": "^3.5.25",
         "ngx-toastr": "^14.2.4",
         "plotly.js": "^1.53.0",
         "rxjs": "~6.6.0",

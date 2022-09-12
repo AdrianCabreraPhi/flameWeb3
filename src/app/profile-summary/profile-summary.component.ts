@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { CommonFunctions } from '../common.functions';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { CommonService } from '../common.service';
 import { Prediction, Globals, Model, Profile } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
@@ -224,6 +226,13 @@ gutterClick(e) {
      );
     }
   }
+  savePDF(){
+    const pdf = new jsPDF();
+    autoTable (pdf,{html: '#dataTablePrediction'} );
+    pdf.save(this.profile.name + '.pdf');
+
+  }
+
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
