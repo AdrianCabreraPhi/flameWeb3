@@ -229,13 +229,15 @@ gutterClick(e) {
    * where you set the color that belongs to the field
    */
   escaleColor(){
-    var chr = chroma.scale('RdBu').domain([3,9]);
+    var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
     var globalArr = []
     for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
       for (let y = 0; y < this.profile.summary.endpoint.length; y++) {
         if(this.profile.summary.quantitative[y]){
-          arrValues[y] = chr(this.profile.summary.values[i][y])._rgb
+          let val = this.profile.summary.values[i][y];
+          // convert 3 to 6 (blue), 9 to 0 (red)
+          arrValues[y] = chr(9-val)._rgb;
         }else {
           arrValues[y] = -1
         }
