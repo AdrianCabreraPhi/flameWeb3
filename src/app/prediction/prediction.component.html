@@ -1,6 +1,9 @@
 <div id="container-pred" style="width:99%;height:99%" *ngIf="this.profile.item">
     <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
         <as-split-area [order]="1" [size]="size1">
+            <div *ngIf="this.isConfidential" class="alert alert-info text-center" role="alert">
+                Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} is a confidential model. Not all information will be displayed
+            </div>
             <div *ngIf="!this.modelPresent" class="alert alert-danger text-center" role="alert">
                 Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown 
             </div>
