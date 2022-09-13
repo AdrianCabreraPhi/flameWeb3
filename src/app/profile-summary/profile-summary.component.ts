@@ -244,15 +244,28 @@ export class ProfileSummaryComponent implements OnInit {
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
    */
+<<<<<<< HEAD
   escaleColor() {
     var chr = chroma.scale('RdBu').domain([3, 9]);
+=======
+  escaleColor(){
+    var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
+>>>>>>> master
     var globalArr = []
     for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
       for (let y = 0; y < this.profile.summary.endpoint.length; y++) {
+<<<<<<< HEAD
         if (this.profile.summary.quantitative[y]) {
           arrValues[y] = chr(this.profile.summary.values[i][y])._rgb
         } else {
+=======
+        if(this.profile.summary.quantitative[y]){
+          let val = this.profile.summary.values[i][y];
+          // convert 3 to 6 (blue), 9 to 0 (red)
+          arrValues[y] = chr(9-val)._rgb;
+        }else {
+>>>>>>> master
           arrValues[y] = -1
         }
       }
