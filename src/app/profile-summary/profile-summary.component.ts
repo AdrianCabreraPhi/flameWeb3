@@ -25,7 +25,7 @@ export class ProfileSummaryComponent implements OnInit {
   gamaColor = undefined;
   profileSelected = undefined;
   prevTR = undefined;
-
+  prevTH = undefined
   opt2 = {
     autoWidth: true,
     destroy: true,
@@ -222,29 +222,78 @@ export class ProfileSummaryComponent implements OnInit {
     }
   }
   savePDF() {
-    var heightImg = this.profile.summary['obj_nam'].length * 20
-    html2canvas(document.getElementById('dataTablePrediction'), {
-      // Opciones
-      allowTaint: true,
-      // Calidad del PDF
-      scale: 5.5
-    }).then((canvas) => {
-      var img = canvas.toDataURL("image/png");
-      var doc = new jsPDF();
-      doc.text(this.profile.name, 10, 10)
-      doc.addImage(img, 'PNG', 7, 20, 185, heightImg);
-      doc.save(this.profile.name + '.pdf');
-    })
-    // const pdf = new jsPDF();
-    // autoTable (pdf,{html: '#dataTablePrediction'} );
-    // pdf.save(this.profile.name + '.pdf');
+    //  var heightImg = this.profile.summary['obj_nam'].length * 20
+    //  html2canvas(document.getElementById('dataTablePrediction'), {
+    //    // Opciones
+    //    allowTaint: true,
+    //    // Calidad del PDF
+    //    scale: 5.5
+    //  }).then((canvas) => {
+    //    var img = canvas.toDataURL("image/png");
+    //    var doc = new jsPDF();
+    //    doc.text(this.profile.name, 10, 10)
+    //    doc.addImage(img, 'PNG', 7, 20, 185, heightImg);
+    //    doc.save(this.profile.name + '.pdf');
+    //  })
+     const doc = new jsPDF();
+    //  *ngFor="let compound of this.profile.summary['obj_nam'];let i = index"
+     var data = [];
+     for (let i = 0; i < this.profile.summary['obj_nam'].length; i++) {
+      var auxData = []
+      const compound = this.profile.summary['obj_nam'][i];
+      const smiles = this.profile.summary['SMILES'][i];
+      auxData.push(compound,smiles)
+      for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {   
+        var value = this.profile.summary['values'][i][y]
+        if(value > 1 || value < 0) value = value.toFixed(2)
+        auxData.push(value)       
+      }
+      data.push(auxData)
+     }
+     
+     autoTable(doc, {
+      head: [['Compound','Structure',...this.profile.summary.endpoint]],
+      body: data,
+      columnStyles: {
+        0: {cellWidth: 30},
+        1: {cellWidth: 60},
+        // etc
+      },
+      styles: {
+        halign: 'center'
+    },
+     })
+    doc.save(this.profile.name + '.pdf');
+  }
+  renderSort(event){   
+    var pos = event.childNodes.length - 2;
+     if(this.prevTH){
+      var oldPos = this.prevTH.childNodes.length-2
+      this.prevTH.childNodes[oldPos].classList.remove('text-dark')
+      this.prevTH.childNodes[oldPos+1].classList.remove('text-dark')
+      this.prevTH.childNodes[oldPos].classList.add('text-secondary')
+      this.prevTH.childNodes[oldPos+1].classList.add('text-secondary')
+     }
+    let status = event.getAttribute('aria-label')
+    if(status.includes('asc')){
+      event.childNodes[pos].classList.remove('text-secondary')
+      event.childNodes[pos].classList.add('text-dark')
+      event.childNodes[pos+1].classList.remove('text-dark')
+      event.childNodes[pos+1].classList.add('text-secondary')
+    }else {
+      event.childNodes[pos].classList.remove('text-dark')
+      event.childNodes[pos].classList.add('text-secondary')
+
+      event.childNodes[pos+1].classList.remove('text-secondary')
+      event.childNodes[pos+1].classList.add('text-dark')
+    }
+    this.prevTH = event
   }
 
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
    */
-
   escaleColor(){
     var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
     var globalArr = []
