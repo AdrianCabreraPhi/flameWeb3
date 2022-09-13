@@ -10,6 +10,7 @@ import 'datatables.net-bs4';
 import chroma from "chroma-js";
 import { SplitComponent } from 'angular-split';
 import { ProfilingService } from '../profiling.service';
+import html2canvas from 'html2canvas';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -20,15 +21,12 @@ export class ProfileSummaryComponent implements OnInit {
   result: any;
   prevSelection: any = undefined;
   Smodel: number = undefined;
-  Smol:number = undefined;
+  Smol: number = undefined;
   gamaColor = undefined;
   profileSelected = undefined;
   prevTR = undefined;
 
   opt2 = {
-    columnDefs: [
-      { "width": "20%", "targets": 0 }
-    ],
     autoWidth: true,
     destroy: true,
     paging: true,
@@ -37,9 +35,6 @@ export class ProfileSummaryComponent implements OnInit {
     info: true,
   }
   opt = {
-    columnDefs: [
-      { "width": "20%", "targets": 0 }
-    ],
     autoWidth: false,
     destroy: true,
     paging: false,
@@ -56,7 +51,7 @@ export class ProfileSummaryComponent implements OnInit {
     private model: Model,
     private renderer2: Renderer2,
     public profile: Profile,
-    private profiling : ProfilingService,
+    private profiling: ProfilingService,
   ) { }
   ngOnInit(): void {
     this.getProfileList();
@@ -65,8 +60,8 @@ export class ProfileSummaryComponent implements OnInit {
      */
     this.commonService.predictionExec$.subscribe(() => {
       setTimeout(() => {
-        this.getProfileList(); 
-      },500)  
+        this.getProfileList();
+      }, 500)
     })
   }
 
@@ -78,42 +73,42 @@ export class ProfileSummaryComponent implements OnInit {
   //    const val = this.castValue(value,column);
   //    const text = compound + "<br>" + this.profile.summary['endpoint'][column] + "<br>" + val;
   //    event.target.setAttribute('data-content', text);  
-     
+
   // }
-  
-  showPrediction(event, molIndex,td) {
+
+  showPrediction(event, molIndex, td) {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.profile.summary['endpoint'][column] + '-' + this.profile.summary['version'][column];
     const modelObj = this.model.listModels[modelName];
-    if (modelObj) this.prediction.modelID = modelObj['modelID']; 
-    
+    if (modelObj) this.prediction.modelID = modelObj['modelID'];
+
     this.prediction.modelName = this.profile.summary['endpoint'][column];
     this.prediction.modelVersion = this.profile.summary['version'][column];
-    this.commonService.setMolAndModelIndex(molIndex,column);
-    this.selectedClass(event,td);
-    $('#container-pred').show()      
-      }
-/**
- * Function to add specific styles to the selected prediction.
- * @param event 
- * @param td 
- */
-  selectedClass(event,td) {
-  if((this.Smol,this.Smodel)!=undefined){
-    this.renderer2.setStyle(this.Smol,'background','white')
-    $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'white');
+    this.commonService.setMolAndModelIndex(molIndex, column);
+    this.selectedClass(event, td);
+    $('#container-pred').show()
   }
+  /**
+   * Function to add specific styles to the selected prediction.
+   * @param event 
+   * @param td 
+   */
+  selectedClass(event, td) {
+    if ((this.Smol, this.Smodel) != undefined) {
+      this.renderer2.setStyle(this.Smol, 'background', 'white')
+      $('#dataTablePrediction thead th:eq(' + this.Smodel + ')').css("background", 'white');
+    }
     this.Smodel = event.target._DT_CellIndex.column;
     this.Smol = td;
-    this.renderer2.setStyle(td,'background','#f7f9ea')
-    $('#dataTablePrediction thead th:eq('+this.Smodel+')').css("background",'#f7f9ea');
-    
+    this.renderer2.setStyle(td, 'background', '#f7f9ea')
+    $('#dataTablePrediction thead th:eq(' + this.Smodel + ')').css("background", '#f7f9ea');
+
     if (this.prevSelection) this.prevSelection.classList.remove('pselected');
     this.prevSelection = event.target;
     event.target.classList.add('pselected');
-    
+
   }
-  getProfileList(){
+  getProfileList() {
     this.profile.profileList = []
     $('#dataTableProfiles').DataTable().destroy();
     $('#dataTableProfiles').DataTable().clear().draw();
@@ -123,38 +118,38 @@ export class ProfileSummaryComponent implements OnInit {
         $('#dataTableProfiles').DataTable(this.opt2)
       }, 20);
     },
-    error => {
-      console.log(error)
-    })
+      error => {
+        console.log(error)
+      })
   }
-@ViewChild('mySplit') mySplitEl: SplitComponent
+  @ViewChild('mySplit') mySplitEl: SplitComponent
   // area size
-  _size1=100;
-  _size2=0;
-get size1() {
-  return this._size1;
-}
+  _size1 = 100;
+  _size2 = 0;
+  get size1() {
+    return this._size1;
+  }
 
-set size1(value) {
+  set size1(value) {
     this._size1 = value;
-}
-get size2() {
-  return this._size2;
-}
+  }
+  get size2() {
+    return this._size2;
+  }
 
-set size2(value) {
+  set size2(value) {
     this._size2 = value;
-}
-gutterClick(e) {
-  if(e.gutterNum === 1) {
-      if(e.sizes[1] == 100 ) {
+  }
+  gutterClick(e) {
+    if (e.gutterNum === 1) {
+      if (e.sizes[1] == 100) {
         this.size1 = 100;
         this.size2 = 0;
       }
+    }
   }
-}
-  getProfileSummary(profile,tr) {
-    if(this.prevTR){
+  getProfileSummary(profile, tr) {
+    if (this.prevTR) {
       this.prevTR.classList.remove('selected')
       tr.classList.add('selected')
     }
@@ -162,16 +157,16 @@ gutterClick(e) {
     tr.classList.add('selected')
     this.profile.name = profile[0]
 
-    if(this.size1 == 100){
+    if (this.size1 == 100) {
       this.size1 = 0;
       this.size2 = 100;
-    }else{
+    } else {
       this.size1 = 100;
       this.size2 = 0
     }
     let profilebtn = document.getElementById('headingCompound')
     profilebtn.click();
-    
+
     this.prediction.date = profile[3];
     $('#container-pred').hide()
     this.profile.summary = undefined;
@@ -184,8 +179,8 @@ gutterClick(e) {
             $('#dataTablePrediction').DataTable().destroy();
             $('#dataTablePrediction').DataTable().clear().draw();
             setTimeout(() => {
-            $('#dataTablePrediction').DataTable(this.opt)
-            this.addStructure();
+              $('#dataTablePrediction').DataTable(this.opt)
+              this.addStructure();
             }, 20);
           }
         },
@@ -193,12 +188,12 @@ gutterClick(e) {
           console.log(error);
         }
       );
-    },500)
+    }, 500)
   }
   deleteProfile() {
     this.profiling.deleteProfile(this.profile.name).subscribe(
       result => {
-        this.profile.name = undefined ;
+        this.profile.name = undefined;
         this.profile.summary = undefined;
         this.profile.item = undefined;
         this.getProfileList();
@@ -208,44 +203,56 @@ gutterClick(e) {
       }
     );
   }
-  addStructure(){
+  addStructure() {
     var options = { width: 100, height: 75 }
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     for (let i = 0; i < this.profile.summary["obj_num"]; i++) {
-    let td = document.getElementById("canvas"+i)
-    const icanvas = document.createElement('canvas');
-    td.appendChild(icanvas)
+      let td = document.getElementById("canvas" + i)
+      const icanvas = document.createElement('canvas');
+      td.appendChild(icanvas)
       SmilesDrawer.parse(
-       this.profile.summary['SMILES'][i],
-       function (tree) {
-         smilesDrawer.draw(tree, icanvas, 'light', false);
-       },
-       function (err) {
-         console.log(err);
-       }
-     );
+        this.profile.summary['SMILES'][i],
+        function (tree) {
+          smilesDrawer.draw(tree, icanvas, 'light', false);
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
     }
   }
-  savePDF(){
-    const pdf = new jsPDF();
-    autoTable (pdf,{html: '#dataTablePrediction'} );
-    pdf.save(this.profile.name + '.pdf');
-
+  savePDF() {
+    var heightImg = this.profile.summary['obj_nam'].length * 20
+    html2canvas(document.getElementById('dataTablePrediction'), {
+      // Opciones
+      allowTaint: true,
+      // Calidad del PDF
+      scale: 5.5
+    }).then((canvas) => {
+      var img = canvas.toDataURL("image/png");
+      var doc = new jsPDF();
+      doc.text(this.profile.name, 10, 10)
+      doc.addImage(img, 'PNG', 7, 20, 185, heightImg);
+      doc.save(this.profile.name + '.pdf');
+    })
+    // const pdf = new jsPDF();
+    // autoTable (pdf,{html: '#dataTablePrediction'} );
+    // pdf.save(this.profile.name + '.pdf');
   }
 
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
    */
-  escaleColor(){
-    var chr = chroma.scale('RdBu').domain([3,9]);
+  escaleColor() {
+    var chr = chroma.scale('RdBu').domain([3, 9]);
     var globalArr = []
     for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
       for (let y = 0; y < this.profile.summary.endpoint.length; y++) {
-        if(this.profile.summary.quantitative[y]){
+        if (this.profile.summary.quantitative[y]) {
           arrValues[y] = chr(this.profile.summary.values[i][y])._rgb
-        }else {
+        } else {
           arrValues[y] = -1
         }
       }
@@ -254,8 +261,8 @@ gutterClick(e) {
     this.profile.summary['escaleColor'] = globalArr
   }
 
-  castValue(value:number,column?:number) {
-    if(this.profile.summary['quantitative'][column]) return value.toFixed(1);
+  castValue(value: number, column?: number) {
+    if (this.profile.summary['quantitative'][column]) return value.toFixed(1);
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
 
