@@ -40,7 +40,7 @@
         <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
     </div>
 
-    <div class="caption m-2">
+    <div *ngIf="this.profile.summary" class="caption m-2">
         <div id="positive-block" class="d-block">
             <div class="d-inline"> <i class="fas fa-square positive-icon"></i>  </div> 
             <div class="d-inline ml-4">Positive</div>
