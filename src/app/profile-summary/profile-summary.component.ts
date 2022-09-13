@@ -11,6 +11,7 @@ import chroma from "chroma-js";
 import { SplitComponent } from 'angular-split';
 import { ProfilingService } from '../profiling.service';
 import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -231,7 +232,7 @@ export class ProfileSummaryComponent implements OnInit {
     //  }).then((canvas) => {
     //    var img = canvas.toDataURL("image/png");
     //    var doc = new jsPDF();
-    //    doc.text(this.profile.name, 10, 10)
+    
     //    doc.addImage(img, 'PNG', 7, 20, 185, heightImg);
     //    doc.save(this.profile.name + '.pdf');
     //  })
@@ -263,7 +264,20 @@ export class ProfileSummaryComponent implements OnInit {
         halign: 'center'
     },
      })
+    doc.text(this.profile.name, 15, 10)
     doc.save(this.profile.name + '.pdf');
+  }
+  saveEXCEL() {
+    const xls  = Object.assign([], [[this.profile.summary['obj_nam']],[this.profile.summary['SMILES']],[this.profile.summary['values']]]);
+    xls.splice(0, 0,[['Compound'],['Structure'],...this.profile.summary.endpoint] );
+    /* generate worksheet */
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.profile.name  + '.xlsx');
   }
   renderSort(event){   
     var pos = event.childNodes.length - 2;
