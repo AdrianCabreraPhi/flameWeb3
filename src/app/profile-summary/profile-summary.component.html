@@ -39,6 +39,22 @@
     <div *ngIf="this.profile.summary" class="btn-group m-2" role="group" aria-label="summary buttons">
         <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
     </div>
+
+    <div class="caption m-2">
+        <div id="positive-block" class="d-block">
+            <div class="d-inline"> <i class="fas fa-square positive-icon"></i>  </div> 
+            <div class="d-inline ml-4">Positive</div>
+        </div>
+        <div id="negative-block" class="d-block">
+            <div class="d-inline"> <i class="fas fa-square negative-icon"></i>  </div> 
+            <div class="d-inline ml-4">Negative</div>
+        </div>
+        <div id="uncertain-block" class="d-block">
+            <div class="d-inline"> <i class="fas fa-square uncertain-icon"></i>  </div> 
+            <div class="d-inline ml-4">Uncertain</div>
+        </div>
+    </div>
+
     <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
         <thead>
             <tr>
