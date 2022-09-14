@@ -222,43 +222,37 @@ export class ProfileSummaryComponent implements OnInit {
       );
     }
   }
-  savePDF() {
-    //  var heightImg = this.profile.summary['obj_nam'].length * 20
-    //  html2canvas(document.getElementById('dataTablePrediction'), {
-    //    // Opciones
-    //    allowTaint: true,
-    //    // Calidad del PDF
-    //    scale: 5.5
-    //  }).then((canvas) => {
-    //    var img = canvas.toDataURL("image/png");
-    //    var doc = new jsPDF();
-    
-    //    doc.addImage(img, 'PNG', 7, 20, 185, heightImg);
-    //    doc.save(this.profile.name + '.pdf');
-    //  })
-     const doc = new jsPDF();
-    //  *ngFor="let compound of this.profile.summary['obj_nam'];let i = index"
-     var data = [];
-     for (let i = 0; i < this.profile.summary['obj_nam'].length; i++) {
-      var auxData = []
-      const compound = this.profile.summary['obj_nam'][i];
-      const smiles = this.profile.summary['SMILES'][i];
-      auxData.push(compound,smiles)
-      for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {   
-        var value = this.profile.summary['values'][i][y]
-        if(value > 1 || value < 0) value = value.toFixed(2)
-        auxData.push(value)       
-      }
-      data.push(auxData)
+
+  /**
+   *Function that formats the data to generate excel,pdf
+   * 
+   */
+  formatData():Array<[]>{
+    var data = [];
+    for (let i = 0; i < this.profile.summary['obj_nam'].length; i++) {
+     var auxData = []
+     const compound = this.profile.summary['obj_nam'][i];
+     const smiles = this.profile.summary['SMILES'][i];
+     auxData.push(compound,smiles)
+     for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {   
+       var value = this.profile.summary['values'][i][y]
+       if(value > 1 || value < 0) value = value.toFixed(2)
+       auxData.push(value)       
      }
-     
+     data.push(auxData)
+    }
+    return data
+  }
+  savePDF() {
+     const doc = new jsPDF();
+     var data = this.formatData();
      autoTable(doc, {
       head: [['Compound','Structure',...this.profile.summary.endpoint]],
       body: data,
       columnStyles: {
         0: {cellWidth: 30},
         1: {cellWidth: 60},
-        // etc
+
       },
       styles: {
         halign: 'center'
@@ -268,14 +262,16 @@ export class ProfileSummaryComponent implements OnInit {
     doc.save(this.profile.name + '.pdf');
   }
   saveEXCEL() {
-    const xls  = Object.assign([], [[this.profile.summary['obj_nam']],[this.profile.summary['SMILES']],[this.profile.summary['values']]]);
-    xls.splice(0, 0,[['Compound'],['Structure'],...this.profile.summary.endpoint] );
+    var data = this.formatData()
+    const xls  = Object.assign([],data);
+    var head = [['Compound'],['Structure'],...this.profile.summary.endpoint]
+    xls.splice(0, 0, head);
     /* generate worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);
+    ws['!cols'] = [{ width: 15 }, { width:50 }];
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
     /* save to file */
     XLSX.writeFile(wb, this.profile.name  + '.xlsx');
   }
