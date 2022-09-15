@@ -183,7 +183,9 @@ export class ProfileSummaryComponent implements OnInit {
             setTimeout(() => {
               $('#dataTablePrediction').DataTable(this.opt)
               this.addStructure();
+              this.caption();
             }, 20);
+          
           }
         },
         (error) => {
@@ -330,12 +332,28 @@ export class ProfileSummaryComponent implements OnInit {
     this.prevTH = event
   }
 
+  setColor(value){
+    var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
+    return chr(value)._rgb
+  }
+
+  caption(){
+    var table = $("#caption")[0]
+     for (var i = 0, row; row = table.rows[i]; i++) {
+       //alert(cell[i].innerText);
+       for (var j = 0, col; col = row.cells[j]; j++) {
+         //alert(col[j].innerText);
+         var rgb = this.setColor(9-col.innerText)
+         col.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
+
+       }
+   }
+}
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
    */
   escaleColor(){
-    var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
     var globalArr = []
     for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
@@ -343,7 +361,7 @@ export class ProfileSummaryComponent implements OnInit {
         if(this.profile.summary.quantitative[y]){
           let val = this.profile.summary.values[i][y];
           // convert 3 to 6 (blue), 9 to 0 (red)
-          arrValues[y] = chr(9-val)._rgb;
+          arrValues[y] = this.setColor(9-val)
         }else {
           arrValues[y] = -1
         }

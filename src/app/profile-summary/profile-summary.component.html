@@ -70,6 +70,19 @@
             </tr>
         </tbody>
     </table>
+    <div *ngIf="this.profile.summary" class="d-flex" id="container-caption">
+        <table style="width: 100%; margin-top: 1px;"  id="caption">
+           <tr>
+               <td class="text-center">3</td> 
+               <td class="text-center">4</td>
+               <td class="text-center">5</td>
+               <td class="text-center">6</td>
+               <td class="text-center">7</td>
+               <td class="text-center">8</td>
+               <td class="text-center">9</td>
+           </tr>
+        </table>
+           </div>
 </div>
 <ng-template #elseBlock>
     <div style="width: 99%;" class="alert alert-warning text-center mt-3">
