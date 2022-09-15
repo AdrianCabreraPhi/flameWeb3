@@ -10,8 +10,8 @@ import 'datatables.net-bs4';
 import chroma from "chroma-js";
 import { SplitComponent } from 'angular-split';
 import { ProfilingService } from '../profiling.service';
-import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
+import { ClipboardService } from 'ngx-clipboard';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -53,6 +53,7 @@ export class ProfileSummaryComponent implements OnInit {
     private renderer2: Renderer2,
     public profile: Profile,
     private profiling: ProfilingService,
+    private clipboard: ClipboardService
   ) { }
   ngOnInit(): void {
     this.getProfileList();
@@ -274,6 +275,35 @@ export class ProfileSummaryComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
     XLSX.writeFile(wb, this.profile.name  + '.xlsx');
+  }
+
+  formatCopyText(){
+    var data = this.formatData();
+    var header = "Compound"+"\t"+"Structure"
+    this.profile.summary.endpoint.forEach(model => {
+      header = header+"\t"+model
+    });
+    var bodyText = ""
+    for (let i = 0; i < data.length; i++) {
+      // const element = array[i];
+      for (let y = 0; y < data[i].length; y++) {
+        bodyText = bodyText+data[i][y]+"\t"
+      }
+      bodyText = bodyText+"\n"
+    }
+    var text  = header+"\n"+bodyText
+    return text;
+  }
+  copy(){
+    var text = this.formatCopyText();
+    this.clipboard.copyFromContent(text);
+  }
+  /**
+   * to do 
+   */
+  print(){
+
+
   }
   renderSort(event){   
     var pos = event.childNodes.length - 2;

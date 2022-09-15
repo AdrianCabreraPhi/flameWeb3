@@ -37,8 +37,11 @@
     </div>
     
     <div *ngIf="this.profile.summary"  class="btn-group m-2" role="group" aria-label="Basic example">
-        <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
+        <button type="button" (click)="copy()" class="btn btn-secondary">Copy</button>
         <button type="button" (click)="saveEXCEL()" class="btn btn-secondary">Excel</button>
+        <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
+        <button type="button" (click)="print()" class="btn btn-secondary">Print</button>
+
     </div>
     <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
         <thead>
