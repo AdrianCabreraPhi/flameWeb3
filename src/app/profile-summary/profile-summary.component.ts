@@ -112,6 +112,8 @@ export class ProfileSummaryComponent implements OnInit {
   }
   getProfileList() {
     this.profile.profileList = []
+    this.profile.summary = undefined
+
     $('#dataTableProfiles').DataTable().destroy();
     $('#dataTableProfiles').DataTable().clear().draw();
     this.profiling.profileList().subscribe(res => {
@@ -331,21 +333,16 @@ export class ProfileSummaryComponent implements OnInit {
     }
     this.prevTH = event
   }
-
   setColor(value){
     var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
     return chr(value)._rgb
   }
-
   caption(){
     var table = $("#caption")[0]
      for (var i = 0, row; row = table.rows[i]; i++) {
-       //alert(cell[i].innerText);
        for (var j = 0, col; col = row.cells[j]; j++) {
-         //alert(col[j].innerText);
          var rgb = this.setColor(9-col.innerText)
          col.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
-
        }
    }
 }
