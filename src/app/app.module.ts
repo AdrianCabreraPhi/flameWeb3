@@ -27,7 +27,7 @@ import { SelectorComponent } from './selector/selector.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
 import { SaveProfileButtonComponent } from './save-profile-button/save-profile-button.component';
 import { LoadProfileButtonComponent } from './load-profile-button/load-profile-button.component';
-
+import { ClipboardModule } from 'ngx-clipboard';
 PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
@@ -60,7 +60,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ReactiveFormsModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    AngularSplitModule
+    AngularSplitModule,
+    ClipboardModule
   ],
   providers: [Model, Prediction, Globals,Compound,Profile],
   bootstrap: [AppComponent]

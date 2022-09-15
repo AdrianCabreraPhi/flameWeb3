@@ -41,15 +41,13 @@ export class Model {
     input_file = undefined;
     listCompoundsSelected = [];
   }
-
-  @Injectable()
-  export class Profile {
+@Injectable()
+export class Profile {
       name: string = undefined;
       summary: any = undefined;
       item = undefined;
       profileList: any  = []; 
   }
-
 @Injectable()
 export class Prediction { 
     modelName: string = undefined;
