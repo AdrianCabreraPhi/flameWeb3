@@ -153,6 +153,7 @@ export class ProfileSummaryComponent implements OnInit {
     }
   }
   getProfileSummary(profile, tr) {
+    this.prediction.name = undefined;
     if (this.prevTR) {
       this.prevTR.classList.remove('selected')
       tr.classList.add('selected')

@@ -12,12 +12,13 @@ declare var $: any;
   styleUrls: ['./predict-button.component.scss'],
 })
 export class PredictButtonComponent implements OnInit {
+  objectKeys = Object.keys;
   endpoints = [];
   versions = [];
   isValidCompound: boolean = false;
-  profileName: string = '';
-  isvalidProfile: boolean = true;
-  profilesNames = [];
+  predictName: string = '';
+  isvalidPrediction: boolean = false;
+  predictionsNames = {};
   constructor(
     public commonService: CommonService,
     public compound: Compound,
@@ -29,214 +30,61 @@ export class PredictButtonComponent implements OnInit {
     private profiling : ProfilingService,
   ) {
   }
-
   ngOnInit(): void {
-    setTimeout(() => {
-      this.defaultProfileName();
-    },1000)
+    this.defaultPredictionName();
+    
     $(function () {
       $('[data-toggle="popover"]').popover();
     });
     this.commonService.isValidCompound$.subscribe(
       (value) => (this.isValidCompound = value)
     );
+    }
 
-  }
-  
-  select_prediction() {
-    if (this.compound.input_file) {
-      this.predict();
-    }
-    if (this.compound.sketchstructure) {
-      this.predictStructure();
-    }
-    if (this.compound.input_list) {
-      this.predictInputList();
-    }
-    setTimeout(() => {
-      this.defaultProfileName();
-    },3000)
-  }
-  defaultProfileName(){
-    for(const name of this.profile.profileList[1]){
-      this.profilesNames.push(name[0])
-    }
-    let i = 1;
-    let nameFound = false;
-    while (!nameFound){
-      let istr = i.toString().padStart(4,'0');
-      this.profileName = 'Profile_' + istr;
-      let keyFound = false;
-      for (const ikey of this.profilesNames) {
-        if (ikey.startsWith(this.profileName)) {
-          keyFound=true;
-        }
+    selectOption() {
+      if (this.compound.input_file) {
+        // this.predict();
       }
-      if (!keyFound){
-        nameFound = true;
-        this.isvalidProfile = true;
+      if (this.compound.sketchstructure) {
+        // this.predictStructure();
       }
-      i=i+1;
-    }
-  }
-
-  profileNameChange(){
-    this.isvalidProfile = true;
-    const letters = /^[A-Za-z0-9_]+$/;
-    this.profile.profileList[1].forEach(profile => {
-       let name = profile[0]
-       if(name.toUpperCase() === this.profileName.toUpperCase()){
-         this.isvalidProfile = false;
-       }
-     });
-    if (!this.profileName.match(letters) || this.profileName == '') {
-      this.isvalidProfile = false;
-    }
-
-    if (!(this.profileName.match(letters)) || this.profileName in this.profilesNames || this.profileName.startsWith('ensemble')) {
-      this.isvalidProfile = false;
-    }
-    for (const ikey of this.profilesNames) {
-      if (ikey.startsWith(this.profileName)) {
-        this.isvalidProfile=false;
+      if (this.compound.input_list) {
+        // this.predictInputList();
       }
+      setTimeout(() => {
+        this.defaultPredictionName();
+      },3000)
     }
-  }
-
-  predictStructure() {
-    this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
-      disableTimeOut: true,
-      positionClass: 'toast-top-right',
-    });
-    this.service
-      .predictSketchStructure(
-        this.profileName,
-        this.compound.sketchstructure['result'],
-        this.compound.sketchstructure['name'],
-        JSON.stringify(this.endpoints),
-        JSON.stringify(this.versions)
-      )
-      .subscribe(
+    defaultPredictionName(){
+      this.service.getPredictionList().subscribe(
         result => {
-          let iter = 0;
-          const intervalId = setInterval(()=> {
-            if(iter < 500){
-              this.checkProfile(result,inserted,intervalId)
-            }else{
-              clearInterval(intervalId)
-              this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
-                timeOut: 10000, positionClass: 'toast-top-right'});
-            }
-            iter +=1;
-          },2000)
-        },
-        (error) => {
-          console.log(error);
+          if(result[0]){
+            this.prediction.predictions = result[1]
+          }
         }
-      );
-  }
-  predict() {
-    this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
-      disableTimeOut: true,
-      positionClass: 'toast-top-right',
-    });
-
-    this.service
-      .predictInputFile(
-        this.profileName,
-        this.compound.input_file['result'],
-        JSON.stringify(this.endpoints),
-        JSON.stringify(this.versions)
       )
-      .subscribe(
-        result => {
-          let iter = 0;
-          const intervalId = setInterval(()=> {
-           if(iter < 500){
-          this.checkProfile(result,inserted,intervalId)
-           }else {
-            this.toastr.clear(inserted.toastId);
-            this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
-              timeOut: 10000, positionClass: 'toast-top-right'});
-           }
-           iter+=1
-          },2000)
-        },
-        error => {
-          console.log('error');
+      setTimeout(() => {
+        for (const name of this.prediction.predictions) {
+          this.predictionsNames[name[0]] = true;
         }
-      );
-  }
-  checkProfile(name,inserted,intervalId){
-     this.profiling.profileSummary(name).subscribe(
-       result => {
-        if (result['aborted']) {
-          this.toastr.clear(inserted.toastId);
-          this.toastr.error("Profile \"" + name + "\" task has not completed. Check the browser console for more information", 
-            'Aborted', {timeOut: 10000, positionClass: 'toast-top-right'});
-          console.log('ERROR report produced by profile task ', name);
-          console.log(result['aborted']);
-          clearInterval(intervalId);
-          return;
-        }
-        if (!result ['waiting']) {
-          this.toastr.clear(inserted.toastId);
-          if (result['error']){
-            this.toastr.warning('Profile ' + name + ' finished with error ' + result['error'] , 'PROFILE COMPLETED', {
-              timeOut: 5000, positionClass: 'toast-top-right'});
+        let i=1;
+        let nameFound = false;
+        while (!nameFound) {
+          this.predictName = 'Prediction_' + i;
+          if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
+            nameFound = true;
+            this.isvalidPrediction = true;
           }
-          else {
-             this.toastr.success('Profile ' + name + ' created' , 'PROFILE COMPLETED', {
-              timeOut: 5000, positionClass: 'toast-top-right'});
-              this.commonService.setPredictionExec(true);
-          }
-          clearInterval(intervalId);
-          $('#dataTablePredictions').DataTable().destroy();
+          i=i+1;
         }
-       }
-     )}
-
-  predictInputList() {
-    this.filterModels();
-    const inserted = this.toastr.info('Running!', 'Profile ' + this.profileName, {
-      disableTimeOut: true,
-      positionClass: 'toast-top-right',
-    });
-
-    this.service.predictInputList(
-      this.profileName,
-      JSON.stringify(this.compound.input_list['result']),
-      this.compound.input_list['name'],
-      JSON.stringify(this.endpoints),
-      JSON.stringify(this.versions)
-    ).subscribe(result => {
-      let iter = 0;
-      const intervalId = setInterval(()=> {
-        if(iter < 500){
-       this.checkProfile(result,inserted,intervalId)
-        }else {
-         this.toastr.clear(inserted.toastId);
-         this.toastr.warning( 'Profile ' + this.profileName + ' \n Time Out' , 'Warning', {
-           timeOut: 10000, positionClass: 'toast-top-right'});
-        }
-        iter+=1
-       },2000)
-    },error => {
-      console.log('error');
-    });
-  }
-
-  filterModels() {
-    this.endpoints = [];
-    this.versions = [];
-    this.model.listModelsSelected.filter((model) =>
-      this.endpoints.push(model.name)
-    );
-    this.model.listModelsSelected.filter((model) =>
-      this.versions.push(model.version)
-    );
-  }
+        
+      }, 200);
+    }
+    predictNameChange() {
+      this.isvalidPrediction = true;
+      const letters = /^[A-Za-z0-9_]+$/;
+      if (!(this.predictName.match(letters)) || this.predictName in this.predictionsNames || this.predictName.startsWith('ensemble')) {
+        this.isvalidPrediction = false;
+      }
+    }
 }

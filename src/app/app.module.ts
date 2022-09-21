@@ -28,6 +28,9 @@ import { CurrentSelectionComponent } from './current-selection/current-selection
 import { SaveProfileButtonComponent } from './save-profile-button/save-profile-button.component';
 import { LoadProfileButtonComponent } from './load-profile-button/load-profile-button.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ProfilingButtonComponent } from './profiling-button/profiling-button.component';
+import { PredictionListComponent } from './prediction-list/prediction-list.component';
+import { OnepredictionComponent } from './oneprediction/oneprediction.component';
 PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
@@ -49,7 +52,10 @@ PlotlyModule.plotlyjs = PlotlyJS;
     SelectorComponent,
     CurrentSelectionComponent,
     SaveProfileButtonComponent,
-    LoadProfileButtonComponent
+    LoadProfileButtonComponent,
+    ProfilingButtonComponent,
+    PredictionListComponent,
+    OnepredictionComponent
   ],
   imports: [
     BrowserModule,

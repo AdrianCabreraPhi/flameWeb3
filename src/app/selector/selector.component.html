@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    <div *ngIf="this.model.listModelsSelected.length > 0" class="card">
         <div class="card-body p-2 pr-5">
             <app-manage-models></app-manage-models>
         </div>

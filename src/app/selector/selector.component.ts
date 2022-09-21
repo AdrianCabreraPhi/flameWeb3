@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service';
+import { Model } from '../Globals';
 
 @Component({
   selector: 'app-selector',
@@ -10,7 +11,8 @@ export class SelectorComponent implements OnInit {
 
   modeltab = false;
 
-  constructor(private commonService: CommonService) { }
+  constructor(private commonService: CommonService,
+    public model : Model) { }
 
   ngOnInit(): void {
   }

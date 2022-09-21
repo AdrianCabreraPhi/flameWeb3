@@ -382,7 +382,6 @@ export class PredictionComponent implements OnInit {
         this.modelPresent = true;
         const info = result;
         if ('PC1' in info) {
-
           // define appropriate labels extracting from manifest
           const manifest = info['manifest'];
           var labelX = 'PCA PC1';
@@ -395,8 +394,6 @@ export class PredictionComponent implements OnInit {
               labelY = manifest[iman]['label'];
             }
           }
-
-          setTimeout(() => {
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
             this.plotScores.data[2].x = info['PC1'];
@@ -416,8 +413,6 @@ export class PredictionComponent implements OnInit {
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
-            
-          }, 10);
         }
       },error => {
         this.modelPresent = false;
@@ -697,6 +692,7 @@ export class PredictionComponent implements OnInit {
         this.modelPresent = true;
 
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
+        console.log(this.modelMatch)
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
         this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting' || 

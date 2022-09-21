@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommonService } from './common.service';
 import { Model, Prediction, Globals } from './Globals';
+import { PredictorService } from './manage-models/predictor.service';
 declare var $: any;
 
 @Injectable({
@@ -9,6 +10,7 @@ declare var $: any;
 
 export class CommonFunctions {
   constructor(private commonService: CommonService,
+    private predictorSerivce: PredictorService,
     public model: Model,
     public globals: Globals,
     public prediction: Prediction,) {
@@ -286,5 +288,33 @@ export class CommonFunctions {
   resetDataTable(dtID,options){
     $(`#${dtID}`).DataTable().destroy();
       $(`#${dtID}`).DataTable(options)
+  }
+  getPredictionList() {
+    this.predictorSerivce.getPredictionList().subscribe(
+      result => {
+        if (result[0]) {
+          this.prediction.predictions = result[1];
+          
+            setTimeout(() => {
+              const table = $('#dataTablePredictions').DataTable({
+                /*Ordering by date */
+                // autoWidth: false,
+                deferRender: true,
+                ordering: true,
+                pageLength: 10,
+                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
+                order: [[4, 'desc']],
+                destroy: true
+              });
+            }, 10);
+          } 
+          else {
+            alert(result[1]);
+          }
+        },
+        error => {
+          alert(error.message);
+        }
+    );
   }
 }

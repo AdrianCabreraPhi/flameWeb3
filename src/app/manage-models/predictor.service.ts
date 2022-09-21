@@ -10,6 +10,14 @@ export class PredictorService {
 
   constructor(private http:HttpClient) { }
 
+  getPrediction(predictionName: string): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
+    return this.http.get(url);
+  }
+  getPredictionList(): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'predictions';
+    return this.http.get(url);
+  }
   predictInputFile(profileName: string, file: any, endpoints: any,versions: any ): Observable<any> {
     const formData = new FormData();
     formData.append('SDF', file);

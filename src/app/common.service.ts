@@ -6,6 +6,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CommonService {
+  // communicate to distant component that makes a call to getPrediction
+  private predictionActive = new Subject<string>();
+  predictionActive$ = this.predictionActive.asObservable();
   //observables to communicate to components without parent-child or sibling relationship, on current values
   private currentCompoundTab = new Subject<string>();
   currentCompoundTab$ = this.currentCompoundTab.asObservable();
@@ -80,7 +83,9 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  
+  setPredictName(predictName: string){
+    this.predictionActive.next(predictName)
+  }
   setCurrentCompoundTab(compoundTab: string) {
     this.currentCompoundTab.next(compoundTab);
   }

@@ -1,5 +1,6 @@
 <div class="mt-2">
-    <predict-button> </predict-button>
+    <predict-button *ngIf="this.model.listModelsSelected.length == 1"> </predict-button>
+    <app-profiling-button *ngIf="this.model.listModelsSelected.length > 1"></app-profiling-button>
 </div>
 
 <!-- <div class="btn-group mt-2 float-right" role="group">

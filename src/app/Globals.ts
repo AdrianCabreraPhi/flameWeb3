@@ -56,12 +56,14 @@ export class Prediction {
     modelDocumentation: any = undefined;
     predictions = [];
     predicting = {};
+    predictionResult = undefined
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     date = undefined;
     modelID = undefined;
     molSelected = undefined;
+    name: string = undefined;
 }
 
 
