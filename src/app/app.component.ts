@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   constructor(
     public model: Model,
     public globals: Globals,
-    private commonService: CommonService
+    private commonService: CommonService,
+    public prediction: Prediction
     ) {}
 
   toxhub: any;

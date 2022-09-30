@@ -53,31 +53,15 @@ export class ProfileSummaryComponent implements OnInit {
     private renderer2: Renderer2,
     public profile: Profile,
     private profiling: ProfilingService,
-    private clipboard: ClipboardService
+    private clipboard: ClipboardService,
+    private global: Globals,
   ) { }
   ngOnInit(): void {
-    this.getProfileList();
-    /**
-     * when create a new profile.
-     */
-    this.commonService.predictionExec$.subscribe(() => {
-      setTimeout(() => {
-        this.getProfileList();
-      }, 500)
+    this.profiling.summaryActive$.subscribe( pname => {
+      this.getProfileSummary(pname)
     })
+
   }
-
-  // generateTooltip(event, compound, value) {
-  //   $(function () {
-  //     $('[data-toggle="popover"]').popover()
-  //   })
-  //    const column = event.target._DT_CellIndex.column-2;
-  //    const val = this.castValue(value,column);
-  //    const text = compound + "<br>" + this.profile.summary['endpoint'][column] + "<br>" + val;
-  //    event.target.setAttribute('data-content', text);  
-
-  // }
-
   showPrediction(event, molIndex, td) {
     const column = event.target._DT_CellIndex.column - 2;
     const modelName = this.profile.summary['endpoint'][column] + '-' + this.profile.summary['version'][column];
@@ -152,29 +136,9 @@ export class ProfileSummaryComponent implements OnInit {
       }
     }
   }
-  getProfileSummary(profile, tr) {
-    this.prediction.name = undefined;
-    if (this.prevTR) {
-      this.prevTR.classList.remove('selected')
-      tr.classList.add('selected')
-    }
-    this.prevTR = tr;
-    tr.classList.add('selected')
-    this.profile.name = profile[0]
-
-    if (this.size1 == 100) {
-      this.size1 = 0;
-      this.size2 = 100;
-    } else {
-      this.size1 = 100;
-      this.size2 = 0
-    }
-    let profilebtn = document.getElementById('headingCompound')
-    profilebtn.click();
-
-    this.prediction.date = profile[3];
-    $('#container-pred').hide()
+  getProfileSummary(pname) {
     this.profile.summary = undefined;
+    this.profile.name = pname
     setTimeout(() => {
       this.profiling.profileSummary(this.profile.name).subscribe(
         (res) => {
@@ -188,7 +152,6 @@ export class ProfileSummaryComponent implements OnInit {
               this.addStructure();
               this.caption();
             }, 20);
-          
           }
         },
         (error) => {
@@ -213,6 +176,9 @@ export class ProfileSummaryComponent implements OnInit {
   addStructure() {
     var options = { width: 100, height: 75 }
     const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+    console.log("here")
+    console.log(this.profile.summary["obj_num"])
     for (let i = 0; i < this.profile.summary["obj_num"]; i++) {
       let td = document.getElementById("canvas" + i)
       const icanvas = document.createElement('canvas');

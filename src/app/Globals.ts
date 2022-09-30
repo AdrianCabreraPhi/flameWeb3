@@ -17,6 +17,7 @@ export class Model {
     ensemble: boolean = undefined;
     incremental = false;
     error: string = undefined;
+    documentation: any = undefined;
     /*
     Delta parameters, empty by default, fills on clicking the parameters tab.
     When you change anything on the formulary, automatically changes the value for that key
@@ -56,14 +57,14 @@ export class Prediction {
     modelDocumentation: any = undefined;
     predictions = [];
     predicting = {};
-    predictionResult = undefined
+    result = undefined;
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
-    result = undefined;
     date = undefined;
     modelID = undefined;
     molSelected = undefined;
     name: string = undefined;
+    modelBuildInfo = {}
 }
 
 

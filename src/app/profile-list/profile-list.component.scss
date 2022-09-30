@@ -1,0 +1,50 @@
+
+
+@import '../../assets/scss/colors.scss';
+@import '../../assets/scss/buttons.scss';
+
+
+    table {
+        thead tr:nth-child(1) th {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        max-height: 400px;
+        overflow: auto;
+        color: black;
+        tbody tr {
+            height: 50px;
+        }
+    }
+
+
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+    th {
+        padding-left: 1px;
+        padding-right: 1px;
+        color: $color1;
+    }
+    td {
+        padding: 5px;
+        font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+        border-bottom: 1px solid #B8DCED;
+        vertical-align: middle;
+    }
+    tr {
+        cursor: pointer;
+        &.selected {
+            background: #f7f9ea;
+        }
+    }
+}
+
+.table tbody tr:hover {
+    background: #f7f9ea;
+}

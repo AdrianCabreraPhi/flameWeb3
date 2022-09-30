@@ -1,20 +1,23 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-import { CustomHTMLElement, Prediction } from '../Globals';
+import { CustomHTMLElement, Globals, Model, Prediction, Profile } from '../Globals';
 import { PredictorService } from '../manage-models/predictor.service';
 import { CommonService } from '../common.service';
+import { ToastrService } from 'ngx-toastr';
 declare var $:any;
 @Component({
   selector: 'app-oneprediction',
   templateUrl: './oneprediction.component.html',
   styleUrls: ['./oneprediction.component.scss']
 })
-export class OnepredictionComponent implements OnInit {
+export class OnepredictionComponent implements OnChanges {
+
+  @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
+  
   objectKeys = Object.keys;
   predictionVisible = false;
-  isVisible = false;
   modelMatch = true;
   modelPresent = true;
   dmodx = false;
@@ -37,6 +40,8 @@ export class OnepredictionComponent implements OnInit {
   isQuantitative = false;
   isMajority = false;
   showConcentration = false;
+  activity_val = [];
+  dmodx_val = [];
 
   predictData = [{
     offset: 45, 
@@ -53,9 +58,9 @@ export class OnepredictionComponent implements OnInit {
 
   plotCommon = {
     layout :{
-      width: 350,
-      height: 350,
-      // margin: {r: 10, t: 30, b:0, pad: 0 },
+      width: 300,
+      height: 300,
+      // margin: {r: 10, t: 10, b:0, pad: 0 },
       polar: {
         bargap: 0,
         gridcolor: "grey",
@@ -84,9 +89,9 @@ export class OnepredictionComponent implements OnInit {
     ];
   
     greencolorscale = [
-      [0.0, 'rgb(107, 232, 49)'],
-      [0.5, 'rgb(107, 232, 49)'],
-      [1.0, 'rgb(107, 232, 49)'],
+      [0.0, 'rgb(0, 107, 107)'],
+      [0.5, 'rgb(0, 107, 107)'],
+      [1.0, 'rgb(0, 107, 107)'],
     ];
 
     redcolorscale = [
@@ -97,64 +102,82 @@ export class OnepredictionComponent implements OnInit {
 
     // [0.1, '#6be831'],
 
+  scores0defaults = {
+    x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    visible: true, 
+    marker: {
+      color: [],
+      opacity: 0.6,
+      size: 10,
+      colorscale: this.bwcolorscale,
+      showscale: false, 
+      cauto: true,
+      colorbar: {
+        x: -0.25,
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+  };
+
+  scores1defaults = { x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    textfont : {
+      color : 'red',
+      size: 16
+    },
+    textposition: 'top right',
+    marker: {
+      color: [],
+      symbol: 'circle',
+      colorscale: this.redcolorscale, 
+      showscale: false, 
+      opacity: 1,
+      size: 14,
+      line: {},
+      colorbar: {
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
+  };
+
+  scores2defaults = {
+    x: [],
+    y: [],
+    autocontour: 20,
+    showscale: false,
+    visible: false, 
+    colorscale: 'Greys',
+    reversescale: true,
+    type: 'histogram2dcontour',
+    hoverinfo: 'skip',
+  };
 
   plotScores = {
     data: [
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers', 
-        marker: {
-          color: [],
-          opacity: 0.6,
-          size: 10,
-          colorscale: 'RdBu', 
-          showscale: true, 
-          cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
-      },
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers+text', 
-        textfont : {
-          fontStyle: 'Barlow Semi Condensed, sans-serif',
-          color: '#59c427',
-          size: 16
-        },
-        textposition: 'top right',
-        marker: {
-          color: [],
-          symbol: 'circle-open',
-          colorscale: this.greencolorscale, 
-          showscale: false, 
-          opacity: 1,
-          size: 14,
-          line: {
-            color: '#6be831',
-            width: 3
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
-      },
+      JSON.parse(JSON.stringify(this.scores0defaults)),
+      JSON.parse(JSON.stringify(this.scores1defaults)),
+      JSON.parse(JSON.stringify(this.scores2defaults))
     ],
     layout: { 
-      width: 800,
-      height: 600,
+      width: 700,
+      height: 500,
       hovermode: 'closest',
       margin: {r: 10, t: 30, pad: 0 },
       showlegend: false,
       showtitle: true,
-      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-      title: 'Prediction projected on training series (using model X matrix)',
+      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+      title: 'Prediction projected on training series',
       xaxis: {
         zeroline: true,
         showgrid: true,
@@ -163,8 +186,8 @@ export class OnepredictionComponent implements OnInit {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC1',
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14},
       },
       yaxis: {
         zeroline: true,
@@ -174,21 +197,21 @@ export class OnepredictionComponent implements OnInit {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC2',
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14},
       },
     },
     config: {
-      // responsive: true,
+      responsive: true,
       displaylogo: false,
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_prediction',
-        width: 800,
-        height: 600,
+        width: 600,
+        height: 400,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      modeBarButtonsToRemove: ['autoScale2d','hoverCompareCartesian']
     }
   };
 
@@ -219,7 +242,7 @@ export class OnepredictionComponent implements OnInit {
         arrayminus: []
       },
       hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
-    },
+      },
       {x: [],
        y: [],
        type: 'scatter',
@@ -240,16 +263,16 @@ export class OnepredictionComponent implements OnInit {
       },
     ],
     layout : {
-      width: 800,
-      // height: 600,
+      width: 700,
+      height: 500,
       hovermode: 'x',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         zeroline: false,
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -259,8 +282,8 @@ export class OnepredictionComponent implements OnInit {
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_combo',
-        width: 800,
-        // height: 600,
+        width: 600,
+        height: 400,
       },
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
@@ -289,23 +312,23 @@ export class OnepredictionComponent implements OnInit {
       },
     ],
     layout : {
-      width: 800,
-      // height: 600,
+      width: 700,
+      height: 500,
       // margin: {r: 10, t: 30, b:0, pad: 0 },
       barmode: 'relative',
       hovermode: 'closest',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         range: [-1.1, 1.1],
         zeroline: true,
         zerolinewidth: 4,
         zerolinecolor: 'black',
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         tickvals: [-1.1, 0, 1.1],
         ticktext: ['negative', 'undefined', 'positive']
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -315,8 +338,8 @@ export class OnepredictionComponent implements OnInit {
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_combo',
-        width: 800,
-        // height: 600,
+        width: 700,
+        height: 500,
       },
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
@@ -324,49 +347,362 @@ export class OnepredictionComponent implements OnInit {
 
   constructor(
     private service: PredictorService,
-    private prediction: Prediction,
-    private commonService: CommonService
+    public prediction: Prediction,
+    private commonService: CommonService,
+    private profile: Profile,
+    private toastr: ToastrService,
+    public globals: Globals,
+    public model: Model
   ) { }
 
-  ngOnInit(): void {
-    //servicio que cuando das click a una prediccion le envie el nombre y el resto de datos.
-    this.commonService.predictionActive$.subscribe( name => { 
-      console.log("Service:")
-      console.log(name)
-      this.getPrediction(name);
-    });
-    
+  ngOnChanges(): void {
 
+      this.noNextMol = false;
+      this.noPreviousMol = true;
+      this.noNextModel = false;
+      this.noPreviousModel = true;
+      this.molIndex = 0;
+      this.submodelsIndex = 0;
+      this.modelBuildInfo = {};
+      this.predictData[0].r = [0, 0, 0, 0];
+      this.predictionError = '';
+  
+      this.activity_val = [];
+      this.dmodx_val = [];
+      this.plotScores.data = [
+        JSON.parse(JSON.stringify(this.scores0defaults)),
+        JSON.parse(JSON.stringify(this.scores1defaults)),
+        JSON.parse(JSON.stringify(this.scores2defaults))
+      ];
+      this.getPrediction();
+    this.getInfo();
+    this.getDocumentation();  
+    this.getValidation();
   }
-  getPrediction(name: string) {
+  public changeProjectStyleTrainingMark (target) {
+    var update = {'visible':[true, true, false]}
+    if (target.value == 'density') {
+      update = {'visible':[false, true, true]}
+    }
+    if (target.value == 'both') {
+      update = {'visible':[true, true, true]}
+    }
+    PlotlyJS.restyle('scoresPreDIV', update);
+  }
+  public changeProjectStylePredictionMark (target) {
+    var update1 = {};
+    if (target.value == 'dots'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'circle',
+        "marker.line.width": 0
+      }
+    }
+    if (target.value == 'crosses'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'cross',
+      }
+    }
+    if (target.value == 'names') {
+      update1 = {
+        "mode": "markers+text",
+        "marker.symbol": 'circle-open',
+        "marker.line.width":3
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+  }
+  public changeProjectStyleTrainingColor (target) {
+    var update0 = {};
+
+    if (target.value == 'grey') {
+      update0 = {
+       'marker.colorscale': [this.bwcolorscale],
+       'marker.opacity': 0.6,
+       'marker.showscale': false,
+      }
+    }
+    if (target.value == 'green') {
+      update0 = {
+       'marker.colorscale': [this.greencolorscale],
+       'marker.opacity': 0.2,
+       'marker.showscale': false,
+      }
+    }
+    if (target.value == 'activity') {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+
+      // points colored by activity
+      update0 = {
+        'marker.colorscale': newcolorscale,
+        'marker.opacity': 0.6,
+        'marker.showscale': this.isQuantitative,
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
+  }
+  public changeProjectStylePredictionColor (target) {
+    var update1 = {};
+    if (target.value == 'red'){
+      update1 =  {
+        "marker.color": 'red',
+        "textfont.color": 'red',
+        'marker.showscale': false,
+      };
+    }
+    if (target.value == 'activity') {
+      if (this.isQuantitative) {
+        update1 =  {
+          'marker.color': [this.activity_val],
+          "textfont.color": 'black',
+          'marker.colorscale': 'RdBu',
+          'marker.showscale': true,
+          'marker.cauto': true
+        };
+      }
+      else {
+        update1 =  {
+          'marker.color': [this.activity_val],
+          "textfont.color": 'black',
+          'marker.colorscale': 'Bluered',
+          'marker.showscale': false,
+          'marker.cauto': false,
+          'marker.cmin': 0.0,
+          'marker.cmax': 1.0
+        };
+      }
+
+    }
+    if (target.value == 'dmodx') {
+      update1 =  {
+        'marker.color': [this.dmodx_val],
+        "textfont.color": 'black',
+        'marker.colorscale': 'RdBu',
+        'marker.showscale': true,
+      };
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+  }
+  public changeProjectStyle (value:string) {
+    var update0 = {};
+    var update1 = {};
+    
+    const backup_colors0 = this.plotScores.data[0].marker.color;
+    const backup_colors1 = this.plotScores.data[1].marker.color;
+
+    if (value=='points' || value=='dmodx') {
+      
+      // grey background
+      update0 = {
+        marker: {
+          color: backup_colors0,
+          opacity: 0.6,
+          size: 10,
+          colorscale: this.bwcolorscale, 
+          showscale: false, 
+          cauto: true
+        }
+      }
+
+      // DModX 
+      if (this.dmodx && value=='dmodx') {
+        update1 =  {
+          mode: 'markers', 
+          marker: {
+            color: backup_colors1,
+            symbol: 'circle',
+            opacity: 0.6,
+            size: 14,
+            colorscale: 'RdBu',
+            showscale: true,
+            cauto: true,
+            colorbar: {
+              title: 'DModX',
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 }
+            }
+          }
+        };
+      }
+      // red points
+      else {
+        update1 =  {
+          mode: 'markers', 
+          marker: {
+            color: backup_colors1,
+            symbol: 'circle',
+            opacity: 0.6,
+            size: 14,
+            colorscale: this.redcolorscale,
+            showscale: false,
+          }
+        };
+      }
+
+    }
+    else {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+
+      // points colored by activity
+      update0 = {
+        marker: {
+          color: backup_colors0,
+          opacity: 0.6,
+          size: 10,
+          colorscale: newcolorscale,
+          showscale: this.isQuantitative, 
+          cauto: true,
+          colorbar: {
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+          }
+        }
+      }
+
+      // markers + text
+      update1 = {
+        mode: 'markers+text', 
+        marker: {
+          symbol: 'circle-open',
+          color: backup_colors1,
+          colorscale: this.greencolorscale,
+          showscale: false,
+          opacity: 1,
+          size: 14,
+          line: {
+            color: '#6be831',
+            width: 3
+          },
+        },
+      };
+    }
+    PlotlyJS.restyle('scoresPreDIV', update0, 0);
+    PlotlyJS.restyle('scoresPreDIV', update1, 1);
+    // console.log(update0);
+  }
+
+  getDocumentation() {
+    this.showConcentration = false;
+    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion, 'JSON').subscribe(
+      result => {
+        this.modelDocumentation = result;
+
+        let unit = this.modelDocumentation['Endpoint_units'].value;
+        if (unit != null) {
+          if (unit.slice(-3)=='(M)') {
+            if (unit.slice(0,1)=='p') {
+              this.showConcentration = true;
+            }
+            if (unit.slice(0,4)=='-log') {
+              this.showConcentration = true;
+            }
+          }
+
+          //update plots with "Activity" and replace with units
+        }
+        
+      },
+      error => {
+        this.modelDocumentation = undefined;
+      }
+    );
+  }
+  getValidation() {
+    this.commonService.getValidation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+        const info = result;
+        if ('PC1' in info) {
+
+          // define appropriate labels extracting from manifest
+          const manifest = info['manifest'];
+          var labelX = 'PCA PC1';
+          var labelY = 'PCA PC2';
+          for (var iman in manifest) {
+            if (manifest[iman]['key'] == 'PC1') {
+              labelX = manifest[iman]['label'];
+            }
+            if (manifest[iman]['key'] == 'PC2') {
+              labelY = manifest[iman]['label'];
+            }
+          }
+
+          setTimeout(() => {
+            this.plotScores.data[0].x = info['PC1'];
+            this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[2].x = info['PC1'];
+            this.plotScores.data[2].y = info['PC2'];
+            this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].meta = info['SMILES'];
+            this.plotScores.data[0].marker.color = info['ymatrix'];
+
+            if ('SSX' in info) {
+              this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+            } else {
+              this.plotScores.layout.xaxis.title = labelX
+              this.plotScores.layout.yaxis.title = labelY
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+            }
+            
+          }, 100);
+        }
+      },
+      error => {
+        this.modelPresent = false;
+        this.modelMatch = true; // prevent showing also this error!
+      }
+    )
+  }
+  getPrediction() {
     this.predictionVisible = false;
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
-    //$('#predictionOne').DataTable().destroy();
+
     this.modelValidationInfo = {};
-    this.service.getPrediction(name).subscribe(
+
+    this.service.getPrediction(this.predictionName).subscribe(
       result => {
         if (result['error']) {
           this.predictionError = result['error']; 
         }
         
+        // setTimeout(() => {
           if ('PC1proj' in result) {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
-            this.plotScores.data[1].meta = result['values'];
+            this.activity_val = result['values']
+
+            if (!this.isQuantitative){
+              for (var i=0; i<this.activity_val.length; i++){
+                if (this.activity_val[i]<0.0) {
+                  this.activity_val[i]=0.5;
+                }
+              }
+            }
+            // this.plotScores.data[1].meta = result['values'];
+            this.plotScores.data[1].meta = this.activity_val;
             if ('PCDMODX' in result) {
-              this.plotScores.data[1].marker.color = result['PCDMODX'];
               this.dmodx = true;
+              this.plotScores.data[1].marker.color = result['PCDMODX'];
+              this.dmodx_val = result['PCDMODX'];
             }
             else {
+              this.dmodx = false;
               for (var i=0; i<result['obj_nam'].length; i++) {
                 this.plotScores.data[1].marker.color[i] = 0.0;
+                this.dmodx_val[i] = 0.0;
               }
-              this.dmodx = false;
             }
 
           };
+          
+        // }, 100);
 
         this.predictionResult = result;
         this.updatePlotCombo();
@@ -388,21 +724,38 @@ export class OnepredictionComponent implements OnInit {
           this.modelValidationInfo['FP'][1]];
         }
         
-        
-        const options_list = {'width': 300, 'height': 150};
+        const options_list = {'width': 200, 'height': 125};
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
         
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
+
+          // List Tab
+          let istructure = 0;
+          let alerted = false;
+
           this.components.forEach((child) => {
-            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+            if (istructure < 200) {
+              SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+                smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
               }, function (err) {
                 console.log(err);
               });
+              istructure++;
+            } else {
+              if (!alerted) {
+                this.toastr.info( 'Too many structures, only the first 200 were rendered' , 'Information', {
+                  timeOut: 3000, positionClass: 'toast-top-right'});
+                alerted = true;
+              }
+            }
           });
-          
+
+          // add buttons to table
           const settingsObj: any = {
+            deferRender: true,
+            autoWidth: false, 
+            destroy: true,
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
@@ -413,20 +766,18 @@ export class OnepredictionComponent implements OnInit {
               { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ],
             rowCallback: (row: Node, data: any[] | Object, index: number) => {
-              const self = this;
+              // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
                 this.tabClickHandler(data);
               });
               return row;
             },
-            destroy: true,
-            deferRender: true,
-            // order: []
           };
 
           $('#prediction').DataTable(settingsObj);
-
+          
+          // Report tab
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
@@ -435,60 +786,117 @@ export class OnepredictionComponent implements OnInit {
             }
           });
 
+          // Series tab
+          // scores plot requires to define interactive behaviour
           if (this.modelMatch){
-
-            const options = {'width': 300, 'height': 300};
-            const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
-    
-            const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-            const context_ref = canvas_ref.getContext('2d');
-    
-            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
-            const context = canvas.getContext('2d');
-            
-            PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-            
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-            
-            // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
-              var points = eventdata.points[0];
-              // console.log (points)
-              if (points.curveNumber === 1) {
-                SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
-                });   
-                context_ref.font = "30px Barlow Semi Condensed";
-                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
-              }
-              else {
-                SmilesDrawer.parse(points.meta, function(tree) {
-                  smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-                });
-              }
-            });
-            // on onhover, clear the canvas
-            myPlot.on('plotly_unhover', function(eventdata){
-              var points = eventdata.points[0];
-              if (points.curveNumber === 0) {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-              }
-            });
-            myPlot.on('plotly_click', function(eventdata){
-              var points = eventdata.points[0];
-              if (points.curveNumber === 1) {
-                context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-              }
-            });
+            this.setScoresPlot(result)
           }
+
           this.predictionVisible = true;
             
-          }, 500);
-        }
+          }, 1000); // timeout
+      }
     );
   }
-  updatePlotCombo() {
+  setScoresPlot (result) {
+    const options = {'width': 400, 'height': 250};
+    const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
+    // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+    // const context_ref = canvas_ref.getContext('2d');
+
+    const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
+    const context = canvas.getContext('2d');
+    
+    PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+    
+    let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
+    
+    // on hover, draw the molecule
+    myPlot.on('plotly_hover', function(eventdata){ 
+      var points = eventdata.points[0];
+      if (points.curveNumber === 1) {
+        SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+        });   
+        // context_ref.font = "30px Barlow Semi Condensed";
+        // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+      }
+      else {
+        SmilesDrawer.parse(points.meta, function(tree) {
+          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+        });
+      }
+    });
+
+    // on onhover, clear the canvas
+    myPlot.on('plotly_unhover', function(eventdata){
+      var points = eventdata.points[0];
+      if (points.curveNumber === 0) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    // myPlot.on('plotly_click', function(eventdata){
+    //   var points = eventdata.points[0];
+    //   if (points.curveNumber === 1) {
+    //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+    //   }
+    // });
+    
+    const sel_options = {'width': 200, 'height': 125};
+    const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+
+    myPlot.on('plotly_selected', function(eventdata){
+      var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
+      if (eventdata != null && 'points' in eventdata) {
+        var points = eventdata.points;
+        // console.log(points);
+        points.forEach(function(pt) {
+          const tr = tbl.insertRow();
+
+          var ismiles = '';
+          var iactiv = ''; 
+          var canvasid = '';
+          if (pt.curveNumber === 0) {
+            ismiles = pt.meta;
+            iactiv = pt["marker.color"];
+            canvasid = 'reference'+pt.pointNumber;
+          }
+          else {
+            tr.setAttribute('style', 'background: #f7f9ea');
+            ismiles = result['SMILES'][pt.pointNumber];
+            iactiv = pt.meta.toFixed(2);
+            canvasid = 'prediction'+pt.pointNumber;
+          }
+          const tdname = tr.insertCell();
+          tdname.appendChild(document.createTextNode(pt.text));
+          tdname.setAttribute('style', 'max-width:100px')
+
+          const tdsmiles = tr.insertCell();
+          tdsmiles.setAttribute('class', 'align-middle text-center' )
+          const icanvas = document.createElement('canvas')
+          icanvas.setAttribute('id', canvasid);
+          tdsmiles.appendChild(icanvas);
+          SmilesDrawer.parse(ismiles, function(tree) {
+            smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+          });
+
+          const tdactiv = tr.insertCell();
+          tdactiv.setAttribute('class', 'align-right' )
+          tdactiv.appendChild(document.createTextNode(iactiv));
+
+        });
+      }
+      else {
+        for(var i = 1;i<tbl.rows.length;){
+          tbl.deleteRow(i);
+        }
+      }  
+    });
+  }
+
+  updatePlotCombo() {
     const xi = this.predictionResult.xmatrix[this.molIndex];
     // console.log (xi);
      
@@ -617,9 +1025,44 @@ export class OnepredictionComponent implements OnInit {
         }
       }
     }
+   
   }
   isInteger(value) {
     return value % 1 == 0;
+  }
+  NextMol() {
+    this.molIndex++;
+    this.noPreviousMol = false;
+    if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
+      this.noNextMol = true;
+    }
+    this.drawReportHeader();
+    this.drawSimilars();
+    this.updatePlotCombo();
+  }
+  PreviousMol() {
+    this.molIndex--;
+    this.noNextMol = false;
+    if (this.molIndex === 0) {
+      this.noPreviousMol = true;
+    }
+    this.drawReportHeader();
+    this.drawSimilars();
+    this.updatePlotCombo();
+  }
+  NextModel() {
+    this.submodelsIndex++;
+    this.noPreviousModel = false;
+    if ((this.submodels.length - 1) === this.submodelsIndex) {
+      this.noNextModel = true;
+    }
+  }
+  PreviousModel() {
+    this.submodelsIndex--;
+    this.noNextModel = false;
+    if (this.submodelsIndex === 0) {
+      this.noPreviousModel = true;
+    }
   }
 
   tabClickHandler(info: any): void {
@@ -631,7 +1074,7 @@ export class OnepredictionComponent implements OnInit {
     if (this.molIndex == 0) {
       this.noPreviousMol = true;
     }
-    if (this.molIndex == (this.predictionResult.SMILES.length - 1)) {
+    if (this.molIndex == (this.prediction.result.SMILES.length - 1)) {
       this.noNextMol = true;
     }
     
@@ -656,8 +1099,9 @@ export class OnepredictionComponent implements OnInit {
     this.updatePlotCombo();
 
   }
+
   drawReportHeader () {
-    const options = {'width': 600, 'height': 300};
+    const options = {'width': 400, 'height': 200};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
@@ -670,7 +1114,7 @@ export class OnepredictionComponent implements OnInit {
     setTimeout(() => {
       // draw similar compounds (if applicable)
       if (this.predictionResult.hasOwnProperty('search_results')) {
-        const optionsA = {'width': 400, 'height': 150};
+        const optionsA = {'width': 300, 'height': 200};
         const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
@@ -687,11 +1131,63 @@ export class OnepredictionComponent implements OnInit {
     },0);
   }
 
+  getInfo(): void {
+    this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+        for (const info of result) {
+          this.modelBuildInfo[info[0]] = info[2];
+        }
+
+        //support for legacy models using significance instead of confidence
+        if (this.modelBuildInfo['conformal_significance']!=undefined){
+          this.modelBuildInfo['conformal_confidence'] = 1.0 - this.modelBuildInfo["conformal_significance"];
+        }
+
+        this.modelPresent = true;
+
+        this.modelMatch = (this.modelBuildInfo['modelID'] == this.prediction.modelID);
+
+        this.isQuantitative = this.modelBuildInfo['quantitative'];
+        this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting' || 
+                          this.modelBuildInfo['model'] == 'combination:logical OR' ;
+
+        if (this.modelBuildInfo['ensemble']) {
+
+          let version = '0';
+          this.submodels = [];
+          this.modelBuildInfo['ensemble_names'].forEach((submodel, index) => {
+
+            if (this.modelBuildInfo['ensemble_names']) {
+              version = this.modelBuildInfo['ensemble_versions'][index];
+            } else {
+              version = '0';
+            }
+            this.submodels[index] = {};
+            this.submodels[index]['name'] = submodel;
+            this.submodels[index]['version'] = version;
+            this.commonService.getModel(submodel, version).subscribe(
+              result3 => {
+                for (const info of result3) {
+                  this.submodels[index][info[0]] = info[2];
+                }
+              },
+              error => {
+              }
+            );
+          });
+        }
+      },
+      error => {
+        this.modelPresent = false;
+        this.modelMatch = true; // prevent showing also this error!
+      }
+    );   
+  }
+
   backConc(value: any) {
     return (Math.pow(10,6-value).toFixed(4))
   }
   castValue(value: any) {
-
     if (this.modelBuildInfo['quantitative']) {
       return value.toFixed(3);
     } else {

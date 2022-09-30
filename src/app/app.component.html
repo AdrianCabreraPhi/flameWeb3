@@ -44,10 +44,47 @@
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab">
             <div class="row">
                 <div class="col-5 ml-2 p-0 scrollable">
-                    <app-profile-summary> </app-profile-summary>
+                    <div class="accordion mt-3" id="buildingAccordion">
+                        <div class="card">
+                            <div class="card-header collapsed" id="headingProfiles" data-toggle="collapse" data-target="#collapseZero"
+                                aria-expanded="true" aria-controls="collapseZero">
+                                <h5 class="mb-0">
+                                    Select Profile
+                                    <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                                </h5>
+                            </div>
+                            <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+                                <div class="card-body p-2 pr-5">
+                                    <app-profile-list> </app-profile-list>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header collapsed" id="headingPrediction" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="false" aria-controls="collapseOne">
+                                <h5 class="mb-0">
+                                    Select Prediction
+                                    <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion">
+                                <div class="card-body p-2 pr-5">
+                                    <app-prediction-list></app-prediction-list>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- componentes debajo de cada lista tanto de predicciones como de perfiles -->
+                    <app-profile-summary></app-profile-summary>
+
+                    <div *ngIf="this.prediction.name != undefined">
+                        <app-oneprediction [predictionName]=this.prediction.name></app-oneprediction>
+                    </div>
+
                 </div>
                 <div class="col p-0 info scrollable">
                     <app-prediction></app-prediction>
+                    <!-- <app-onepred-details *ngIf="this.globals.tablePredictionVisible" [predictionName]=this.prediction.name></app-onepred-details> -->
                 </div>
             </div>
         </div>

@@ -31,10 +31,12 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ProfilingButtonComponent } from './profiling-button/profiling-button.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { OnepredictionComponent } from './oneprediction/oneprediction.component';
+import { OnepredDetailsComponent } from './onepred-details/onepred-details.component';
+import { ProfileListComponent } from './profile-list/profile-list.component';
 PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
-  declarations: [
+  declarations: [			
     AppComponent,
     ModelListComponent,
     CompoundsComponent,
@@ -55,8 +57,11 @@ PlotlyModule.plotlyjs = PlotlyJS;
     LoadProfileButtonComponent,
     ProfilingButtonComponent,
     PredictionListComponent,
-    OnepredictionComponent
-  ],
+    OnepredictionComponent,
+      OnepredDetailsComponent,
+      PredictionListComponent,
+      ProfileListComponent,
+   ],
   imports: [
     BrowserModule,
     AppRoutingModule,

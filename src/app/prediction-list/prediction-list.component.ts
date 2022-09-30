@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
-import { Model, Prediction, Profile } from '../Globals';
+import { Globals, Model, Prediction, Profile } from '../Globals';
 
 @Component({
   selector: 'app-prediction-list',
@@ -15,7 +15,8 @@ export class PredictionListComponent implements OnInit {
     public prediction: Prediction,
     private model: Model,
     private profile: Profile,
-    private service: CommonService
+    private service: CommonService,
+    private global: Globals,
 
   ) { }
 
@@ -29,6 +30,7 @@ export class PredictionListComponent implements OnInit {
   }
 
   selectPrediction(name: string, modelName: string, modelVersion: string, date: any, modelID: string) {
+    this.global.tablePredictionVisible = true;
     this.profile.summary = undefined
     this.prediction.name = name;
     this.prediction.modelName = modelName;
@@ -36,6 +38,8 @@ export class PredictionListComponent implements OnInit {
     this.prediction.date = date;
     this.prediction.modelID = modelID;
     this.service.setPredictName(name);
+    let closebtn = document.getElementById('headingPrediction')
+    closebtn.click();
     
   }
 

@@ -83,7 +83,7 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  setPredictName(predictName: string){
+  setPredictName(predictName: any){
     this.predictionActive.next(predictName)
   }
   setCurrentCompoundTab(compoundTab: string) {
